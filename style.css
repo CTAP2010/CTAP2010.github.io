@@ -1,58 +1,79 @@
-/* Navbar CTAP */
-.navbar .brand-text {
-  color: #ffffff;       /* branco */
-  font-weight: 700;     /* negrito */
-  font-size: 1.25rem;   
-}
-
-/* Banner */
+/* ===== Banner Homepage ===== */
 .banner-section {
   position: relative;
+  width: 100%;
+  max-height: 500px;
+  overflow: hidden;
 }
 
 .banner-section img {
   width: 100%;
-  max-height: 600px;
+  height: 100%;
   object-fit: cover;
 }
 
 .banner-text {
   position: absolute;
-  bottom: 20px;        
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
+  transform: translate(-50%, -50%);
   color: white;
-  text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
 }
 
-/* Botões redes sociais */
+.banner-text h1 {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.banner-text p {
+  font-size: 1.5rem;
+}
+
+/* ===== Razões para praticar tiro com arco ===== */
+section.container h2 {
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.img-razoes {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 250px;
+  object-fit: cover;
+}
+
+.img-razoes:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== Botões redes sociais ===== */
 .btn-instagram {
-  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-  color: #fff;
-  font-weight: 600;
-  border-radius: 5px;
-  border: none;
+  background-color: #E1306C;
+  color: white;
+}
+
+.btn-instagram:hover {
+  background-color: #c1275b;
+  color: white;
 }
 
 .btn-facebook {
-  background-color: #1877F2;
-  color: #fff;
-  font-weight: 600;
-  border-radius: 5px;
-  border: none;
+  background-color: #3b5998;
+  color: white;
 }
 
-.btn-instagram:hover, .btn-facebook:hover {
-  opacity: 0.9;
-  color: #fff;
+.btn-facebook:hover {
+  background-color: #334d84;
+  color: white;
 }
 
-/* Navbar links */
-.navbar-nav .nav-link {
-  color: #fff !important;
-}
-
-.navbar-nav .nav-link:hover {
-  color: #D4AF37 !important;
+/* ===== Ajustes Mobile ===== */
+@media (max-width: 768px) {
+  .banner-text h1 {
+    font-size: 2rem;
+  }
+  .banner-text p {
+    font-size: 1rem;
+  }
 }

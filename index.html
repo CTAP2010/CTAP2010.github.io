@@ -4,9 +4,9 @@ title: Início
 ---
 
 <!-- Banner principal -->
-<section class="banner-section mb-5 position-relative text-center text-light">
-  <img src="/assets/img/home/banner.jpg" alt="Banner Clube" class="img-fluid w-100">
-  <div class="banner-text position-absolute top-50 start-50 translate-middle">
+<section class="banner-section mb-5 position-relative text-light">
+  <img src="/assets/img/home/banner.jpg" alt="Banner Clube">
+  <div class="banner-text text-center">
     <h1>Clube de Tiro com Arco do Porto</h1>
     <p>Treino, Competição e Espírito de Equipa</p>
   </div>
@@ -15,39 +15,20 @@ title: Início
 <!-- Razões para praticar tiro com arco -->
 <section class="container my-5">
   <h2 class="text-center mb-4">Por que praticar tiro com arco?</h2>
-  <div class="row text-center">
-    <div class="col-md-4 mb-3">
-      <img src="/assets/img/home/razao1.jpg" class="img-fluid rounded shadow mb-2" alt="Razão 1">
-      <h5>Foco e Concentração</h5>
-      <p>O tiro com arco melhora a atenção, disciplina e controlo mental.</p>
-    </div>
-    <div class="col-md-4 mb-3">
-      <img src="/assets/img/home/razao2.jpg" class="img-fluid rounded shadow mb-2" alt="Razão 2">
-      <h5>Desporto e Saúde</h5>
-      <p>Fortalece a postura, braços e coordenação motora.</p>
-    </div>
-    <div class="col-md-4 mb-3">
-      <img src="/assets/img/home/razao3.jpg" class="img-fluid rounded shadow mb-2" alt="Razão 3">
-      <h5>Espírito de Equipa</h5>
-      <p>Trabalhar em grupo e participar em competições promove camaradagem.</p>
-    </div>
-  </div>
-
-  <div class="row text-center mt-4">
-    <div class="col-md-4 mb-3">
-      <img src="/assets/img/home/razao4.jpg" class="img-fluid rounded shadow mb-2" alt="Razão 4">
-      <h5>Desafio Pessoal</h5>
-      <p>Cada tiro é uma oportunidade para melhorar e superar-se a si mesmo.</p>
-    </div>
-    <div class="col-md-4 mb-3">
-      <img src="/assets/img/home/razao5.jpg" class="img-fluid rounded shadow mb-2" alt="Razão 5">
-      <h5>Lazer e Relaxamento</h5>
-      <p>Uma atividade calma e recompensadora, ideal para reduzir stress.</p>
-    </div>
-    <div class="col-md-4 mb-3">
-      <img src="/assets/img/home/razao6.jpg" class="img-fluid rounded shadow mb-2" alt="Razão 6">
-      <h5>Competição Saudável</h5>
-      <p>Participar em torneios estimula a motivação e o crescimento pessoal.</p>
-    </div>
+  <div class="row text-center g-4">
+    {% assign fotos = site.static_files | where_exp:"file","file.path contains '/assets/img/home/'" %}
+    {% for foto in fotos %}
+      {% if foto.name != 'banner.jpg' %}
+        <div class="col-sm-6 col-md-4">
+          <div class="card shadow h-100">
+            <img src="{{ foto.path }}" class="card-img-top img-razoes" alt="Razão {{ forloop.index }}">
+            <div class="card-body">
+              <h5 class="card-title">Razão {{ forloop.index }}</h5>
+              <p class="card-text">Descobre os benefícios de praticar tiro com arco!</p>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
   </div>
 </section>
