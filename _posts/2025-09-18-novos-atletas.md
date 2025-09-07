@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Novos Atletas no Clube"
-date: 2025-09-18
+date: 2025-09-4
 img: "/assets/img/post/novos_atletas.jpg"
 ---
 
