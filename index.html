@@ -3,29 +3,56 @@ layout: default
 title: Início
 ---
 
-<!-- Banner -->
-<section class="position-relative">
-  <img src="/assets/img/banner.jpg" class="img-fluid w-100 banner-img" alt="Banner do Clube">
-
-  <!-- Texto embaixo do banner -->
-  <div class="banner-text text-center">
-    <h1 class="display-4 fw-bold">Clube de Tiro com Arco do Porto</h1>
-    <p class="lead">Treino, Competição e Espírito de Equipa</p>
-    <a href="https://www.instagram.com/clubetiroarcoporto/" class="btn btn-instagram btn-lg me-2" target="_blank">Instagram</a>
-    <a href="https://www.facebook.com/ClubedeTirocomArcoPorto/" class="btn btn-facebook btn-lg" target="_blank">Facebook</a>
+<!-- Banner principal -->
+<section class="banner-section mb-5">
+  <img src="/assets/img/banner.jpg" alt="Banner Clube">
+  <div class="banner-text">
+    <h1>Clube de Tiro com Arco do Porto</h1>
+    <p>Treino, Competição e Espírito de Equipa</p>
+    <a href="/contact.html" class="btn btn-success btn-lg mt-3">Contactar</a>
   </div>
 </section>
 
-<!-- Últimas Notícias -->
+<!-- Sobre e modalidades -->
 <section class="container my-5">
-  <h2 class="mb-3">Últimas Notícias</h2>
-  <ul class="list-group">
-    {% for post in site.posts limit:3 %}
-      <li class="list-group-item">
-        <a href="{{ post.url }}">{{ post.title }}</a> 
-        <small class="text-muted">({{ post.date | date: "%d-%m-%Y" }})</small>
-      </li>
-    {% endfor %}
-  </ul>
-  <a href="/noticias.html" class="btn btn-primary mt-3">Ver todas as notícias</a>
+  <h2 class="text-center mb-4">Sobre o Clube</h2>
+  <div class="row mb-5 align-items-center">
+    <div class="col-md-6">
+      <img src="/assets/img/treino1.jpg" class="img-fluid rounded shadow" alt="Treino no clube">
+    </div>
+    <div class="col-md-6">
+      <p>Fundado em XXXX, o Clube de Tiro com Arco do Porto promove o desporto e o espírito de equipa.</p>
+    </div>
+  </div>
+
+  <h2 class="text-center mb-4">Modalidades</h2>
+  <div class="row text-center">
+    <div class="col-md-4 mb-3">
+      <div class="card shadow">
+        <img src="/assets/img/recurvo.jpg" class="card-img-top" alt="Arco Recurvo">
+        <div class="card-body">
+          <h5 class="card-title">Arco Recurvo</h5>
+          <p class="card-text">Treinos e competições oficiais para iniciantes e avançados.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card shadow">
+        <img src="/assets/img/composto.jpg" class="card-img-top" alt="Arco Composto">
+        <div class="card-body">
+          <h5 class="card-title">Arco Composto</h5>
+          <p class="card-text">Modalidade moderna e competitiva, com equipamento especializado.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card shadow">
+        <img src="/assets/img/iniciacao.jpg" class="card-img-top" alt="Iniciação">
+        <div class="card-body">
+          <h5 class="card-title">Iniciação</h5>
+          <p class="card-text">Formação para novos atletas e jovens interessados no desporto.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
