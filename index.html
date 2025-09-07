@@ -2,4 +2,21 @@
 layout: default
 title: Início
 ---
-<!-- Conteúdo HTML com Bootstrap -->
+
+<div class="text-center">
+  <h1>Bem-vindo ao Clube de Tiro com Arco do Porto</h1>
+  <p class="lead">Dedicados ao treino, competição e espírito de equipa.</p>
+</div>
+
+<hr>
+
+<h2>Últimas Notícias</h2>
+<ul>
+  {% for post in site.posts limit:3 %}
+    <li>
+      <a href="{{ post.url }}">{{ post.title }}</a> 
+      <small>({{ post.date | date: "%d-%m-%Y" }})</small>
+    </li>
+  {% endfor %}
+</ul>
+<a href="/noticias.html">Ver todas as notícias</a>

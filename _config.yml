@@ -1,6 +1,8 @@
 title: "CTAP"
+email: geral@ctap.pt
 description: "Clube de Tiro com Arco do Porto"
 baseurl: ""        # vazio para site do utilizador
-url: "https://username.github.io"
+url: "https://rmmossso.github.io"
 theme: minima
-markdown: kramdown
+plugins:
+  - jekyll-feed
