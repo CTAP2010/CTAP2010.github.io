@@ -5,22 +5,37 @@ title: Equipa
 
 <h1 class="text-center mb-4">Equipa do Clube</h1>
 
-{% comment %}
-Agrupa todos os atletas por categoria
-{% endcomment %}
-{% assign categorias = site.data.atletas | map: "categoria" | uniq %}
+{% assign categorias_principais = "Recurvo,Barebow,Compound" | split: "," %}
+{% assign subcategorias = "Flechas,Robins,Juvenis,Cadetes,Juniores,Seniores,Veteranos" | split: "," %}
+{% assign sexos = "Masculino,Feminino" | split: "," %}
 
-{% for categoria in categorias %}
-  <div class="categoria">({{ categoria }})</div>
+{% for cat_principal in categorias_principais %}
+  {% assign atletas_cat = site.data.atletas | where: "categoria_principal", cat_principal %}
+  {% if atletas_cat.size > 0 %}
+    <h2 class="categoria-principal">{{ cat_principal }}</h2>
 
-  {% assign atletas_categoria = site.data.atletas | where: "categoria", categoria %}
-  <div class="membros">
-    {% for atleta in atletas_categoria %}
-      <div class="membro">
-        <img src="{{ atleta.foto }}" alt="Foto {{ atleta.nome }}">
-        <p><strong>{{ atleta.nome }}</strong> - {{ atleta.mensagem }}</p>
-      </div>
+    {% for subcat in subcategorias %}
+      {% assign atletas_sub = atletas_cat | where: "subcategoria", subcat %}
+      {% if atletas_sub.size > 0 %}
+        <h3 class="subcategoria">{{ subcat }}</h3>
+
+        {% for sexo in sexos %}
+          {% assign atletas_sexo = atletas_sub | where: "sexo", sexo %}
+          {% if atletas_sexo.size > 0 %}
+            <h4 class="sexo">{{ sexo }}</h4>
+            <div class="membros">
+              {% for atleta in atletas_sexo %}
+                <div class="membro">
+                  <img src="{{ atleta.foto }}" alt="Foto {{ atleta.nome }}">
+                  <p><strong>{{ atleta.nome }}</strong> - {{ atleta.mensagem }}</p>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+      {% endif %}
     {% endfor %}
-  </div>
-{% endfor %}
 
+  {% endif %}
+{% endfor %}
