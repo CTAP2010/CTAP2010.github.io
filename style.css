@@ -17,13 +17,21 @@ footer a {
 //banner 
 .banner {
   position: relative;
+  margin-bottom: 40px;
+}
+
+.banner img {
+  width: 100%;
+  height: auto;
+  max-height: 500px; /* mantém proporção e limita altura */
+  object-fit: cover;  /* corta ligeiramente se necessário, mantendo proporção */
 }
 
 .banner-text {
   position: absolute;
-  bottom: 20px;   /* distância do fundo do banner */
+  bottom: 0;
   width: 100%;
-  background: rgba(0,0,0,0.3); /* leve sombreado para o texto */
+  background: rgba(0,0,0,0.3); /* sombra leve para legibilidade */
   color: #fff;
   padding: 20px 0;
 }
