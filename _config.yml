@@ -1,5 +1,5 @@
-title: "Clube Desportivo"
-description: "Site do clube"
+title: "CTAP"
+description: "Clube de Tiro com Arco do Porto"
 baseurl: ""        # vazio para site do utilizador
 url: "https://username.github.io"
 theme: minima
