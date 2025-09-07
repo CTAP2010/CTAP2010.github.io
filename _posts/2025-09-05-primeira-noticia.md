@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Novo website"
-date: 2025-09-07
+date: 2025-09-05
 img: /assets/img/post/galeria1.jpg
 ---
 

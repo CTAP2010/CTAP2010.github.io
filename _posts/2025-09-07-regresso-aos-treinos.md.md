@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Regresso aos Treinos no Novo Espaço"
-date: 2025-09-10
+date: 2025-09-7
 img: "/assets/img/post/novo_espaco.jpg"
 ---
 
