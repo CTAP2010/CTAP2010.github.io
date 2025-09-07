@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Novos Atletas no Clube"
 date: 2025-09-4
 img: "/assets/img/post/novos_atletas.jpg"

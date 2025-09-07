@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Torneio de Início de Temporada"
 date: 2025-09-2
 img: "/assets/img/post/torneio_inicio.jpg"

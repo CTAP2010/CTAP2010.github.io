@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Treino Noturno para Todos"
 date: 2025-09-3
 img: "/assets/img/post/treino_noturno.jpg"

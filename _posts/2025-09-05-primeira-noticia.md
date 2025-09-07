@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Novo website"
 date: 2025-09-8
 img: /assets/img/post/galeria1.jpg

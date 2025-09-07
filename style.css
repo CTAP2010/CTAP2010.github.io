@@ -79,3 +79,12 @@
   color: #fff;
   border-color: #00A305;
 }
+
+/* ===== Imagens dentro das notícias ===== */
+.post-content img {
+  max-width: 100%;   /* não ultrapassa a largura do container */
+  height: auto;      /* mantém a proporção */
+  display: block;
+  margin: 0 auto 1rem auto; /* centraliza e adiciona margem inferior */
+  border-radius: 8px; /* opcional: bordas arredondadas */
+}

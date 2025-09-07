@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Regresso aos Treinos no Novo Espaço"
 date: 2025-09-1
 img: "/assets/img/post/novo_espaco.jpg"
