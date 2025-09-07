@@ -70,3 +70,8 @@
 img {
   object-fit: cover;
 }
+
+/* Ajusta botões redes sociais em linhas curtas */
+.contact-buttons .btn {
+  min-width: 120px;
+}
