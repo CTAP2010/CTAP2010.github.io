@@ -19,14 +19,16 @@ footer a {
   position: relative;
 }
 
-.banner .overlay {
-  background: rgba(0,0,0,0.5); /* sombreado sobre a imagem */
-  padding: 30px;
-  border-radius: 10px;
+.banner-text {
+  position: absolute;
+  bottom: 20px;   /* distância do fundo do banner */
+  width: 100%;
+  background: rgba(0,0,0,0.3); /* leve sombreado para o texto */
+  color: #fff;
+  padding: 20px 0;
 }
 
-.banner h1, .banner p {
-  color: #FFFFFF;
+.banner-text h1, .banner-text p {
   text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
 }
 
