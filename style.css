@@ -112,80 +112,92 @@
   object-fit: cover;
 }
 
-/* ================== Página Equipa ================== */
-.categoria {
-  background: #0d5c74;
+/* ==== Categoria Principal ==== */
+.categoria-principal {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
   color: white;
   text-align: center;
-  padding: 15px;
-  font-size: 18px;
-  font-weight: bold;
-  margin: 20px 0;
-  border-radius: 6px;
+  transition: all 0.3s;
 }
 
-.membro {
+.categoria-principal.Recurvo { background-color: #0d5c74; }
+.categoria-principal.Barebow { background-color: #1f7a8c; }
+.categoria-principal.Compound { background-color: #3a9ad9; }
+
+/* ==== Subcategoria ==== */
+.subcategoria {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+  color: #444;
+  border-bottom: 2px dashed #ccc;
+  padding-bottom: 0.2rem;
+  transition: border-color 0.3s;
+}
+
+.subcategoria:hover { border-color: #0d5c74; }
+
+/* ==== Sexo ==== */
+.sexo {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 0.8rem;
+  margin-bottom: 0.5rem;
+  color: #333;
   display: flex;
   align-items: center;
-  background: #0d5c74;
-  color: white;
-  margin: 10px 0;
-  border-radius: 6px;
-  padding: 10px;
-  gap: 15px;
-  transition: background 0.3s ease;
+  gap: 0.5rem;
+}
+
+/* ==== Membros ==== */
+.membros {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ==== Card de Atleta ==== */
+.membro {
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .membro:hover {
-  background: #0b4a5a;
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.18);
 }
 
 .membro img {
-  width: 60px;
-  height: 60px;
+  width: 100%;
+  max-width: 120px;
+  height: auto;
   border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid white;
+  margin-bottom: 0.5rem;
+  border: 2px solid #ddd;
 }
 
-.membro p {
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.3;
-}
+/* ==== Cards coloridos por Subcategoria ==== */
+.card-flechas { background-color: #e0f7fa; }
+.card-robins { background-color: #f1f8e9; }
+.card-juvenis { background-color: #fff3e0; }
+.card-cadetes { background-color: #fce4ec; }
+.card-juniores { background-color: #ede7f6; }
+.card-seniores { background-color: #f3e5f5; }
+.card-veteranos { background-color: #e0e0e0; }
 
-.membro p strong {
-  display: block; /* Desktop: nome em cima da mensagem */
-  font-size: 17px;
-  margin-bottom: 3px;
-}
+.membro p { margin: 0.3rem 0; font-size: 0.95rem; }
 
-/* Responsivo Equipa */
-@media (max-width: 600px) {
-  .membro {
-    flex-direction: row;   /* imagem e texto lado a lado */
-    flex-wrap: wrap;       /* permite quebra de linha */
-    text-align: left;
-    gap: 10px;
-    padding: 8px;
-  }
-
-  .membro img {
-    width: 50px;
-    height: 50px;
-    margin: 0;
-  }
-
-  .membro p {
-    font-size: 14px;
-    margin: 0;
-  }
-
-  .membro p strong {
-    display: inline;      /* nome ao lado da mensagem */
-    margin-right: 5px;
-  }
-}
 
 /* ================== Galeria ================== */
 #galeria img {

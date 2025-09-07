@@ -12,7 +12,7 @@ title: Equipa
 {% for cat_principal in categorias_principais %}
   {% assign atletas_cat = site.data.atletas | where: "categoria_principal", cat_principal %}
   {% if atletas_cat.size > 0 %}
-    <h2 class="categoria-principal">{{ cat_principal }}</h2>
+    <h2 class="categoria-principal {{ cat_principal }}">{{ cat_principal }}</h2>
 
     {% for subcat in subcategorias %}
       {% assign atletas_sub = atletas_cat | where: "subcategoria", subcat %}
@@ -22,15 +22,24 @@ title: Equipa
         {% for sexo in sexos %}
           {% assign atletas_sexo = atletas_sub | where: "sexo", sexo %}
           {% if atletas_sexo.size > 0 %}
-            <h4 class="sexo">{{ sexo }}</h4>
+            <h4 class="sexo">
+              {% if sexo == "Masculino" %}
+                ♂ {{ sexo }}
+              {% else %}
+                ♀ {{ sexo }}
+              {% endif %}
+            </h4>
+
             <div class="membros">
               {% for atleta in atletas_sexo %}
-                <div class="membro">
+                <div class="membro card-{{ subcat | downcase }}">
                   <img src="{{ atleta.foto }}" alt="Foto {{ atleta.nome }}">
-                  <p><strong>{{ atleta.nome }}</strong> - {{ atleta.mensagem }}</p>
+                  <p><strong>{{ atleta.nome }}</strong></p>
+                  <p>{{ atleta.mensagem }}</p>
                 </div>
               {% endfor %}
             </div>
+
           {% endif %}
         {% endfor %}
 
