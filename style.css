@@ -1,3 +1,10 @@
+/* Navbar CTAP */
+.navbar .brand-text {
+  color: #ffffff;       /* branco */
+  font-weight: 700;     /* negrito */
+  font-size: 1.25rem;   /* opcional: ajusta tamanho */
+}
+
 /* Banner */
 .banner-img {
   width: 100%;
@@ -21,7 +28,7 @@
   text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
 }
 
-/* Botões das redes sociais */
+/* Botões redes sociais */
 .btn-instagram {
   background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
   color: #fff;
@@ -48,7 +55,7 @@
   color: #fff;
 }
 
-/* Navbar */
+/* Navbar links */
 .navbar-nav .nav-link {
   color: #fff !important;
 }
