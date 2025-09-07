@@ -7,18 +7,52 @@ title: Contactos
   <h1 class="mb-4 text-center">Contacta-nos</h1>
   
   <div class="row">
-    <div class="col-md-8 mb-4">
+    <!-- Formulário -->
+    <div class="col-md-6 mb-4">
       <p>Preenche o formulário abaixo para falar connosco. Responderemos assim que possível!</p>
       <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdG2H9O1TASTcsYihB2M38RpDPqk9QsVUijUYMYbK-zmDTtWA/viewform?embedded=true" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0">A carregar…</iframe>
     </div>
 
-    <div class="col-md-4 text-center d-flex flex-column align-items-center justify-content-center">
-	  <h2>Siga-nos nas redes sociais</h2>
-	  <p>Fique por dentro de novidades, eventos e fotos do clube.</p>
-	  <div class="d-flex gap-2">
-		<a href="https://www.instagram.com/clubetiroarcoporto/" class="btn btn-instagram btn-lg" target="_blank">Instagram</a>
-		<a href="https://www.facebook.com/ClubedeTirocomArcoPorto/" class="btn btn-facebook btn-lg" target="_blank">Facebook</a>
-	  </div>
-	</div>
+    <!-- Morada, mapa e redes sociais -->
+    <div class="col-md-6 mb-4">
+      <h2>Morada</h2>
+      <p>
+        Clube de Tiro com Arco do Porto<br>
+        Rua do Arco, nº 123<br>
+        4000-000 Porto, Portugal
+      </p>
 
+      <h2>Localização</h2>
+      <div id="map" class="map-container mb-3"></div>
+
+      <h2>Siga-nos nas redes sociais</h2>
+      <p>Fique por dentro de novidades, eventos e fotos do clube.</p>
+      <div class="d-flex gap-2">
+        <a href="https://www.instagram.com/clubetiroarcoporto/" class="btn btn-instagram btn-lg" target="_blank">Instagram</a>
+        <a href="https://www.facebook.com/ClubedeTirocomArcoPorto/" class="btn btn-facebook btn-lg" target="_blank">Facebook</a>
+      </div>
+    </div>
+  </div>
 </section>
+
+<!-- Google Maps API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+<script>
+  function initMap() {
+    const clube = { lat: 41.149, lng: -8.611 };
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 16,
+      center: clube,
+      styles: []
+    });
+
+    const marker = new google.maps.Marker({
+      position: clube,
+      map: map,
+      title: "Clube de Tiro com Arco do Porto",
+      icon: "/assets/img/logo.png"
+    });
+  }
+
+  window.onload = initMap;
+</script>

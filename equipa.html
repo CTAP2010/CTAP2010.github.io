@@ -5,15 +5,20 @@ title: Equipa
 
 <h1 class="text-center mb-4">Equipa do Clube</h1>
 
-{% for categoria, atletas in site.data.atletas %}
-  <div class="categoria">
-    Categoria ({{ categoria }})
-  </div>
+{% assign senior_m = site.data.atletas | where: "categoria", "Senior Masculino" %}
+<div class="categoria">Categoria (Senior Masculino)</div>
+{% for atleta in senior_m %}
+<div class="membro">
+  <img src="{{ atleta.foto }}" alt="Foto {{ atleta.nome }}">
+  <p><strong>{{ atleta.nome }}</strong> - {{ atleta.mensagem }}</p>
+</div>
+{% endfor %}
 
-  {% for atleta in atletas %}
-    <div class="membro">
-      <img src="{{ atleta.foto }}" alt="Foto de {{ atleta.nome }}">
-      <p><strong>{{ atleta.nome }}</strong></p>
-    </div>
-  {% endfor %}
+{% assign senior_f = site.data.atletas | where: "categoria", "Senior Feminino" %}
+<div class="categoria">Categoria (Senior Feminino)</div>
+{% for atleta in senior_f %}
+<div class="membro">
+  <img src="{{ atleta.foto }}" alt="Foto {{ atleta.nome }}">
+  <p><strong>{{ atleta.nome }}</strong> - {{ atleta.mensagem }}</p>
+</div>
 {% endfor %}
