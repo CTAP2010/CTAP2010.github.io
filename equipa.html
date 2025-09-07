@@ -5,25 +5,15 @@ title: Equipa
 
 <h1 class="text-center mb-4">Equipa do Clube</h1>
 
-<div class="categoria">
-  Categoria (Senior Masculino)
-</div>
+{% for categoria, atletas in site.data.atletas %}
+  <div class="categoria">
+    Categoria ({{ categoria }})
+  </div>
 
-<div class="membro">
-  <img src="/assets/img/atletas/foto1.jpg" alt="Foto membro">
-  <p>Vem para o clube</p>
-</div>
-
-<div class="membro">
-  <img src="/assets/img/atletas/foto2.jpg" alt="Foto membro">
-  <p>Tiro com arco é fixe</p>
-</div>
-
-<div class="categoria">
-  Categoria (Senior Feminino)
-</div>
-
-<div class="membro">
-  <img src="/assets/img/atletas/foto3.jpg" alt="Foto membro">
-  <p>Adoro competir pelo clube</p>
-</div>
+  {% for atleta in atletas %}
+    <div class="membro">
+      <img src="{{ atleta.foto }}" alt="Foto de {{ atleta.nome }}">
+      <p><strong>{{ atleta.nome }}</strong></p>
+    </div>
+  {% endfor %}
+{% endfor %}

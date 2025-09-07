@@ -7,8 +7,8 @@ title: Início
 <section class="banner-section mb-5">
   <img src="/assets/img/banner_home.jpg" alt="Banner do Clube">
   <div class="banner-text">
- <!--   <h1>Clube de Tiro com Arco do Porto</h1>
-    <p>Treino, Competição e Espírito de Equipa</p>	-->
+    <h1>Clube de Tiro com Arco do Porto</h1>
+    <p>Treino, Competição e Espírito de Equipa</p>
   </div>
 </section>
 
@@ -16,18 +16,18 @@ title: Início
 <section class="container my-5">
   <h1 class="mb-4 text-center">Sobre o Clube</h1>
   <div class="row mb-5 align-items-center">
-    <div class="col-md-6">
+    <div class="col-md-6 mb-3">
       <img src="/assets/img/treino1.jpg" class="img-fluid rounded shadow" alt="Treino no clube">
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 mb-3">
       <h2>História</h2>
       <p>Fundado em XXXX, o Clube de Tiro com Arco do Porto promove o desporto e o espírito de equipa.</p>
     </div>
   </div>
 
   <h2 class="text-center mb-4">Modalidades</h2>
-  <div class="row text-center">
-    <div class="col-md-4 mb-3">
+  <div class="row text-center g-4 justify-content-center">
+    <div class="col-sm-6 col-md-4">
       <div class="card shadow">
         <img src="/assets/img/recurvo.jpg" class="card-img-top" alt="Arco Recurvo">
         <div class="card-body">
@@ -36,7 +36,7 @@ title: Início
         </div>
       </div>
     </div>
-    <div class="col-md-4 mb-3">
+    <div class="col-sm-6 col-md-4">
       <div class="card shadow">
         <img src="/assets/img/composto.jpg" class="card-img-top" alt="Arco Composto">
         <div class="card-body">
@@ -45,7 +45,7 @@ title: Início
         </div>
       </div>
     </div>
-    <div class="col-md-4 mb-3">
+    <div class="col-sm-6 col-md-4">
       <div class="card shadow">
         <img src="/assets/img/iniciacao.jpg" class="card-img-top" alt="Iniciação">
         <div class="card-body">
@@ -60,10 +60,10 @@ title: Início
 <!-- Últimas 3 Notícias -->
 <section class="container my-5">
   <h2 class="text-center mb-4">Últimas Notícias</h2>
-  <div class="row g-4">
+  <div class="row g-4 justify-content-center">
     {% assign ultimas_noticias = site.posts | sort: 'date' | reverse | slice: 0,3 %}
     {% for post in ultimas_noticias %}
-      <div class="col-md-4">
+      <div class="col-sm-6 col-md-4">
         <div class="news-card h-100 shadow">
           {% if post.img %}
             <img src="{{ post.img }}" class="news-card-img" alt="{{ post.title }}">

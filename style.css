@@ -19,6 +19,14 @@
   text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
 }
 
+/* Ajustes responsivos do texto do banner */
+@media (max-width: 600px) {
+  .banner-text h1, .banner-text p {
+    font-size: 1.2rem;
+    padding: 0 10px;
+  }
+}
+
 /* ===== Notícias ===== */
 .news-card {
   border-radius: 8px;
@@ -33,7 +41,9 @@
 
 .news-card-img {
   width: 100%;
-  height: auto; /* mantém proporção */
+  height: 200px;
+  object-fit: cover; 
+  object-position: center;
   display: block;
 }
 
@@ -59,7 +69,7 @@
   line-height: 1.4;
 }
 
-/* ===== Outros estilos gerais ===== */
+/* ===== Cards e botões ===== */
 .card-body h5 {
   font-weight: 600;
 }
@@ -80,25 +90,16 @@
   border-color: #00A305;
 }
 
-/* ===== Imagens dentro das notícias ===== */
+/* ===== Imagens nos posts ===== */
 .post-content img {
-  max-width: 100%;   /* não ultrapassa a largura do container */
-  height: auto;      /* mantém a proporção */
+  max-width: 100%;
+  height: auto;
   display: block;
-  margin: 0 auto 1rem auto; /* centraliza e adiciona margem inferior */
-  border-radius: 8px; /* opcional: bordas arredondadas */
+  margin: 0 auto 1rem auto;
+  border-radius: 8px;
 }
 
-/* Garantir que todas as thumbnails das notícias tenham o mesmo tamanho */
-.card-img-top {
-  height: 200px;          /* altura fixa para uniformizar */
-  object-fit: cover;      /* corta proporcionalmente sem distorcer */
-  object-position: center; /* foca no centro da imagem */
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-}
-
-/* ==== Página Equipa ==== */
+/* ===== Página Equipa ===== */
 .categoria {
   background: #0d5c74;
   color: white;
@@ -113,18 +114,19 @@
 .membro {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   background: #0d5c74;
   color: white;
   margin: 10px 0;
   border-radius: 6px;
   padding: 10px;
+  gap: 15px;
 }
 
 .membro img {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  margin-right: 15px;
   object-fit: cover;
   border: 2px solid white;
 }
@@ -132,9 +134,10 @@
 .membro p {
   margin: 0;
   font-size: 16px;
+  line-height: 1.2;
 }
 
-/* Responsivo para telemóvel */
+/* Responsivo */
 @media (max-width: 600px) {
   .membro {
     flex-direction: column;
@@ -142,6 +145,74 @@
   }
 
   .membro img {
-    margin: 0 0 10px 0;
+    margin-bottom: 10px;
   }
+}
+
+/* ===== Razões para praticar ===== */
+.reason-card {
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.reason-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0,0,0,0.15);
+}
+
+.card-img-wrapper {
+  overflow: hidden;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.img-razoes {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.img-razoes:hover {
+  transform: scale(1.05);
+}
+
+/* ===== Galeria ===== */
+.galeria img, .img-fluid.rounded.shadow {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.galeria img:hover, .img-fluid.rounded.shadow:hover {
+  transform: scale(1.05);
+}
+
+/* ===== Contactos ===== */
+iframe {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Botões redes sociais */
+.btn-instagram {
+  background-color: #E1306C;
+  color: white;
+}
+
+.btn-instagram:hover {
+  background-color: #C12D5A;
+}
+
+.btn-facebook {
+  background-color: #1877F2;
+  color: white;
+}
+
+.btn-facebook:hover {
+  background-color: #145BC0;
 }
