@@ -88,3 +88,12 @@
   margin: 0 auto 1rem auto; /* centraliza e adiciona margem inferior */
   border-radius: 8px; /* opcional: bordas arredondadas */
 }
+
+/* Garantir que todas as thumbnails das notícias tenham o mesmo tamanho */
+.card-img-top {
+  height: 200px;          /* altura fixa para uniformizar */
+  object-fit: cover;      /* corta proporcionalmente sem distorcer */
+  object-position: center; /* foca no centro da imagem */
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
