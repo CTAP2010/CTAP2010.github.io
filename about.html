@@ -6,7 +6,7 @@ title: Sobre
 <section class="container my-5">
   <h1 class="mb-4 text-center">Sobre o Clube</h1>
   
-  <!-- História do Clube -->
+  <!-- História -->
   <div class="row mb-5 align-items-center">
     <div class="col-md-6">
       <img src="/assets/img/treino1.jpg" class="img-fluid rounded shadow" alt="Treino no clube">
@@ -14,8 +14,7 @@ title: Sobre
     <div class="col-md-6">
       <h2>História</h2>
       <p>
-        Fundado em XXXX, o Clube de Tiro com Arco do Porto dedica-se a promover o desporto e o espírito de equipa.
-        A nossa missão é formar atletas e fomentar a prática saudável do tiro com arco em todas as idades.
+        Fundado em XXXX, o Clube de Tiro com Arco do Porto promove o desporto e o espírito de equipa.
       </p>
     </div>
   </div>
@@ -53,14 +52,13 @@ title: Sobre
   </div>
 
   <!-- Galeria Dinâmica -->
-	<div class="row mb-5">
-	  <h2 class="mb-4 text-center">Galeria</h2>
-	  {% assign fotos = site.static_files | where_exp:"file","file.path contains '/assets/img/galeria/'" %}
-	  {% for foto in fotos %}
-		<div class="col-md-4 mb-3">
-		  <img src="{{ foto.path }}" class="img-fluid rounded shadow" alt="Galeria {{ forloop.index }}">
-		</div>
-	  {% endfor %}
-	</div>
-
+  <div class="row mb-5">
+    <h2 class="mb-4 text-center">Galeria</h2>
+    {% assign fotos = site.static_files | where_exp:"file","file.path contains '/assets/img/galeria/'" %}
+    {% for foto in fotos %}
+      <div class="col-md-4 mb-3">
+        <img src="{{ foto.path }}" class="img-fluid rounded shadow" alt="Galeria {{ forloop.index }}">
+      </div>
+    {% endfor %}
+  </div>
 </section>
