@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Primeira notícia do clube"
+title: "Novo website"
 date: 2025-09-07
 ---
 Olá a todos, este é a primeira tentantiva de website para o Clube de tiro com arco do porto.
