@@ -1,0 +1,42 @@
+---
+layout: default
+title: Razões para praticar
+home_reasons:
+  - img: /assets/img/razoes/foco.jpg
+    title: Foco e Concentração
+    text: O tiro com arco melhora a atenção, disciplina e controlo mental.
+  - img: /assets/img/razoes/saude.jpg
+    title: Desporto e Saúde
+    text: Fortalece a postura, braços e coordenação motora.
+  - img: /assets/img/razoes/equipa.jpg
+    title: Espírito de Equipa
+    text: Trabalhar em grupo e participar em competições promove camaradagem.
+  - img: /assets/img/razoes/desafio.jpg
+    title: Desafio Pessoal
+    text: Cada tiro é uma oportunidade para melhorar e superar-se a si mesmo.
+  - img: /assets/img/razoes/lazer.jpg
+    title: Lazer e Relaxamento
+    text: Uma atividade calma e recompensadora, ideal para reduzir stress.
+  - img: /assets/img/razoes/competicao.jpg
+    title: Competição Saudável
+    text: Participar em torneios estimula a motivação e o crescimento pessoal.
+---
+
+<section class="container my-5">
+  <h1 class="text-center mb-5">Razões para praticar tiro com arco</h1>
+  <div class="row g-4 justify-content-center">
+    {% for reason in page.home_reasons %}
+      <div class="col-sm-6 col-md-4">
+        <div class="card reason-card h-100 shadow-sm">
+          <div class="card-img-wrapper">
+            <img src="{{ reason.img }}" class="card-img-top img-razoes" alt="{{ reason.title }}">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">{{ reason.title }}</h5>
+            <p class="card-text">{{ reason.text }}</p>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
