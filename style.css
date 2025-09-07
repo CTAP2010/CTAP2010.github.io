@@ -1,4 +1,12 @@
-/* ===== Banner ===== */
+/* ===== Geral ===== */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== Banner Home ===== */
 .banner-section {
   position: relative;
   text-align: center;
@@ -19,15 +27,7 @@
   text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
 }
 
-/* Ajustes responsivos do texto do banner */
-@media (max-width: 600px) {
-  .banner-text h1, .banner-text p {
-    font-size: 1.2rem;
-    padding: 0 10px;
-  }
-}
-
-/* ===== Notícias ===== */
+/* ===== Cards de Notícias ===== */
 .news-card {
   border-radius: 8px;
   overflow: hidden;
@@ -41,9 +41,7 @@
 
 .news-card-img {
   width: 100%;
-  height: 200px;
-  object-fit: cover; 
-  object-position: center;
+  height: auto;
   display: block;
 }
 
@@ -69,16 +67,25 @@
   line-height: 1.4;
 }
 
-/* ===== Cards e botões ===== */
-.card-body h5 {
-  font-weight: 600;
+/* Imagens dentro das notícias */
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto 1rem auto;
+  border-radius: 8px;
 }
 
-.card-body p {
-  font-size: 0.95rem;
-  color: #555;
+/* Uniformizar thumbnails de notícias */
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+  object-position: center;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
+/* ===== Botões ===== */
 .btn-outline-success {
   border-color: #00A305;
   color: #00A305;
@@ -90,16 +97,7 @@
   border-color: #00A305;
 }
 
-/* ===== Imagens nos posts ===== */
-.post-content img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto 1rem auto;
-  border-radius: 8px;
-}
-
-/* ===== Página Equipa ===== */
+/* ===== Equipa ===== */
 .categoria {
   background: #0d5c74;
   color: white;
@@ -114,13 +112,17 @@
 .membro {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   background: #0d5c74;
   color: white;
   margin: 10px 0;
   border-radius: 6px;
   padding: 10px;
   gap: 15px;
+  transition: background 0.3s ease;
+}
+
+.membro:hover {
+  background: #0b4a5a; /* efeito hover */
 }
 
 .membro img {
@@ -134,18 +136,39 @@
 .membro p {
   margin: 0;
   font-size: 16px;
-  line-height: 1.2;
+  line-height: 1.3;
 }
 
-/* Responsivo */
+.membro p strong {
+  display: block; /* Desktop: nome em cima da mensagem */
+  font-size: 17px;
+  margin-bottom: 3px;
+}
+
+/* Responsivo para telemóvel */
 @media (max-width: 600px) {
   .membro {
-    flex-direction: column;
-    text-align: center;
+    flex-direction: row;   /* imagem e texto lado a lado */
+    flex-wrap: wrap;       /* permite quebra de linha */
+    text-align: left;      /* texto alinhado à esquerda */
+    gap: 10px;
+    padding: 8px;
   }
 
   .membro img {
-    margin-bottom: 10px;
+    width: 50px;
+    height: 50px;
+    margin: 0;
+  }
+
+  .membro p {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .membro p strong {
+    display: inline;      /* nome ao lado da mensagem */
+    margin-right: 5px;
   }
 }
 
@@ -153,123 +176,116 @@
 .reason-card {
   border-radius: 8px;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
+  background: #fff;
 }
 
 .reason-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0,0,0,0.15);
 }
 
 .card-img-wrapper {
+  width: 100%;
+  height: 200px;
   overflow: hidden;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
 }
 
 .img-razoes {
   width: 100%;
-  height: 180px;
+  height: 100%;
   object-fit: cover;
-  display: block;
-  transition: transform 0.3s ease;
-}
-
-.img-razoes:hover {
-  transform: scale(1.05);
 }
 
 /* ===== Galeria ===== */
-.galeria img, .img-fluid.rounded.shadow {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
+#gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+#gallery img {
+  cursor: pointer;
   border-radius: 8px;
+  max-width: 100%;
+  height: auto;
   transition: transform 0.3s ease;
 }
 
-.galeria img:hover, .img-fluid.rounded.shadow:hover {
+#gallery img:hover {
   transform: scale(1.05);
 }
 
-/* ===== Contactos ===== */
-iframe {
+/* Lightbox */
+.lightbox {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  padding-top: 60px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.9);
+}
+
+.lightbox-content {
+  margin: auto;
+  display: block;
+  max-width: 90%;
+  max-height: 80%;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 30px;
+  right: 45px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* ===== Contactos ===== */
+.contact-section {
+  text-align: center;
+}
+
+.contact-section h2 {
+  margin-bottom: 15px;
+}
+
+.contact-section p {
+  margin-bottom: 10px;
 }
 
 /* Botões redes sociais */
 .btn-instagram {
   background-color: #E1306C;
-  color: white;
+  color: #fff;
 }
 
 .btn-instagram:hover {
-  background-color: #C12D5A;
+  background-color: #C72C61;
+  color: #fff;
 }
 
 .btn-facebook {
-  background-color: #1877F2;
-  color: white;
+  background-color: #3b5998;
+  color: #fff;
 }
 
 .btn-facebook:hover {
-  background-color: #145BC0;
+  background-color: #2d4373;
+  color: #fff;
 }
 
-/* ==== Página Equipa ==== */
-.categoria {
-  background: #0d5c74;
-  color: white;
-  text-align: center;
-  padding: 15px;
-  font-size: 18px;
-  font-weight: bold;
-  margin: 20px 0;
-  border-radius: 6px;
-}
-
-.membro {
-  display: flex;
-  align-items: center;
-  background: #0d5c74;
-  color: white;
-  margin: 10px 0;
-  border-radius: 6px;
-  padding: 10px;
-}
-
-.membro img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  margin-right: 15px;
-  object-fit: cover;
-  border: 2px solid white;
-}
-
-.membro p {
-  margin: 0;
-  font-size: 16px;
-}
-
-/* Responsivo */
-@media (max-width: 600px) {
-  .membro {
-    flex-direction: column;
-    text-align: center;
+/* ===== Responsivo geral ===== */
+@media (max-width: 768px) {
+  .col-md-4, .col-md-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
   }
-  .membro img {
-    margin: 0 0 10px 0;
-  }
-}
-
-/* ==== Mapa ==== */
-.map-container {
-  width: 100%;
-  height: 300px;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-  margin-bottom: 20px;
 }
