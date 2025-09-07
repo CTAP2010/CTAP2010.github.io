@@ -75,3 +75,10 @@ img {
 .contact-buttons .btn {
   min-width: 120px;
 }
+
+/* CTAP na navbar */
+.navbar .brand-text {
+  color: #ffffff;       /* branco */
+  font-weight: 700;     /* negrito */
+  font-size: 1.25rem;   /* opcional: ajusta tamanho */
+}
