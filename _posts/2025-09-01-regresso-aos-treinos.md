@@ -1,13 +1,11 @@
 ---
 layout: post
 title: "Regresso aos Treinos no Novo Espaço"
-date: 2025-09-1
+date: 2025-09-01
 img: "/assets/img/post/novo_espaco.jpg"
 ---
 
 É com grande entusiasmo que anunciamos o **regresso aos treinos** do Clube de Tiro com Arco do Porto no nosso **novo espaço totalmente renovado**. Após um período de obras, estamos preparados para receber todos os atletas, desde iniciantes até competidores experientes, num ambiente moderno e seguro.
-
-![Novo espaço]({{ '/assets/img/post/novo_espaco.jpg' | relative_url }})
 
 O novo espaço oferece:
 
