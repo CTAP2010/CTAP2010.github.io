@@ -3,6 +3,15 @@ layout: default
 title: Início
 ---
 
+<!-- Banner Homepage -->
+<section class="banner-section mb-5">
+  <img src="/assets/img/banner_home.jpg" alt="Banner do Clube">
+  <div class="banner-text">
+    <h1>Clube de Tiro com Arco do Porto</h1>
+    <p>Treino, Competição e Espírito de Equipa</p>
+  </div>
+</section>
+
 <!-- História -->
 <section class="container my-5">
   <h1 class="mb-4 text-center">Sobre o Clube</h1>
@@ -49,5 +58,30 @@ title: Início
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- Últimas Notícias -->
+<section class="container my-5">
+  <h2 class="text-center mb-4">Últimas Notícias</h2>
+  <div class="row">
+    {% assign ultimas_noticias = site.posts | sort: 'date' | reverse | slice: 0,3 %}
+    {% for post in ultimas_noticias %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow">
+          {% if post.img %}
+            <img src="{{ post.img }}" class="card-img-top" alt="{{ post.title }}">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text"><small class="text-muted">{{ post.date | date: "%d-%m-%Y" }}</small></p>
+            <a href="{{ post.url }}" class="btn btn-primary">Ler mais</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="text-center mt-3">
+    <a href="/noticias.html" class="btn btn-success">Ver todas as notícias</a>
   </div>
 </section>

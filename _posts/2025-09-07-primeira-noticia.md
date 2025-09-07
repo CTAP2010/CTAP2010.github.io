@@ -2,10 +2,13 @@
 layout: default
 title: "Novo website"
 date: 2025-09-07
+img: /assets/img/post/galeria1.jpg
 ---
-Olá a todos, este é a primeira tentantiva de website para o Clube de tiro com arco do porto.
 
-Texto da notícia... podes usar imagens em assets/img e referenciá-las com:
-`![alt]({{ '/assets/img/exemplo.jpg' | relative_url }})`
+Olá a todos, este é a primeira tentativa de website para o Clube de Tiro com Arco do Porto.
 
-agora vou tentar adicionar uma imagem ![alt]({{ '/assets/img/galeria1.jpg' | relative_url }})
+Texto da notícia...
+
+![Galeria 1]({{ '/assets/img/post/galeria1.jpg' | relative_url }})
+
+Mais texto da notícia aqui...

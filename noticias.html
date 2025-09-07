@@ -6,9 +6,13 @@ title: Notícias
 <section class="container my-5">
   <h1 class="mb-4 text-center">Notícias</h1>
   <div class="row">
-    {% for post in site.posts %}
+    {% assign noticias_ordenadas = site.posts | sort: 'date' | reverse %}
+    {% for post in noticias_ordenadas %}
       <div class="col-md-4 mb-4">
         <div class="card h-100 shadow">
+          {% if post.img %}
+            <img src="{{ post.img }}" class="card-img-top" alt="{{ post.title }}">
+          {% endif %}
           <div class="card-body">
             <h5 class="card-title">{{ post.title }}</h5>
             <p class="card-text"><small class="text-muted">{{ post.date | date: "%d-%m-%Y" }}</small></p>
