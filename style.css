@@ -1,12 +1,4 @@
-/* ===== Geral ===== */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f8f9fa;
-  margin: 0;
-  padding: 0;
-}
-
-/* ===== Banner Home ===== */
+/* ================== Banner ================== */
 .banner-section {
   position: relative;
   text-align: center;
@@ -27,7 +19,7 @@ body {
   text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
 }
 
-/* ===== Cards de Notícias ===== */
+/* ================== Notícias ================== */
 .news-card {
   border-radius: 8px;
   overflow: hidden;
@@ -67,7 +59,7 @@ body {
   line-height: 1.4;
 }
 
-/* Imagens dentro das notícias */
+/* ================== Post e imagens ================== */
 .post-content img {
   max-width: 100%;
   height: auto;
@@ -76,7 +68,6 @@ body {
   border-radius: 8px;
 }
 
-/* Uniformizar thumbnails de notícias */
 .card-img-top {
   height: 200px;
   object-fit: cover;
@@ -85,7 +76,7 @@ body {
   border-top-right-radius: 8px;
 }
 
-/* ===== Botões ===== */
+/* ================== Botões ================== */
 .btn-outline-success {
   border-color: #00A305;
   color: #00A305;
@@ -97,7 +88,31 @@ body {
   border-color: #00A305;
 }
 
-/* ===== Equipa ===== */
+/* ================== Cards Razões ================== */
+.reason-card {
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #fff;
+}
+
+.reason-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0,0,0,0.15);
+}
+
+.card-img-wrapper {
+  height: 200px;
+  overflow: hidden;
+}
+
+.img-razoes {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ================== Página Equipa ================== */
 .categoria {
   background: #0d5c74;
   color: white;
@@ -122,7 +137,7 @@ body {
 }
 
 .membro:hover {
-  background: #0b4a5a; /* efeito hover */
+  background: #0b4a5a;
 }
 
 .membro img {
@@ -145,12 +160,12 @@ body {
   margin-bottom: 3px;
 }
 
-/* Responsivo para telemóvel */
+/* Responsivo Equipa */
 @media (max-width: 600px) {
   .membro {
     flex-direction: row;   /* imagem e texto lado a lado */
     flex-wrap: wrap;       /* permite quebra de linha */
-    text-align: left;      /* texto alinhado à esquerda */
+    text-align: left;
     gap: 10px;
     padding: 8px;
   }
@@ -172,47 +187,14 @@ body {
   }
 }
 
-/* ===== Razões para praticar ===== */
-.reason-card {
-  border-radius: 8px;
-  overflow: hidden;
-  transition: transform 0.3s ease;
-  background: #fff;
-}
-
-.reason-card:hover {
-  transform: translateY(-5px);
-}
-
-.card-img-wrapper {
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
-}
-
-.img-razoes {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* ===== Galeria ===== */
-#gallery {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
-}
-
-#gallery img {
+/* ================== Galeria ================== */
+#galeria img {
   cursor: pointer;
-  border-radius: 8px;
-  max-width: 100%;
-  height: auto;
   transition: transform 0.3s ease;
+  border-radius: 6px;
 }
 
-#gallery img:hover {
+#galeria img:hover {
   transform: scale(1.05);
 }
 
@@ -221,7 +203,7 @@ body {
   display: none;
   position: fixed;
   z-index: 9999;
-  padding-top: 60px;
+  padding: 1rem;
   left: 0;
   top: 0;
   width: 100%;
@@ -230,62 +212,32 @@ body {
   background-color: rgba(0,0,0,0.9);
 }
 
-.lightbox-content {
+.lightbox img {
   margin: auto;
   display: block;
   max-width: 90%;
-  max-height: 80%;
+  max-height: 90%;
+}
+
+.lightbox:target {
+  display: block;
+}
+
+/* ================== Contactos ================== */
+#map {
+  width: 100%;
+  height: 400px;
   border-radius: 8px;
+  margin-top: 1rem;
 }
 
-.lightbox-close {
-  position: absolute;
-  top: 30px;
-  right: 45px;
-  color: #fff;
-  font-size: 40px;
-  font-weight: bold;
-  cursor: pointer;
+/* ================== Outros estilos gerais ================== */
+.card-body h5 {
+  font-weight: 600;
 }
 
-/* ===== Contactos ===== */
-.contact-section {
-  text-align: center;
+.card-body p {
+  font-size: 0.95rem;
+  color: #555;
 }
 
-.contact-section h2 {
-  margin-bottom: 15px;
-}
-
-.contact-section p {
-  margin-bottom: 10px;
-}
-
-/* Botões redes sociais */
-.btn-instagram {
-  background-color: #E1306C;
-  color: #fff;
-}
-
-.btn-instagram:hover {
-  background-color: #C72C61;
-  color: #fff;
-}
-
-.btn-facebook {
-  background-color: #3b5998;
-  color: #fff;
-}
-
-.btn-facebook:hover {
-  background-color: #2d4373;
-  color: #fff;
-}
-
-/* ===== Responsivo geral ===== */
-@media (max-width: 768px) {
-  .col-md-4, .col-md-6 {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-}
