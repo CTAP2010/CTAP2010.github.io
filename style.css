@@ -97,3 +97,51 @@
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
+
+/* ==== Página Equipa ==== */
+.categoria {
+  background: #0d5c74;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 20px 0;
+  border-radius: 6px;
+}
+
+.membro {
+  display: flex;
+  align-items: center;
+  background: #0d5c74;
+  color: white;
+  margin: 10px 0;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.membro img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 15px;
+  object-fit: cover;
+  border: 2px solid white;
+}
+
+.membro p {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* Responsivo para telemóvel */
+@media (max-width: 600px) {
+  .membro {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .membro img {
+    margin: 0 0 10px 0;
+  }
+}
