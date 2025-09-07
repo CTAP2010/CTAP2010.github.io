@@ -4,7 +4,28 @@
   sexo: "Masculino"
   foto: "/assets/img/atletas/foto1.jpg"
   mensagem: "Vem para o clube"
+  
+- nome: "Antonio Silva"
+ categoria_principal: "Recurvo"
+ subcategoria: "Seniores"
+ sexo: "Masculino"
+ foto: "/assets/img/atletas/foto2.jpg"
+ mensagem: "Vedasdalube"
 
+- nome: "João nix"
+  categoria_principal: "Recurvo"
+  subcategoria: "Seniores"
+  sexo: "Masculino"
+  foto: "/assets/img/atletas/foto1.jpg"
+  mensagem: "Vem para o ja foste caralgo"
+  
+- nome: "João maria"
+  categoria_principal: "Recurvo"
+  subcategoria: "Juniores"
+  sexo: "Masculino"
+  foto: "/assets/img/atletas/foto1.jpg"
+  mensagem: "Vem para o ja foste caralgo"
+  
 - nome: "Ana Costa"
   categoria_principal: "Recurvo"
   subcategoria: "Seniores"
