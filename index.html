@@ -3,20 +3,26 @@ layout: default
 title: Início
 ---
 
-<div class="text-center">
-  <h1>Bem-vindo ao Clube de Tiro com Arco do Porto</h1>
-  <p class="lead">Dedicados ao treino, competição e espírito de equipa.</p>
-</div>
+<!-- Banner -->
+<section class="banner text-center text-white d-flex align-items-center justify-content-center" style="background-image: url('/assets/img/banner.jpg'); background-size: cover; background-position: center; height: 400px;">
+  <div class="overlay p-3">
+    <h1 class="display-4 fw-bold">Clube de Tiro com Arco do Porto</h1>
+    <p class="lead">Treino, Competição e Espírito de Equipa</p>
+    <a href="https://www.instagram.com/clubetiroarcoporto/" class="btn btn-light btn-lg me-2" target="_blank">Instagram</a>
+    <a href="https://www.facebook.com/ClubedeTirocomArcoPorto/" class="btn btn-light btn-lg" target="_blank">Facebook</a>
+  </div>
+</section>
 
-<hr>
-
-<h2>Últimas Notícias</h2>
-<ul>
-  {% for post in site.posts limit:3 %}
-    <li>
-      <a href="{{ post.url }}">{{ post.title }}</a> 
-      <small>({{ post.date | date: "%d-%m-%Y" }})</small>
-    </li>
-  {% endfor %}
-</ul>
-<a href="/noticias.html">Ver todas as notícias</a>
+<!-- Últimas Notícias -->
+<section class="container my-5">
+  <h2 class="mb-3">Últimas Notícias</h2>
+  <ul class="list-group">
+    {% for post in site.posts limit:3 %}
+      <li class="list-group-item">
+        <a href="{{ post.url }}">{{ post.title }}</a> 
+        <small class="text-muted">({{ post.date | date: "%d-%m-%Y" }})</small>
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="/noticias.html" class="btn btn-primary mt-3">Ver todas as notícias</a>
+</section>

@@ -13,3 +13,44 @@ a {
 footer a {
   margin: 0 5px;
 }
+
+//banner 
+.banner {
+  position: relative;
+}
+
+.banner .overlay {
+  background: rgba(0,0,0,0.5); /* sombreado sobre a imagem */
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.banner h1, .banner p {
+  color: #FFFFFF;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+}
+
+.btn-light {
+  background-color: #FFFFFF;
+  color: #1A3C2E;
+  font-weight: 600;
+}
+
+.btn-light:hover {
+  background-color: #D4AF37;
+  color: #FFFFFF;
+}
+
+//about
+.card-title {
+  color: #1A3C2E;
+  font-weight: 600;
+}
+
+.card-text {
+  font-size: 0.95rem;
+}
+
+img {
+  object-fit: cover;
+}
