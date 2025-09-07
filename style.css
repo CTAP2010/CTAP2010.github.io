@@ -1,12 +1,6 @@
 /* Banner */
-.banner {
-  position: relative;
-  margin-bottom: 40px;
-}
-
-.banner img {
+.banner-img {
   width: 100%;
-  height: auto;
   max-height: 500px;
   object-fit: cover;
 }
@@ -14,6 +8,8 @@
 .banner-text {
   position: absolute;
   bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
   background: rgba(0,0,0,0.3);
   color: #fff;
@@ -59,22 +55,6 @@
 
 .navbar-nav .nav-link:hover {
   color: #D4AF37 !important;
-}
-
-/* Contact buttons (opcional para contact.html) */
-.contact-buttons a {
-  display: block;
-  margin: 10px auto;
-  width: 70%;
-  background-color: #1A3C2E;
-  color: #FFFFFF;
-  font-weight: 600;
-  border-radius: 5px;
-}
-
-.contact-buttons a:hover {
-  background-color: #D4AF37;
-  color: #FFFFFF;
 }
 
 /* Cards de notícias e galeria */
