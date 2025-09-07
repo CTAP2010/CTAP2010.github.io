@@ -1,6 +1,25 @@
 ---
 layout: default
 title: Início
+home_reasons:
+  - img: /assets/img/home/foco.jpg
+    title: Foco e Concentração
+    text: O tiro com arco melhora a atenção, disciplina e controlo mental.
+  - img: /assets/img/home/saude.jpg
+    title: Desporto e Saúde
+    text: Fortalece a postura, braços e coordenação motora.
+  - img: /assets/img/home/equipa.jpg
+    title: Espírito de Equipa
+    text: Trabalhar em grupo e participar em competições promove camaradagem.
+  - img: /assets/img/home/desafio.jpg
+    title: Desafio Pessoal
+    text: Cada tiro é uma oportunidade para melhorar e superar-se a si mesmo.
+  - img: /assets/img/home/lazer.jpg
+    title: Lazer e Relaxamento
+    text: Uma atividade calma e recompensadora, ideal para reduzir stress.
+  - img: /assets/img/home/competicao.jpg
+    title: Competição Saudável
+    text: Participar em torneios estimula a motivação e o crescimento pessoal.
 ---
 
 <!-- Banner principal -->
@@ -16,19 +35,16 @@ title: Início
 <section class="container my-5">
   <h2 class="text-center mb-4">Por que praticar tiro com arco?</h2>
   <div class="row text-center g-4">
-    {% assign fotos = site.static_files | where_exp:"file","file.path contains '/assets/img/home/'" %}
-    {% for foto in fotos %}
-      {% if foto.name != 'banner.jpg' %}
-        <div class="col-sm-6 col-md-4">
-          <div class="card shadow h-100">
-            <img src="{{ foto.path }}" class="card-img-top img-razoes" alt="Razão {{ forloop.index }}">
-            <div class="card-body">
-              <h5 class="card-title">Razão {{ forloop.index }}</h5>
-              <p class="card-text">Descobre os benefícios de praticar tiro com arco!</p>
-            </div>
+    {% for reason in page.home_reasons %}
+      <div class="col-sm-6 col-md-4">
+        <div class="card shadow h-100">
+          <img src="{{ reason.img }}" class="card-img-top img-razoes" alt="{{ reason.title }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ reason.title }}</h5>
+            <p class="card-text">{{ reason.text }}</p>
           </div>
         </div>
-      {% endif %}
+      </div>
     {% endfor %}
   </div>
 </section>
