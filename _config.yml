@@ -1,0 +1,6 @@
+title: "Clube Desportivo"
+description: "Site do clube"
+baseurl: ""        # vazio para site do utilizador
+url: "https://username.github.io"
+theme: minima
+markdown: kramdown

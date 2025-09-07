@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ page.title }} | {{ site.title }}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{{ '/style.css' | relative_url }}" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="{{ '/' | relative_url }}">Início</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ '/about.html' | relative_url }}">Sobre</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ '/noticias.html' | relative_url }}">Notícias</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ '/contact.html' | relative_url }}">Contacto</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main class="container my-4">
+  {{ content }}
+</main>
+
+<footer class="bg-dark text-white text-center py-3">
+  &copy; {{ site.time | date: "%Y" }} {{ site.title }}
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
