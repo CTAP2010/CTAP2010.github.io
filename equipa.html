@@ -5,20 +5,22 @@ title: Equipa
 
 <h1 class="text-center mb-4">Equipa do Clube</h1>
 
-{% assign senior_m = site.data.atletas | where: "categoria", "Senior Masculino" %}
-<div class="categoria">Categoria (Senior Masculino)</div>
-{% for atleta in senior_m %}
-<div class="membro">
-  <img src="{{ atleta.foto }}" alt="Foto {{ atleta.nome }}">
-  <p><strong>{{ atleta.nome }}</strong> - {{ atleta.mensagem }}</p>
-</div>
+{% comment %}
+Agrupa todos os atletas por categoria
+{% endcomment %}
+{% assign categorias = site.data.atletas | map: "categoria" | uniq %}
+
+{% for categoria in categorias %}
+  <div class="categoria">({{ categoria }})</div>
+
+  {% assign atletas_categoria = site.data.atletas | where: "categoria", categoria %}
+  <div class="membros">
+    {% for atleta in atletas_categoria %}
+      <div class="membro">
+        <img src="{{ atleta.foto }}" alt="Foto {{ atleta.nome }}">
+        <p><strong>{{ atleta.nome }}</strong> - {{ atleta.mensagem }}</p>
+      </div>
+    {% endfor %}
+  </div>
 {% endfor %}
 
-{% assign senior_f = site.data.atletas | where: "categoria", "Senior Feminino" %}
-<div class="categoria">Categoria (Senior Feminino)</div>
-{% for atleta in senior_f %}
-<div class="membro">
-  <img src="{{ atleta.foto }}" alt="Foto {{ atleta.nome }}">
-  <p><strong>{{ atleta.nome }}</strong> - {{ atleta.mensagem }}</p>
-</div>
-{% endfor %}
