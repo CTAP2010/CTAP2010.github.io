@@ -54,3 +54,19 @@ footer a {
 img {
   object-fit: cover;
 }
+
+//contactos
+.contact-buttons a {
+  display: block;
+  margin: 10px auto;
+  width: 70%;
+  background-color: #1A3C2E;
+  color: #FFFFFF;
+  font-weight: 600;
+  border-radius: 5px;
+}
+
+.contact-buttons a:hover {
+  background-color: #D4AF37;
+  color: #FFFFFF;
+}

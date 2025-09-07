@@ -52,17 +52,15 @@ title: Sobre
     </div>
   </div>
 
-  <!-- Galeria -->
-  <div class="row mb-5">
-    <h2 class="mb-4 text-center">Galeria</h2>
-    <div class="col-md-4 mb-3">
-      <img src="/assets/img/galeria1.jpg" class="img-fluid rounded shadow" alt="Foto 1">
-    </div>
-    <div class="col-md-4 mb-3">
-      <img src="/assets/img/galeria2.jpg" class="img-fluid rounded shadow" alt="Foto 2">
-    </div>
-    <div class="col-md-4 mb-3">
-      <img src="/assets/img/galeria3.jpg" class="img-fluid rounded shadow" alt="Foto 3">
-    </div>
-  </div>
+  <!-- Galeria Dinâmica -->
+	<div class="row mb-5">
+	  <h2 class="mb-4 text-center">Galeria</h2>
+	  {% assign fotos = site.static_files | where_exp:"file","file.path contains '/assets/img/galeria/'" %}
+	  {% for foto in fotos %}
+		<div class="col-md-4 mb-3">
+		  <img src="{{ foto.path }}" class="img-fluid rounded shadow" alt="Galeria {{ forloop.index }}">
+		</div>
+	  {% endfor %}
+	</div>
+
 </section>
