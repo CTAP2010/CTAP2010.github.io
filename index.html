@@ -33,13 +33,15 @@ home_reasons:
 
 <!-- Razões para praticar tiro com arco -->
 <section class="container my-5">
-  <h2 class="text-center mb-4">Por que praticar tiro com arco?</h2>
-  <div class="row text-center g-4">
+  <h2 class="text-center mb-5">Por que praticar tiro com arco?</h2>
+  <div class="row g-4 justify-content-center">
     {% for reason in page.home_reasons %}
       <div class="col-sm-6 col-md-4">
-        <div class="card shadow h-100">
-          <img src="{{ reason.img }}" class="card-img-top img-razoes" alt="{{ reason.title }}">
-          <div class="card-body">
+        <div class="card reason-card h-100 shadow-sm">
+          <div class="card-img-wrapper">
+            <img src="{{ reason.img }}" class="card-img-top img-razoes" alt="{{ reason.title }}">
+          </div>
+          <div class="card-body text-center">
             <h5 class="card-title">{{ reason.title }}</h5>
             <p class="card-text">{{ reason.text }}</p>
           </div>
