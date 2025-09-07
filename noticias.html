@@ -5,18 +5,19 @@ title: Notícias
 
 <section class="container my-5">
   <h1 class="mb-4 text-center">Notícias</h1>
-  <div class="row">
+  <div class="row g-4">
     {% assign noticias_ordenadas = site.posts | sort: 'date' | reverse %}
     {% for post in noticias_ordenadas %}
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 shadow">
+      <div class="col-md-4">
+        <div class="news-card h-100 shadow">
           {% if post.img %}
-            <img src="{{ post.img }}" class="card-img-top" alt="{{ post.title }}">
+            <img src="{{ post.img }}" class="news-card-img" alt="{{ post.title }}">
           {% endif %}
-          <div class="card-body">
-            <h5 class="card-title">{{ post.title }}</h5>
-            <p class="card-text"><small class="text-muted">{{ post.date | date: "%d-%m-%Y" }}</small></p>
-            <a href="{{ post.url }}" class="btn btn-primary">Ler mais</a>
+          <div class="news-card-body">
+            <h5 class="news-card-title">{{ post.title }}</h5>
+            <p class="news-card-date">{{ post.date | date: "%d-%m-%Y" }}</p>
+            <p class="news-card-text">{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
+            <a href="{{ post.url }}" class="btn btn-outline-success btn-sm mt-2">Ler mais</a>
           </div>
         </div>
       </div>
