@@ -1,3 +1,6 @@
+<h2>Teste de dados</h2>
+<pre>{{ site.data.atletas | jsonify }}</pre>
+
 - nome: "João Silva"
   categoria_principal: "Recurvo"
   subcategoria: "Seniores"
