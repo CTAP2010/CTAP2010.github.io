@@ -1,28 +1,11 @@
-/* ================== Tipografia Global ================== */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
-
-body {
-  font-family: 'Montserrat', sans-serif;
-  line-height: 1.6;
-  color: #333;
-  background-color: #f4f9f4;
-}
-
-/* ================== Navbar ================== */
-.navbar {
-  background-color: #007a33 !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  transition: background-color 0.3s;
-}
-
-.navbar-nav .nav-link {
-  color: #e6f2e6 !important;
-  transition: color 0.3s, transform 0.3s;
-}
-
-.navbar-nav .nav-link:hover {
-  color: #b2ffb2 !important;
-  transform: scale(1.05);
+/* ================== Paleta Verde ================== */
+:root {
+  --verde-principal: #00A305;
+  --verde-claro: #66CC66;
+  --verde-escuro: #0d5c74;
+  --verde-hover: #008000;
+  --cinza-claro: #f9f9f9;
+  --cinza-escuro: #555;
 }
 
 /* ================== Banner ================== */
@@ -30,14 +13,11 @@ body {
   position: relative;
   text-align: center;
   color: white;
-  border-radius: 8px;
-  overflow: hidden;
 }
 
 .banner-section img {
   width: 100%;
   height: auto;
-  display: block;
   border-radius: 8px;
 }
 
@@ -47,62 +27,96 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
+  font-size: 2.5rem;
+  font-weight: bold;
 }
 
-.banner-text h1 {
-  font-size: 3rem;
-  font-weight: 700;
-  letter-spacing: 1px;
+/* ================== Navbar ================== */
+.navbar {
+  background-color: var(--verde-principal) !important;
 }
 
-/* ================== Cards Notícias ================== */
+.navbar .nav-link {
+  color: white !important;
+}
+
+.navbar .nav-link:hover {
+  color: var(--verde-claro) !important;
+}
+
+/* ================== Botões ================== */
+.btn-success, .btn-outline-success {
+  border-color: var(--verde-principal);
+  color: var(--verde-principal);
+}
+
+.btn-success:hover, .btn-outline-success:hover {
+  background-color: var(--verde-hover);
+  color: #fff;
+  border-color: var(--verde-hover);
+}
+
+/* Botões redes sociais */
+.btn-instagram {
+  background: #E1306C;
+  color: white;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  transition: background 0.3s;
+}
+.btn-instagram:hover { background: #C12F61; }
+
+.btn-facebook {
+  background: #1877F2;
+  color: white;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  transition: background 0.3s;
+}
+.btn-facebook:hover { background: #145DBF; }
+
+/* ================== Notícias ================== */
 .news-card {
-  border-radius: 15px;
+  border-radius: 8px;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background: #e6f2e6;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  background: #fff;
 }
 
 .news-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 15px rgba(0,0,0,0.15);
+  transform: translateY(-3px);
 }
 
 .news-card-img {
   width: 100%;
-  height: auto;
-  display: block;
-}
-
-.news-card-body {
-  padding: 0.8rem;
+  height: 200px;
+  object-fit: cover;
 }
 
 .news-card-title {
   font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 0.3rem;
-  color: #007a33;
+  color: var(--verde-escuro);
 }
 
 .news-card-date {
   font-size: 0.85rem;
-  color: #555;
-  margin-bottom: 0.5rem;
+  color: #777;
 }
 
 .news-card-text {
   font-size: 0.95rem;
-  color: #333;
+  color: var(--cinza-escuro);
   line-height: 1.4;
 }
 
 /* ================== Cards Razões ================== */
 .reason-card {
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background: #d9f0d9;
+  background: #fff;
 }
 
 .reason-card:hover {
@@ -121,9 +135,9 @@ body {
   object-fit: cover;
 }
 
-/* ================== Equipa ================== */
+/* ================== Página Equipa ================== */
 .categoria {
-  background-color: #007a33;
+  background: var(--verde-escuro);
   color: #fff;
   text-align: center;
   padding: 12px;
@@ -135,8 +149,8 @@ body {
 }
 
 .subcategoria {
-  color: #007a33;
-  border-left: 5px solid #007a33;
+  color: var(--verde-principal);
+  border-left: 5px solid var(--verde-principal);
   padding-left: 10px;
   margin-top: 25px;
   margin-bottom: 15px;
@@ -160,64 +174,49 @@ body {
 }
 
 .membro {
-  background: #e6f2e6;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   text-align: center;
   padding: 15px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .membro:hover {
-  transform: translateY(-5px) scale(1.03);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
 }
 
 .membro img {
   width: 100%;
   height: 200px;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 8px;
   margin-bottom: 10px;
 }
 
-.membro p {
-  margin: 5px 0;
-  font-size: 0.95rem;
+/* ================== Cards Modalidades ================== */
+.card-modalidade {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card-modalidade:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0,0,0,0.15);
 }
 
 /* ================== Galeria ================== */
-#galeria .galeria-img {
-  border-radius: 10px;
-  transition: transform 0.4s, box-shadow 0.3s;
+#galeria img {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  border-radius: 6px;
 }
 
-#galeria .galeria-img:hover {
-  transform: scale(1.08);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+#galeria img:hover {
+  transform: scale(1.05);
 }
 
 /* ================== Contactos ================== */
-.btn-instagram {
-  background: #C13584;
-  color: #fff;
-  transition: transform 0.3s;
-}
-.btn-instagram:hover {
-  transform: scale(1.05);
-  background: #E1306C;
-}
-
-.btn-facebook {
-  background: #3b5998;
-  color: #fff;
-  transition: transform 0.3s;
-}
-.btn-facebook:hover {
-  transform: scale(1.05);
-  background: #2d4373;
-}
-
 #map {
   width: 100%;
   height: 400px;
@@ -225,76 +224,20 @@ body {
   margin-top: 1rem;
 }
 
-/* ================== Botões gerais ================== */
-.btn-success {
-  background: #007a33;
-  border: none;
-  color: #fff;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.btn-success:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.25);
-  background: #00b359;
-}
-
-/* ================== Cards gerais ================== */
-.card {
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.18);
-}
-
-.card img {
-  height: 250px;
-  object-fit: cover;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-}
-
-.card-body {
-  padding: 15px;
-}
-
-.card-title {
-  font-size: 1.1rem;
+/* ================== Outros estilos gerais ================== */
+.card-body h5 {
   font-weight: 600;
-  color: #007a33;
-  margin-bottom: 8px;
+  color: var(--verde-escuro);
 }
 
-.card-text {
-  font-size: 0.9rem;
-  color: #333;
+.card-body p {
+  font-size: 0.95rem;
+  color: var(--cinza-escuro);
 }
 
-/* ================== Responsividade ================== */
 @media (max-width: 768px) {
-  .banner-text h1 {
-    font-size: 2rem;
-  }
-
-  .categoria {
-    font-size: 1.5rem;
-    padding: 10px;
-  }
-
-  .subcategoria {
-    font-size: 1.2rem;
-  }
-
-  .card img {
-    height: 200px;
-  }
-
-  .membro img {
-    height: 180px;
-  }
+  .banner-text { font-size: 2rem; }
+  .categoria { font-size: 1.5rem; }
+  .subcategoria { font-size: 1.2rem; }
+  .card img { height: 200px; }
 }
