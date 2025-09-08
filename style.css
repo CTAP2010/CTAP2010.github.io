@@ -313,3 +313,92 @@
 .membro p {
   margin: 5px 0;
 }
+
+/* ==== Página Equipa ==== */
+
+/* Categoria Principal (Recurvo, Barebow, Compound) */
+.categoria {
+  background: #0d5c74;
+  color: #fff;
+  text-align: center;
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+/* Subcategoria (Flechas, Robins, etc.) */
+.subcategoria {
+  color: #0d5c74;
+  border-left: 5px solid #0d5c74;
+  padding-left: 10px;
+  margin-top: 25px;
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+/* Sexo (Masculino/Feminino) */
+.sexo {
+  color: #333;
+  font-size: 1.2rem;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+/* Cartões dos atletas */
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.18);
+}
+
+/* Imagens dos atletas */
+.card img {
+  height: 250px;
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+/* Texto do cartão */
+.card-body {
+  padding: 15px;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #0d5c74;
+  margin-bottom: 8px;
+}
+
+.card-text {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .categoria {
+    font-size: 1.5rem;
+    padding: 10px;
+  }
+
+  .subcategoria {
+    font-size: 1.2rem;
+  }
+
+  .card img {
+    height: 200px;
+  }
+}

@@ -3,48 +3,44 @@ layout: default
 title: Equipa
 ---
 
-<h1 class="text-center mb-4">Equipa do Clube</h1>
+<div class="container my-5">
+  <h1 class="text-center mb-5">A Nossa Equipa</h1>
 
-{% assign categorias_principais = "Recurvo,Barebow,Compound" | split: "," %}
-{% assign subcategorias = "Flechas,Robins,Juvenis,Cadetes,Juniores,Seniores,Veteranos" | split: "," %}
-{% assign sexos = "Masculino,Feminino" | split: "," %}
+  {% assign categorias = "Recurvo,Barebow,Compound" | split: "," %}
+  {% assign subcategorias = "Flechas,Robins,Juvenis,Cadetes,Juniores,Seniores,Veteranos" | split: "," %}
+  {% assign sexos = "Masculino,Feminino" | split: "," %}
 
-{% for cat_principal in categorias_principais %}
-  {% assign atletas_cat = site.data.atletas | where: "categoria_principal", cat_principal %}
-  {% if atletas_cat.size > 0 %}
-    <h2 class="categoria-principal {{ cat_principal }}">{{ cat_principal }}</h2>
+  {% for cat in categorias %}
+    {% assign atletas_categoria = site.data.atletas | where: "categoria_principal", cat %}
+    {% if atletas_categoria.size > 0 %}
+      <h2 class="categoria mt-5">{{ cat }}</h2>
 
-    {% for subcat in subcategorias %}
-      {% assign atletas_sub = atletas_cat | where: "subcategoria", subcat %}
-      {% if atletas_sub.size > 0 %}
-        <h3 class="subcategoria">{{ subcat }}</h3>
+      {% for sub in subcategorias %}
+        {% assign atletas_sub = atletas_categoria | where: "subcategoria", sub %}
+        {% if atletas_sub.size > 0 %}
+          <h3 class="subcategoria mt-4">{{ sub }}</h3>
 
-        {% for sexo in sexos %}
-          {% assign atletas_sexo = atletas_sub | where: "sexo", sexo %}
-          {% if atletas_sexo.size > 0 %}
-            <h4 class="sexo">
-              {% if sexo == "Masculino" %}
-                ♂ {{ sexo }}
-              {% else %}
-                ♀ {{ sexo }}
-              {% endif %}
-            </h4>
-
-            <div class="membros">
-              {% for atleta in atletas_sexo %}
-                <div class="membro card-{{ subcat | downcase }}">
-                  <img src="{{ atleta.foto }}" alt="Foto {{ atleta.nome }}">
-                  <p><strong>{{ atleta.nome }}</strong></p>
-                  <p>{{ atleta.mensagem }}</p>
-                </div>
-              {% endfor %}
-            </div>
-
-          {% endif %}
-        {% endfor %}
-
-      {% endif %}
-    {% endfor %}
-
-  {% endif %}
-{% endfor %}
+          {% for sexo in sexos %}
+            {% assign atletas_sexo = atletas_sub | where: "sexo", sexo %}
+            {% if atletas_sexo.size > 0 %}
+              <h4 class="sexo mt-3">{{ sexo }}</h4>
+              <div class="row">
+                {% for atleta in atletas_sexo %}
+                  <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="card h-100 text-center">
+                      <img src="{{ atleta.foto }}" class="card-img-top" alt="{{ atleta.nome }}">
+                      <div class="card-body">
+                        <h5 class="card-title">{{ atleta.nome }}</h5>
+                        <p class="card-text">{{ atleta.mensagem }}</p>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+</div>
