@@ -1,5 +1,4 @@
-<h2>Teste de dados</h2>
-<pre>{{ site.data.atletas | jsonify }}</pre>
+
 
 - nome: "João Silva"
   categoria_principal: "Recurvo"
@@ -78,9 +77,4 @@
   foto: "/assets/img/atletas/miguel_santos.jpg"
   mensagem: "Tiro com arco é fixe"
 
-- nome: "Luís Gonçalves"
-  categoria_principal: "Compound"
-  subcategoria: "Veteranos"
-  sexo: "Masculino"
-  foto: "/assets/img/atletas/luis_goncalves.jpg"
-  mensagem: "Ainda cheio de energia para competir"
+
