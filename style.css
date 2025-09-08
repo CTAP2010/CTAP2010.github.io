@@ -56,6 +56,23 @@
   border-color: var(--verde-hover);
 }
 
+/* Botão notícias – fundo verde, texto branco */
+.btn-news {
+  background-color: var(--verde-principal);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-news:hover {
+  background-color: var(--verde-escuro);
+  color: #fff;
+}
+
+
 /* Botões redes sociais */
 .btn-instagram {
   background: #E1306C;

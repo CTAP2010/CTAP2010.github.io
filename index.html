@@ -71,13 +71,15 @@ title: Início
             <h5 class="news-card-title">{{ post.title }}</h5>
             <p class="news-card-date">{{ post.date | date: "%d-%m-%Y" }}</p>
             <p class="news-card-text">{{ post.excerpt | strip_html | truncatewords: 20 }}</p>
-            <a href="{{ post.url }}" class="btn btn-outline-success btn-sm mt-2">Ler mais</a>
+            <a href="{{ post.url }}" class="btn btn-sm btn-news mt-2">Ler mais</a>
           </div>
         </div>
       </div>
     {% endfor %}
   </div>
+
+  <!-- Botão para todas as notícias -->
   <div class="text-center mt-3">
-    <a href="/noticias.html" class="btn btn-success">Ver todas as notícias</a>
+    <a href="/noticias.html" class="btn btn-news">Ver todas as notícias</a>
   </div>
 </section>
