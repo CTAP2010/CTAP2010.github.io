@@ -3,8 +3,8 @@ layout: default
 title: Galeria
 ---
 
-<section class="container my-5">
-  <h1 class="mb-4 text-center">Galeria</h1>
+<section class="container my-5" id="galeria">
+  <h1 class="mb-4 text-center" style="color: var(--verde-escuro);">Galeria</h1>
   <div class="row g-4">
     {% assign fotos = site.static_files | where_exp:"file","file.path contains '/assets/img/galeria/'" %}
     {% for foto in fotos %}
@@ -23,12 +23,13 @@ title: Galeria
       <div class="modal-body p-0 position-relative">
         <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Close"></button>
         <img id="lightboxImage" src="" class="img-fluid rounded" alt="Imagem Ampliada">
-        <button class="position-absolute top-50 start-0 translate-middle-y btn btn-dark btn-sm" onclick="prevImage()">&#10094;</button>
-        <button class="position-absolute top-50 end-0 translate-middle-y btn btn-dark btn-sm" onclick="nextImage()">&#10095;</button>
+        <button class="position-absolute top-50 start-0 translate-middle-y btn btn-success btn-sm" onclick="prevImage()">&#10094;</button>
+        <button class="position-absolute top-50 end-0 translate-middle-y btn btn-success btn-sm" onclick="nextImage()">&#10095;</button>
       </div>
     </div>
   </div>
 </div>
+
 
 <script>
   let currentIndex = 0;

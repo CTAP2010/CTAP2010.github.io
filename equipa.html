@@ -4,7 +4,7 @@ title: Equipa
 ---
 
 <div class="container my-5">
-  <h1 class="text-center mb-5">A Nossa Equipa</h1>
+  <h1 class="text-center mb-5" style="color: var(--verde-escuro);">A Nossa Equipa</h1>
 
   {% assign categorias = "Recurvo,Barebow,Compound" | split: "," %}
   {% assign subcategorias = "Flechas,Robins,Juvenis,Cadetes,Juniores,Seniores,Veteranos" | split: "," %}
@@ -26,9 +26,9 @@ title: Equipa
               <h4 class="sexo">{{ sexo }}</h4>
               <div class="membros">
                 {% for atleta in atletas_sexo %}
-                  <div class="membro card-{{ sub | downcase }}">
+                  <div class="membro">
                     <img src="{{ atleta.foto }}" alt="{{ atleta.nome }}">
-                    <h5>{{ atleta.nome }}</h5>
+                    <h5 style="color: var(--verde-principal);">{{ atleta.nome }}</h5>
                     <p>{{ atleta.mensagem }}</p>
                   </div>
                 {% endfor %}

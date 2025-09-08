@@ -23,16 +23,16 @@ home_reasons:
 ---
 
 <section class="container my-5">
-  <h1 class="text-center mb-5">Razões para praticar tiro com arco</h1>
+  <h1 class="text-center mb-5" style="color: var(--verde-escuro);">Razões para praticar tiro com arco</h1>
   <div class="row g-4 justify-content-center">
     {% for reason in page.home_reasons %}
       <div class="col-sm-6 col-md-4">
-        <div class="reason-card">
+        <div class="card reason-card h-100 shadow-sm">
           <div class="card-img-wrapper">
-            <img src="{{ reason.img }}" class="img-razoes" alt="{{ reason.title }}">
+            <img src="{{ reason.img }}" class="card-img-top img-razoes" alt="{{ reason.title }}">
           </div>
           <div class="card-body text-center">
-            <h5 class="card-title">{{ reason.title }}</h5>
+            <h5 class="card-title" style="color: var(--verde-principal)">{{ reason.title }}</h5>
             <p class="card-text">{{ reason.text }}</p>
           </div>
         </div>
