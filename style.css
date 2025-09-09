@@ -223,15 +223,18 @@
 }
 
 /* ================== Galeria ================== */
-#galeria img {
-  cursor: pointer;
+.galeria-img {
+  width: 100%;
+  height: 250px;       /* ou outro valor fixo para cards */
+  object-fit: cover;   /* mantém proporção e corta o excesso */
+  border-radius: 8px;
   transition: transform 0.3s ease;
-  border-radius: 6px;
 }
 
-#galeria img:hover {
+.galeria-img:hover {
   transform: scale(1.05);
 }
+
 
 /* ================== Contactos ================== */
 #map {
@@ -240,6 +243,27 @@
   border-radius: 8px;
   margin-top: 1rem;
 }
+
+
+/* ================== post ================== */
+.post-content img {
+  max-width: 100%;       /* nunca ultrapassa o container */
+  height: auto;          /* mantém proporção */
+  display: block;        /* permite centralização */
+  margin: 20px auto;     /* centraliza horizontalmente e dá espaço */
+  border-radius: 8px;    /* cantos arredondados, opcional */
+  object-fit: cover;     /* mantém proporção sem distorcer */
+}
+
+.post-img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
 
 /* ================== Outros estilos gerais ================== */
 .card-body h5 {
@@ -253,8 +277,9 @@
 }
 
 @media (max-width: 768px) {
-  .banner-text { font-size: 2rem; }
-  .categoria { font-size: 1.5rem; }
-  .subcategoria { font-size: 1.2rem; }
-  .card img { height: 200px; }
+  .post-content img, .galeria-img {
+    height: auto;      /* altura automática no telemóvel */
+    max-width: 100%;
+  }
 }
+

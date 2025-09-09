@@ -47,8 +47,9 @@
       {% endif %}
 
       {% if page.img %}
-        <img src="{{ page.img }}" alt="{{ page.title }}">
-      {% endif %}
+		  <img src="{{ page.img }}" alt="{{ page.title }}" class="post-img">
+	  {% endif %}
+
 
       {{ content }}
     </div>
