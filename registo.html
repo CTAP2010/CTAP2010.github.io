@@ -4,39 +4,60 @@ title: Registo de Treino
 ---
 
 <section class="container my-5">
-  <h1 class="mb-4 text-center">Registo de Treino</h1>
+  <h1 class="mb-4 text-center" style="color: var(--verde-escuro);">Registo de Treino</h1>
 
-  <!-- Botão login/logout -->
+  <!-- Botão Login Google -->
   <div class="text-center mb-4">
-    <button id="loginBtn" class="btn btn-success">Login com Google</button>
-    <button id="logoutBtn" class="btn btn-danger d-none">Logout</button>
-    <p id="userEmail" class="mt-2"></p>
+    <button id="loginGoogle" class="btn btn-success btn-lg">Entrar com Google</button>
   </div>
 
-  <!-- Formulário de treino -->
-  <form id="treinoForm" class="d-none">
+  <!-- Formulário de registo de treino -->
+  <form id="treinoForm" style="display:none; max-width: 600px; margin: auto;">
     <div class="mb-3">
-      <label for="dataTreino" class="form-label">Data</label>
+      <label for="dataTreino" class="form-label">Data:</label>
       <input type="date" id="dataTreino" class="form-control" required>
     </div>
+
     <div class="mb-3">
-      <label for="numFlechas" class="form-label">Número de Flechas</label>
-      <input type="number" id="numFlechas" class="form-control" min="1" required>
+      <label for="numFlechas" class="form-label">Número de flechas:</label>
+      <input type="number" id="numFlechas" class="form-control" required>
     </div>
+
     <div class="mb-3">
-      <label for="observacoes" class="form-label">Observações</label>
-      <textarea id="observacoes" class="form-control" rows="3"></textarea>
+      <label for="obsTreino" class="form-label">Observações:</label>
+      <textarea id="obsTreino" class="form-control" rows="3"></textarea>
     </div>
-    <button type="submit" class="btn btn-success">Enviar Registo</button>
+
+    <button type="submit" class="btn btn-success">Registar Treino</button>
   </form>
+
+  <!-- Tabela de treinos -->
+  <div id="treinosContainer" class="mt-5" style="display:none;">
+    <h2 class="mb-4 text-center" style="color: var(--verde-escuro);">Meus Treinos</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Número de Flechas</th>
+          <th>Observações</th>
+          <th>Registado em</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="treinosTableBody">
+        <!-- Linhas preenchidas por JS -->
+      </tbody>
+    </table>
+  </div>
 </section>
 
-<script type="module">
-  // Import Firebase (já no snippet acima)
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-auth.js";
-  import { getFirestore, collection, addDoc, Timestamp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-firestore.js";
+<!-- Firebase scripts -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
+<script>
+  // Inicializa Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyDxTP9oTiAlDRpjGgC_hL06uzpYLrbzZd8",
     authDomain: "ctap-registo.firebaseapp.com",
@@ -45,58 +66,105 @@ title: Registo de Treino
     messagingSenderId: "460997897512",
     appId: "1:460997897512:web:841860bf674a5b1d19b41d"
   };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth();
-  const provider = new GoogleAuthProvider();
-  const db = getFirestore(app);
+  const loginButton = document.getElementById('loginGoogle');
+  const treinoForm = document.getElementById('treinoForm');
+  const treinosContainer = document.getElementById('treinosContainer');
+  const treinosTableBody = document.getElementById('treinosTableBody');
 
-  const loginBtn = document.getElementById("loginBtn");
-  const logoutBtn = document.getElementById("logoutBtn");
-  const userEmail = document.getElementById("userEmail");
-  const treinoForm = document.getElementById("treinoForm");
-
-  loginBtn.addEventListener("click", () => {
-    signInWithPopup(auth, provider).catch(console.error);
-  });
-
-  logoutBtn.addEventListener("click", () => {
-    signOut(auth).catch(console.error);
-  });
-
-  onAuthStateChanged(auth, user => {
-    if (user) {
-      loginBtn.classList.add("d-none");
-      logoutBtn.classList.remove("d-none");
-      treinoForm.classList.remove("d-none");
-      userEmail.textContent = `Logado como: ${user.email}`;
-    } else {
-      loginBtn.classList.remove("d-none");
-      logoutBtn.classList.add("d-none");
-      treinoForm.classList.add("d-none");
-      userEmail.textContent = "";
-    }
-  });
-
-  treinoForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const data = document.getElementById("dataTreino").value;
-    const numFlechas = document.getElementById("numFlechas").value;
-    const observacoes = document.getElementById("observacoes").value;
-
-    try {
-      await addDoc(collection(db, "treinos"), {
-        email: auth.currentUser.email,
-        data: data,
-        numFlechas: Number(numFlechas),
-        observacoes: observacoes,
-        timestamp: Timestamp.now()
+  // Login Google
+  loginButton.addEventListener('click', () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider)
+      .then((result) => {
+        const user = result.user;
+        alert(`Bem-vindo, ${user.displayName}!`);
+        treinoForm.style.display = 'block';
+        loginButton.style.display = 'none';
+        carregarTreinos(user.uid);
+      })
+      .catch((error) => {
+        console.error(error);
+        alert('Erro ao entrar com Google.');
       });
-      alert("Registo enviado com sucesso!");
-      treinoForm.reset();
-    } catch (err) {
-      console.error(err);
-      alert("Erro ao enviar registo.");
-    }
   });
+
+  // Registar treino
+  treinoForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const user = auth.currentUser;
+    if (!user) {
+      alert("Faz login antes de registar o treino.");
+      return;
+    }
+
+    const data = document.getElementById('dataTreino').value;
+    const flechas = parseInt(document.getElementById('numFlechas').value);
+    const obs = document.getElementById('obsTreino').value;
+
+    db.collection('treinos').add({
+      uid: user.uid,
+      nome: user.displayName,
+      email: user.email,
+      data: data,
+      flechas: flechas,
+      observacoes: obs,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    .then(() => {
+      alert("Treino registado com sucesso!");
+      treinoForm.reset();
+      carregarTreinos(user.uid);
+    })
+    .catch((error) => {
+      console.error(error);
+      alert("Erro ao registar treino.");
+    });
+  });
+
+  // Carregar treinos do utilizador
+  function carregarTreinos(uid) {
+    treinosTableBody.innerHTML = '';
+    db.collection('treinos')
+      .where('uid', '==', uid)
+      .orderBy('timestamp', 'desc')
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          const treino = doc.data();
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${treino.data}</td>
+            <td>${treino.flechas}</td>
+            <td>${treino.observacoes || ''}</td>
+            <td>${treino.timestamp ? treino.timestamp.toDate().toLocaleString() : ''}</td>
+            <td><button class="btn btn-sm btn-danger" onclick="eliminarTreino('${doc.id}', '${uid}')">Eliminar</button></td>
+          `;
+          treinosTableBody.appendChild(row);
+        });
+        treinosContainer.style.display = querySnapshot.size > 0 ? 'block' : 'none';
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("Erro ao carregar os treinos.");
+      });
+  }
+
+  // Eliminar treino
+  function eliminarTreino(docId, uid) {
+    if (confirm("Tens a certeza que queres eliminar este treino?")) {
+      db.collection('treinos').doc(docId).delete()
+        .then(() => {
+          alert("Treino eliminado com sucesso!");
+          carregarTreinos(uid);
+        })
+        .catch((error) => {
+          console.error(error);
+          alert("Erro ao eliminar treino.");
+        });
+    }
+  }
 </script>
