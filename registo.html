@@ -1,0 +1,102 @@
+---
+layout: default
+title: Registo de Treino
+---
+
+<section class="container my-5">
+  <h1 class="mb-4 text-center">Registo de Treino</h1>
+
+  <!-- Botão login/logout -->
+  <div class="text-center mb-4">
+    <button id="loginBtn" class="btn btn-success">Login com Google</button>
+    <button id="logoutBtn" class="btn btn-danger d-none">Logout</button>
+    <p id="userEmail" class="mt-2"></p>
+  </div>
+
+  <!-- Formulário de treino -->
+  <form id="treinoForm" class="d-none">
+    <div class="mb-3">
+      <label for="dataTreino" class="form-label">Data</label>
+      <input type="date" id="dataTreino" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label for="numFlechas" class="form-label">Número de Flechas</label>
+      <input type="number" id="numFlechas" class="form-control" min="1" required>
+    </div>
+    <div class="mb-3">
+      <label for="observacoes" class="form-label">Observações</label>
+      <textarea id="observacoes" class="form-control" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-success">Enviar Registo</button>
+  </form>
+</section>
+
+<script type="module">
+  // Import Firebase (já no snippet acima)
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-auth.js";
+  import { getFirestore, collection, addDoc, Timestamp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDxTP9oTiAlDRpjGgC_hL06uzpYLrbzZd8",
+    authDomain: "ctap-registo.firebaseapp.com",
+    projectId: "ctap-registo",
+    storageBucket: "ctap-registo.firebasestorage.app",
+    messagingSenderId: "460997897512",
+    appId: "1:460997897512:web:841860bf674a5b1d19b41d"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth();
+  const provider = new GoogleAuthProvider();
+  const db = getFirestore(app);
+
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const userEmail = document.getElementById("userEmail");
+  const treinoForm = document.getElementById("treinoForm");
+
+  loginBtn.addEventListener("click", () => {
+    signInWithPopup(auth, provider).catch(console.error);
+  });
+
+  logoutBtn.addEventListener("click", () => {
+    signOut(auth).catch(console.error);
+  });
+
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      loginBtn.classList.add("d-none");
+      logoutBtn.classList.remove("d-none");
+      treinoForm.classList.remove("d-none");
+      userEmail.textContent = `Logado como: ${user.email}`;
+    } else {
+      loginBtn.classList.remove("d-none");
+      logoutBtn.classList.add("d-none");
+      treinoForm.classList.add("d-none");
+      userEmail.textContent = "";
+    }
+  });
+
+  treinoForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const data = document.getElementById("dataTreino").value;
+    const numFlechas = document.getElementById("numFlechas").value;
+    const observacoes = document.getElementById("observacoes").value;
+
+    try {
+      await addDoc(collection(db, "treinos"), {
+        email: auth.currentUser.email,
+        data: data,
+        numFlechas: Number(numFlechas),
+        observacoes: observacoes,
+        timestamp: Timestamp.now()
+      });
+      alert("Registo enviado com sucesso!");
+      treinoForm.reset();
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao enviar registo.");
+    }
+  });
+</script>
