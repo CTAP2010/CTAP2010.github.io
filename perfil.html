@@ -42,21 +42,21 @@ title: Perfil
     <hr class="my-4">
 
     <h3 class="mb-3">Registos Anteriores</h3>
-	<div class="table-responsive">
-		<table class="table table-striped" id="registosTable">
-		  <thead class="table-dark">
-			<tr>
-			  <th>Data</th>
-			  <th>Flechas</th>
-			  <th>Observações</th>
-			  <th>Ações</th>
-			</tr>
-		  </thead>
-		  <tbody>
-			<!-- Registos vão ser inseridos aqui -->
-		  </tbody>
-		</table>
-	</div>
+    <div class="table-responsive">
+      <table class="table table-striped" id="registosTable">
+        <thead class="table-dark">
+          <tr>
+            <th>Data</th>
+            <th>Flechas</th>
+            <th>Observações</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Registos vão ser inseridos aqui -->
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 
@@ -108,7 +108,7 @@ title: Perfil
       userName.textContent = user.displayName || "Utilizador sem nome";
       userEmail.textContent = user.email;
 
-      carregarRegistos();
+      await carregarRegistos();
     } else {
       currentUser = null;
       userInfoDiv.style.display = "none";
@@ -137,6 +137,8 @@ title: Perfil
   // 🔹 Guardar treino no Firestore
   document.getElementById("treinoForm").addEventListener("submit", async (e) => {
     e.preventDefault();
+    if (!currentUser) return alert("Tens de estar autenticado para guardar um treino.");
+
     const data = document.getElementById("data").value;
     const numFlechas = parseInt(document.getElementById("numFlechas").value);
     const observacoes = document.getElementById("observacoes").value;
@@ -150,16 +152,17 @@ title: Perfil
         timestamp: serverTimestamp()
       });
       e.target.reset();
-      await carregarRegistos(); // ordena e recarrega a tabela
+      await carregarRegistos();
     } catch (error) {
       console.error("Erro ao guardar treino:", error);
-      alert("Erro ao guardar treino.");
+      alert("Erro ao guardar treino: " + error.message);
     }
   });
 
   // 🔹 Carregar registos do utilizador (ordenados por data desc)
   async function carregarRegistos() {
     registosTableBody.innerHTML = "";
+    if (!currentUser) return;
 
     const q = query(
       collection(db, "treinos"),
@@ -193,10 +196,10 @@ title: Perfil
         if (confirm("Tens a certeza que queres apagar este registo?")) {
           try {
             await deleteDoc(doc(db, "treinos", docSnap.id));
-            await carregarRegistos(); // reordena tabela
+            await carregarRegistos();
           } catch (error) {
             console.error("Erro ao apagar registo:", error);
-            alert("Erro ao apagar registo.");
+            alert("Erro ao apagar registo: " + error.message);
           }
         }
       });
@@ -220,10 +223,10 @@ title: Perfil
               numFlechas: novasFlechas,
               observacoes: novasObs
             });
-            await carregarRegistos(); // reordena tabela após editar
+            await carregarRegistos();
           } catch (error) {
             console.error("Erro ao atualizar registo:", error);
-            alert("Erro ao atualizar registo.");
+            alert("Erro ao atualizar registo: " + error.message);
           }
         }
       });
