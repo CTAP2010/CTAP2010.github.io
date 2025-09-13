@@ -298,3 +298,45 @@
 #registosTable tbody tr:hover {
   background-color: #e6f7e6; /* verde claro suave ao passar o mouse */
 }
+
+/* 🔹 Tornar a tabela responsiva com scroll horizontal no telemóvel */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* suaviza o scroll em iOS */
+}
+
+/* 🔹 Inputs e textarea dentro da tabela ocupam toda a célula */
+#registosTable input,
+#registosTable textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 🔹 Melhor contraste do cabeçalho */
+#registosTable thead {
+  background-color: var(--verde-escuro);
+  color: #fff;
+  text-align: center;
+}
+
+/* 🔹 Ajuste para os botões pequenos dentro da tabela */
+#registosTable .btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+/* 🔹 Centralizar conteúdo das células */
+#registosTable th,
+#registosTable td {
+  text-align: center;
+  vertical-align: middle;
+  word-break: break-word;
+}
+
+/* 🔹 Scroll horizontal automático se necessário */
+@media (max-width: 768px) {
+  #registosTable {
+    display: block;
+    width: 100%;
+  }
+}

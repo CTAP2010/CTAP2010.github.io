@@ -42,19 +42,21 @@ title: Perfil
     <hr class="my-4">
 
     <h3 class="mb-3">Registos Anteriores</h3>
-    <table class="table table-striped" id="registosTable">
-      <thead class="table-dark">
-        <tr>
-          <th>Data</th>
-          <th>Flechas</th>
-          <th>Observações</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Registos vão ser inseridos aqui -->
-      </tbody>
-    </table>
+	<div class="table-responsive">
+		<table class="table table-striped" id="registosTable">
+		  <thead class="table-dark">
+			<tr>
+			  <th>Data</th>
+			  <th>Flechas</th>
+			  <th>Observações</th>
+			  <th>Ações</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			<!-- Registos vão ser inseridos aqui -->
+		  </tbody>
+		</table>
+	</div>
   </div>
 </section>
 
@@ -64,7 +66,7 @@ title: Perfil
     getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut 
   } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
   import {
-    getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc, deleteDoc
+    getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc, deleteDoc, orderBy
   } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
   // 🔹 Config Firebase
@@ -119,9 +121,7 @@ title: Perfil
   loginBtn.addEventListener("click", async () => {
     const provider = new GoogleAuthProvider();
     try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      // Aqui podes adicionar validação de email se quiseres
+      await signInWithPopup(auth, provider);
     } catch (error) {
       console.error("Erro Firebase:", error);
       alert("Erro ao entrar: " + error.message);
@@ -149,19 +149,24 @@ title: Perfil
         uid: currentUser.uid,
         timestamp: serverTimestamp()
       });
-      alert("Treino guardado com sucesso!");
       e.target.reset();
-      carregarRegistos();
+      await carregarRegistos(); // ordena e recarrega a tabela
     } catch (error) {
       console.error("Erro ao guardar treino:", error);
       alert("Erro ao guardar treino.");
     }
   });
 
-  // 🔹 Carregar registos do utilizador
+  // 🔹 Carregar registos do utilizador (ordenados por data desc)
   async function carregarRegistos() {
     registosTableBody.innerHTML = "";
-    const q = query(collection(db, "treinos"), where("uid", "==", currentUser.uid));
+
+    const q = query(
+      collection(db, "treinos"),
+      where("uid", "==", currentUser.uid),
+      orderBy("data", "desc")
+    );
+
     const snapshot = await getDocs(q);
 
     snapshot.forEach(docSnap => {
@@ -188,8 +193,7 @@ title: Perfil
         if (confirm("Tens a certeza que queres apagar este registo?")) {
           try {
             await deleteDoc(doc(db, "treinos", docSnap.id));
-            alert("Registo apagado com sucesso!");
-            carregarRegistos();
+            await carregarRegistos(); // reordena tabela
           } catch (error) {
             console.error("Erro ao apagar registo:", error);
             alert("Erro ao apagar registo.");
@@ -200,14 +204,12 @@ title: Perfil
       // Editar / Guardar registo
       btnEdit.addEventListener("click", async () => {
         if (btnEdit.textContent === "Editar") {
-          // Ativa inputs para edição
           inputData.removeAttribute("readonly");
           inputFlechas.removeAttribute("readonly");
           inputObs.removeAttribute("readonly");
           btnEdit.textContent = "Guardar";
-          inputObs.rows = 3; // aumenta a área do textarea ao editar
+          inputObs.rows = 3;
         } else {
-          // Guardar alterações
           const novaData = inputData.value;
           const novasFlechas = parseInt(inputFlechas.value);
           const novasObs = inputObs.value;
@@ -218,13 +220,7 @@ title: Perfil
               numFlechas: novasFlechas,
               observacoes: novasObs
             });
-            alert("Registo atualizado com sucesso!");
-            // Voltar a deixar readonly
-            inputData.setAttribute("readonly", true);
-            inputFlechas.setAttribute("readonly", true);
-            inputObs.setAttribute("readonly", true);
-            btnEdit.textContent = "Editar";
-            inputObs.rows = 1; // volta ao tamanho inicial
+            await carregarRegistos(); // reordena tabela após editar
           } catch (error) {
             console.error("Erro ao atualizar registo:", error);
             alert("Erro ao atualizar registo.");
