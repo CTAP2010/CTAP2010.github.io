@@ -66,7 +66,7 @@ import {
   getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut 
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import {
-  getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc, deleteDoc, orderBy, getDoc
+  getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc, deleteDoc, getDoc
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 // 🔹 Config Firebase
@@ -193,37 +193,44 @@ document.getElementById("treinoForm").addEventListener("submit", async (e) => {
 // 🔹 Carregar registos ordenados por data desc
 async function carregarRegistos() {
   registosTableBody.innerHTML = "";
+
   const q = query(
     collection(db, "treinos"),
-    where("email", "==", currentUser.email),
-    orderBy("data", "desc")
+    where("email", "==", currentUser.email)
   );
   const snapshot = await getDocs(q);
 
+  let registos = [];
   snapshot.forEach(docSnap => {
-    const registo = docSnap.data();
+    registos.push({ id: docSnap.id, ...docSnap.data() });
+  });
+
+  // Ordenar pelo campo data (YYYY-MM-DD) do mais recente para o mais antigo
+  registos.sort((a, b) => b.data.localeCompare(a.data));
+
+  registos.forEach(registo => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td><input type="date" value="${registo.data}" class="form-control form-control-sm" id="data-${docSnap.id}" readonly></td>
-      <td><input type="number" value="${registo.numFlechas}" class="form-control form-control-sm" id="flechas-${docSnap.id}" readonly></td>
-      <td><textarea class="form-control form-control-sm" id="obs-${docSnap.id}" rows="1" readonly>${registo.observacoes || ''}</textarea></td>
+      <td><input type="date" value="${registo.data}" class="form-control form-control-sm" readonly></td>
+      <td><input type="number" value="${registo.numFlechas}" class="form-control form-control-sm" readonly></td>
+      <td><textarea class="form-control form-control-sm" rows="1" readonly>${registo.observacoes || ''}</textarea></td>
       <td>
-        <button class="btn btn-primary btn-sm me-1" id="edit-${docSnap.id}">Editar</button>
-        <button class="btn btn-danger btn-sm" id="delete-${docSnap.id}">Apagar</button>
+        <button class="btn btn-primary btn-sm me-1" id="edit-${registo.id}">Editar</button>
+        <button class="btn btn-danger btn-sm" id="delete-${registo.id}">Apagar</button>
       </td>
     `;
     registosTableBody.appendChild(tr);
 
-    const btnEdit = document.getElementById(`edit-${docSnap.id}`);
-    const inputData = document.getElementById(`data-${docSnap.id}`);
-    const inputFlechas = document.getElementById(`flechas-${docSnap.id}`);
-    const inputObs = document.getElementById(`obs-${docSnap.id}`);
+    const btnEdit = document.getElementById(`edit-${registo.id}`);
+    const inputData = tr.querySelector("td:nth-child(1) input");
+    const inputFlechas = tr.querySelector("td:nth-child(2) input");
+    const inputObs = tr.querySelector("td:nth-child(3) textarea");
 
     // Apagar registo
-    document.getElementById(`delete-${docSnap.id}`).addEventListener("click", async () => {
+    tr.querySelector(`#delete-${registo.id}`).addEventListener("click", async () => {
       if (confirm("Tens a certeza que queres apagar este registo?")) {
         try {
-          await deleteDoc(doc(db, "treinos", docSnap.id));
+          await deleteDoc(doc(db, "treinos", registo.id));
           alert("Registo apagado com sucesso!");
           carregarRegistos();
         } catch (error) {
@@ -247,7 +254,7 @@ async function carregarRegistos() {
         const novasObs = inputObs.value;
 
         try {
-          await updateDoc(doc(db, "treinos", docSnap.id), {
+          await updateDoc(doc(db, "treinos", registo.id), {
             data: novaData,
             numFlechas: novasFlechas,
             observacoes: novasObs
