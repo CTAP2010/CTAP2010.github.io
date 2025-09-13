@@ -20,7 +20,7 @@ title: Perfil
     <button id="logoutBtn" class="btn btn-danger">Sair</button>
   </div>
 
-  <!-- 🔹 Formulário de registo (só aparece se estiver logado) -->
+  <!-- 🔹 Formulário de registo (só aparece se estiver logado e autorizado) -->
   <div id="registoTreino" style="display:none;" class="mt-5">
     <h2 class="mb-3">Registo de Treino</h2>
     <form id="treinoForm">
@@ -100,15 +100,31 @@ title: Perfil
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       currentUser = user;
-      userInfoDiv.style.display = "block";
-      noUserDiv.style.display = "none";
-      registoDiv.style.display = "block";
 
-      userPhoto.src = user.photoURL || "https://via.placeholder.com/120";
-      userName.textContent = user.displayName || "Utilizador sem nome";
-      userEmail.textContent = user.email;
+      // Verificar se é atleta autorizado
+      const q = query(collection(db, "atletas"), where("email", "==", user.email));
+      const snapshot = await getDocs(q);
 
-      await carregarRegistos();
+      if (snapshot.empty) {
+        alert("Não tens permissão para aceder a este site.");
+        await signOut(auth);
+        currentUser = null;
+        userInfoDiv.style.display = "none";
+        registoDiv.style.display = "none";
+        noUserDiv.style.display = "block";
+      } else {
+        // Mostrar info do utilizador e formulário
+        userInfoDiv.style.display = "block";
+        noUserDiv.style.display = "none";
+        registoDiv.style.display = "block";
+
+        userPhoto.src = user.photoURL || "https://via.placeholder.com/120";
+        userName.textContent = user.displayName || "Utilizador sem nome";
+        userEmail.textContent = user.email;
+
+        carregarRegistos();
+      }
+
     } else {
       currentUser = null;
       userInfoDiv.style.display = "none";
@@ -121,7 +137,8 @@ title: Perfil
   loginBtn.addEventListener("click", async () => {
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      // O resto é tratado pelo onAuthStateChanged
     } catch (error) {
       console.error("Erro Firebase:", error);
       alert("Erro ao entrar: " + error.message);
@@ -137,8 +154,6 @@ title: Perfil
   // 🔹 Guardar treino no Firestore
   document.getElementById("treinoForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    if (!currentUser) return alert("Tens de estar autenticado para guardar um treino.");
-
     const data = document.getElementById("data").value;
     const numFlechas = parseInt(document.getElementById("numFlechas").value);
     const observacoes = document.getElementById("observacoes").value;
@@ -151,25 +166,23 @@ title: Perfil
         uid: currentUser.uid,
         timestamp: serverTimestamp()
       });
+      alert("Treino guardado com sucesso!");
       e.target.reset();
-      await carregarRegistos();
+      carregarRegistos();
     } catch (error) {
       console.error("Erro ao guardar treino:", error);
-      alert("Erro ao guardar treino: " + error.message);
+      alert("Erro ao guardar treino.");
     }
   });
 
-  // 🔹 Carregar registos do utilizador (ordenados por data desc)
+  // 🔹 Carregar registos do utilizador (ordenados por data descendente)
   async function carregarRegistos() {
     registosTableBody.innerHTML = "";
-    if (!currentUser) return;
-
     const q = query(
       collection(db, "treinos"),
       where("uid", "==", currentUser.uid),
       orderBy("data", "desc")
     );
-
     const snapshot = await getDocs(q);
 
     snapshot.forEach(docSnap => {
@@ -192,44 +205,4 @@ title: Perfil
       const inputObs = document.getElementById(`obs-${docSnap.id}`);
 
       // Apagar registo
-      document.getElementById(`delete-${docSnap.id}`).addEventListener("click", async () => {
-        if (confirm("Tens a certeza que queres apagar este registo?")) {
-          try {
-            await deleteDoc(doc(db, "treinos", docSnap.id));
-            await carregarRegistos();
-          } catch (error) {
-            console.error("Erro ao apagar registo:", error);
-            alert("Erro ao apagar registo: " + error.message);
-          }
-        }
-      });
-
-      // Editar / Guardar registo
-      btnEdit.addEventListener("click", async () => {
-        if (btnEdit.textContent === "Editar") {
-          inputData.removeAttribute("readonly");
-          inputFlechas.removeAttribute("readonly");
-          inputObs.removeAttribute("readonly");
-          btnEdit.textContent = "Guardar";
-          inputObs.rows = 3;
-        } else {
-          const novaData = inputData.value;
-          const novasFlechas = parseInt(inputFlechas.value);
-          const novasObs = inputObs.value;
-
-          try {
-            await updateDoc(doc(db, "treinos", docSnap.id), {
-              data: novaData,
-              numFlechas: novasFlechas,
-              observacoes: novasObs
-            });
-            await carregarRegistos();
-          } catch (error) {
-            console.error("Erro ao atualizar registo:", error);
-            alert("Erro ao atualizar registo: " + error.message);
-          }
-        }
-      });
-    });
-  }
-</script>
+      document.getElementById(`delete-${docSnap.id}`).addEventListener("

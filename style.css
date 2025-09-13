@@ -332,11 +332,3 @@
   vertical-align: middle;
   word-break: break-word;
 }
-
-/* 🔹 Scroll horizontal automático se necessário */
-@media (max-width: 768px) {
-  #registosTable {
-    display: block;
-    width: 100%;
-  }
-}
