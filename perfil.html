@@ -7,7 +7,7 @@ title: Perfil
   <h1 class="mb-4 text-center" style="color: var(--verde-escuro);">O Meu Perfil</h1>
 
   <!-- 🔹 Login -->
-  <div id="noUser" class="text-center" style="display:none;">
+  <div id="noUser" class="text-center" style="display:block;">
     <p>Não estás autenticado.</p>
     <button id="loginBtn" class="btn btn-success">Entrar com Google</button>
   </div>
@@ -20,7 +20,7 @@ title: Perfil
     <button id="logoutBtn" class="btn btn-danger">Sair</button>
   </div>
 
-  <!-- 🔹 Formulário de registo (só aparece se estiver logado e autorizado) -->
+  <!-- 🔹 Formulário de registo (só aparece se estiver autorizado) -->
   <div id="registoTreino" style="display:none;" class="mt-5">
     <h2 class="mb-3">Registo de Treino</h2>
     <form id="treinoForm">
@@ -61,194 +61,195 @@ title: Perfil
 </section>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { 
-    getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut 
-  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-  import {
-    getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc, deleteDoc, orderBy
-  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { 
+  getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut 
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import {
+  getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc, deleteDoc, orderBy
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-  // 🔹 Config Firebase
-  const firebaseConfig = {
-    apiKey: "AIzaSyDxTP9oTiAlDRpjGgC_hL06uzpYLrbzZd8",
-    authDomain: "ctap-registo.firebaseapp.com",
-    projectId: "ctap-registo",
-    storageBucket: "ctap-registo.appspot.com",
-    messagingSenderId: "460997897512",
-    appId: "1:460997897512:web:841860bf674a5b1d19b41d"
-  };
+// 🔹 Config Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyDxTP9oTiAlDRpjGgC_hL06uzpYLrbzZd8",
+  authDomain: "ctap-registo.firebaseapp.com",
+  projectId: "ctap-registo",
+  storageBucket: "ctap-registo.appspot.com",
+  messagingSenderId: "460997897512",
+  appId: "1:460997897512:web:841860bf674a5b1d19b41d"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-  const loginBtn = document.getElementById("loginBtn");
-  const logoutBtn = document.getElementById("logoutBtn");
-  const userInfoDiv = document.getElementById("userInfo");
-  const noUserDiv = document.getElementById("noUser");
-  const registoDiv = document.getElementById("registoTreino");
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const userInfoDiv = document.getElementById("userInfo");
+const noUserDiv = document.getElementById("noUser");
+const registoDiv = document.getElementById("registoTreino");
 
-  const userPhoto = document.getElementById("userPhoto");
-  const userName = document.getElementById("userName");
-  const userEmail = document.getElementById("userEmail");
-  const registosTableBody = document.querySelector("#registosTable tbody");
+const userPhoto = document.getElementById("userPhoto");
+const userName = document.getElementById("userName");
+const userEmail = document.getElementById("userEmail");
+const registosTableBody = document.querySelector("#registosTable tbody");
 
-  let currentUser = null;
+let currentUser = null;
 
-  // 🔹 Estado de autenticação
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      currentUser = user;
+// 🔹 Estado de autenticação
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
 
-      // Verificar se é atleta autorizado
-      const q = query(collection(db, "atletas"), where("email", "==", user.email));
-      const snapshot = await getDocs(q);
+    // Verificar se é atleta autorizado
+    const q = query(collection(db, "atletas"), where("email", "==", user.email));
+    const snapshot = await getDocs(q);
 
-      if (snapshot.empty) {
-        alert("Não tens permissão para aceder a este site.");
-        await signOut(auth);
-        currentUser = null;
-        userInfoDiv.style.display = "none";
-        registoDiv.style.display = "none";
-        noUserDiv.style.display = "block";
-      } else {
-        // Mostrar info do utilizador e formulário
-        userInfoDiv.style.display = "block";
-        noUserDiv.style.display = "none";
-        registoDiv.style.display = "block";
-
-        userPhoto.src = user.photoURL || "https://via.placeholder.com/120";
-        userName.textContent = user.displayName || "Utilizador sem nome";
-        userEmail.textContent = user.email;
-
-        carregarRegistos();
-      }
-
-    } else {
+    if (snapshot.empty) {
+      alert("Não tens permissão para aceder a este site.");
       currentUser = null;
       userInfoDiv.style.display = "none";
       registoDiv.style.display = "none";
       noUserDiv.style.display = "block";
-    }
-  });
+      loginBtn.style.display = "inline-block"; // Mantém botão de login
+    } else {
+      // Mostrar info do utilizador e formulário
+      userInfoDiv.style.display = "block";
+      noUserDiv.style.display = "none";
+      registoDiv.style.display = "block";
+      loginBtn.style.display = "none";
 
-  // 🔹 Login com Google
-  loginBtn.addEventListener("click", async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      // O resto é tratado pelo onAuthStateChanged
-    } catch (error) {
-      console.error("Erro Firebase:", error);
-      alert("Erro ao entrar: " + error.message);
-    }
-  });
+      userPhoto.src = user.photoURL || "https://via.placeholder.com/120";
+      userName.textContent = user.displayName || "Utilizador sem nome";
+      userEmail.textContent = user.email;
 
-  // 🔹 Logout
-  logoutBtn.addEventListener("click", async () => {
-    await signOut(auth);
-    alert("Terminaste a sessão.");
-  });
-
-  // 🔹 Guardar treino no Firestore
-  document.getElementById("treinoForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const data = document.getElementById("data").value;
-    const numFlechas = parseInt(document.getElementById("numFlechas").value);
-    const observacoes = document.getElementById("observacoes").value;
-
-    try {
-      await addDoc(collection(db, "treinos"), {
-        data,
-        numFlechas,
-        observacoes,
-        uid: currentUser.uid,
-        timestamp: serverTimestamp()
-      });
-      alert("Treino guardado com sucesso!");
-      e.target.reset();
       carregarRegistos();
-    } catch (error) {
-      console.error("Erro ao guardar treino:", error);
-      alert("Erro ao guardar treino.");
     }
-  });
 
-  // 🔹 Carregar registos do utilizador (ordenados por data descendente)
-  async function carregarRegistos() {
-    registosTableBody.innerHTML = "";
-    const q = query(
-      collection(db, "treinos"),
-      where("uid", "==", currentUser.uid),
-      orderBy("data", "desc")
-    );
-    const snapshot = await getDocs(q);
-
-    snapshot.forEach(docSnap => {
-      const registo = docSnap.data();
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td><input type="date" value="${registo.data}" class="form-control form-control-sm" id="data-${docSnap.id}" readonly></td>
-        <td><input type="number" value="${registo.numFlechas}" class="form-control form-control-sm" id="flechas-${docSnap.id}" readonly></td>
-        <td><textarea class="form-control form-control-sm" id="obs-${docSnap.id}" rows="1" readonly>${registo.observacoes || ''}</textarea></td>
-        <td>
-          <button class="btn btn-primary btn-sm me-1" id="edit-${docSnap.id}">Editar</button>
-          <button class="btn btn-danger btn-sm" id="delete-${docSnap.id}">Apagar</button>
-        </td>
-      `;
-      registosTableBody.appendChild(tr);
-
-      const btnEdit = document.getElementById(`edit-${docSnap.id}`);
-      const inputData = document.getElementById(`data-${docSnap.id}`);
-      const inputFlechas = document.getElementById(`flechas-${docSnap.id}`);
-      const inputObs = document.getElementById(`obs-${docSnap.id}`);
-
-      // Apagar registo
-      document.getElementById(`delete-${docSnap.id}`).addEventListener("click", async () => {
-        if (confirm("Tens a certeza que queres apagar este registo?")) {
-          try {
-            await deleteDoc(doc(db, "treinos", docSnap.id));
-            alert("Registo apagado com sucesso!");
-            carregarRegistos();
-          } catch (error) {
-            console.error("Erro ao apagar registo:", error);
-            alert("Erro ao apagar registo.");
-          }
-        }
-      });
-
-      // Editar / Guardar registo
-      btnEdit.addEventListener("click", async () => {
-        if (btnEdit.textContent === "Editar") {
-          inputData.removeAttribute("readonly");
-          inputFlechas.removeAttribute("readonly");
-          inputObs.removeAttribute("readonly");
-          btnEdit.textContent = "Guardar";
-          inputObs.rows = 3;
-        } else {
-          const novaData = inputData.value;
-          const novasFlechas = parseInt(inputFlechas.value);
-          const novasObs = inputObs.value;
-
-          try {
-            await updateDoc(doc(db, "treinos", docSnap.id), {
-              data: novaData,
-              numFlechas: novasFlechas,
-              observacoes: novasObs
-            });
-            alert("Registo atualizado com sucesso!");
-            inputData.setAttribute("readonly", true);
-            inputFlechas.setAttribute("readonly", true);
-            inputObs.setAttribute("readonly", true);
-            btnEdit.textContent = "Editar";
-            inputObs.rows = 1;
-          } catch (error) {
-            console.error("Erro ao atualizar registo:", error);
-            alert("Erro ao atualizar registo.");
-          }
-        }
-      });
-    });
+  } else {
+    currentUser = null;
+    userInfoDiv.style.display = "none";
+    registoDiv.style.display = "none";
+    noUserDiv.style.display = "block";
+    loginBtn.style.display = "inline-block";
   }
+});
+
+// 🔹 Login com Google
+loginBtn.addEventListener("click", async () => {
+  const provider = new GoogleAuthProvider();
+  try {
+    await signInWithPopup(auth, provider);
+  } catch (error) {
+    console.error("Erro Firebase:", error);
+    alert("Erro ao entrar: " + error.message);
+  }
+});
+
+// 🔹 Logout
+logoutBtn.addEventListener("click", async () => {
+  await signOut(auth);
+  alert("Terminaste a sessão.");
+});
+
+// 🔹 Guardar treino
+document.getElementById("treinoForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const data = document.getElementById("data").value;
+  const numFlechas = parseInt(document.getElementById("numFlechas").value);
+  const observacoes = document.getElementById("observacoes").value;
+
+  try {
+    await addDoc(collection(db, "treinos"), {
+      data,
+      numFlechas,
+      observacoes,
+      uid: currentUser.uid,
+      timestamp: serverTimestamp()
+    });
+    alert("Treino guardado com sucesso!");
+    e.target.reset();
+    carregarRegistos();
+  } catch (error) {
+    console.error("Erro ao guardar treino:", error);
+    alert("Erro ao guardar treino.");
+  }
+});
+
+// 🔹 Carregar registos ordenados por data desc
+async function carregarRegistos() {
+  registosTableBody.innerHTML = "";
+  const q = query(
+    collection(db, "treinos"),
+    where("uid", "==", currentUser.uid),
+    orderBy("data", "desc")
+  );
+  const snapshot = await getDocs(q);
+
+  snapshot.forEach(docSnap => {
+    const registo = docSnap.data();
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><input type="date" value="${registo.data}" class="form-control form-control-sm" id="data-${docSnap.id}" readonly></td>
+      <td><input type="number" value="${registo.numFlechas}" class="form-control form-control-sm" id="flechas-${docSnap.id}" readonly></td>
+      <td><textarea class="form-control form-control-sm" id="obs-${docSnap.id}" rows="1" readonly>${registo.observacoes || ''}</textarea></td>
+      <td>
+        <button class="btn btn-primary btn-sm me-1" id="edit-${docSnap.id}">Editar</button>
+        <button class="btn btn-danger btn-sm" id="delete-${docSnap.id}">Apagar</button>
+      </td>
+    `;
+    registosTableBody.appendChild(tr);
+
+    const btnEdit = document.getElementById(`edit-${docSnap.id}`);
+    const inputData = document.getElementById(`data-${docSnap.id}`);
+    const inputFlechas = document.getElementById(`flechas-${docSnap.id}`);
+    const inputObs = document.getElementById(`obs-${docSnap.id}`);
+
+    // Apagar registo
+    document.getElementById(`delete-${docSnap.id}`).addEventListener("click", async () => {
+      if (confirm("Tens a certeza que queres apagar este registo?")) {
+        try {
+          await deleteDoc(doc(db, "treinos", docSnap.id));
+          alert("Registo apagado com sucesso!");
+          carregarRegistos();
+        } catch (error) {
+          console.error("Erro ao apagar registo:", error);
+          alert("Erro ao apagar registo.");
+        }
+      }
+    });
+
+    // Editar / Guardar
+    btnEdit.addEventListener("click", async () => {
+      if (btnEdit.textContent === "Editar") {
+        inputData.removeAttribute("readonly");
+        inputFlechas.removeAttribute("readonly");
+        inputObs.removeAttribute("readonly");
+        btnEdit.textContent = "Guardar";
+        inputObs.rows = 3;
+      } else {
+        const novaData = inputData.value;
+        const novasFlechas = parseInt(inputFlechas.value);
+        const novasObs = inputObs.value;
+
+        try {
+          await updateDoc(doc(db, "treinos", docSnap.id), {
+            data: novaData,
+            numFlechas: novasFlechas,
+            observacoes: novasObs
+          });
+          alert("Registo atualizado com sucesso!");
+          inputData.setAttribute("readonly", true);
+          inputFlechas.setAttribute("readonly", true);
+          inputObs.setAttribute("readonly", true);
+          btnEdit.textContent = "Editar";
+          inputObs.rows = 1;
+        } catch (error) {
+          console.error("Erro ao atualizar registo:", error);
+          alert("Erro ao atualizar registo.");
+        }
+      }
+    });
+  });
+}
 </script>
