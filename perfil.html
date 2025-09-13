@@ -161,7 +161,14 @@ title: Perfil
   // 🔹 Carregar registos do utilizador
   async function carregarRegistos() {
     registosTableBody.innerHTML = "";
-    const q = query(collection(db, "treinos"), where("uid", "==", currentUser.uid));
+	
+    import { orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+	const q = query(
+	  collection(db, "treinos"),
+	  where("uid", "==", currentUser.uid),
+	  orderBy("data", "desc")  // ordena da mais recente para a mais antiga
+	);
     const snapshot = await getDocs(q);
 
     snapshot.forEach(docSnap => {
