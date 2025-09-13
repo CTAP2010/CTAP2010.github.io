@@ -6,6 +6,13 @@ title: Perfil
 <section class="container my-5">
   <h1 class="mb-4 text-center" style="color: var(--verde-escuro);">O Meu Perfil</h1>
 
+  <!-- 🔹 Login -->
+  <div id="noUser" class="text-center" style="display:none;">
+    <p>Não estás autenticado.</p>
+    <button id="loginBtn" class="btn btn-success">Entrar com Google</button>
+  </div>
+
+  <!-- 🔹 Info utilizador -->
   <div id="userInfo" class="text-center" style="display:none;">
     <img id="userPhoto" src="" alt="Foto de Perfil" class="rounded-circle mb-3" width="120">
     <h3 id="userName"></h3>
@@ -13,55 +20,111 @@ title: Perfil
     <button id="logoutBtn" class="btn btn-danger">Sair</button>
   </div>
 
-  <div id="noUser" class="text-center" style="display:none;">
-    <p>Não estás autenticado. <a href="login.html">Faz login aqui</a>.</p>
+  <!-- 🔹 Formulário de registo (só aparece se estiver logado) -->
+  <div id="registoTreino" style="display:none;" class="mt-5">
+    <h2 class="mb-3">Registo de Treino</h2>
+    <form id="treinoForm">
+      <div class="mb-3">
+        <label for="descricao" class="form-label">Descrição</label>
+        <input type="text" class="form-control" id="descricao" required>
+      </div>
+      <div class="mb-3">
+        <label for="data" class="form-label">Data</label>
+        <input type="date" class="form-control" id="data" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
   </div>
 </section>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } 
-    from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+  import { 
+    getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut 
+  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
+  import {
+    getFirestore, collection, addDoc, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+  // 🔹 Config Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyDxTP9oTiAlDRpjGgC_hL06uzpYLrbzZd8",
     authDomain: "ctap-registo.firebaseapp.com",
     projectId: "ctap-registo",
-    storageBucket: "ctap-registo.firebasestorage.app",
+    storageBucket: "ctap-registo.appspot.com",
     messagingSenderId: "460997897512",
     appId: "1:460997897512:web:841860bf674a5b1d19b41d"
   };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
   const userInfoDiv = document.getElementById("userInfo");
   const noUserDiv = document.getElementById("noUser");
+  const registoDiv = document.getElementById("registoTreino");
 
   const userPhoto = document.getElementById("userPhoto");
   const userName = document.getElementById("userName");
   const userEmail = document.getElementById("userEmail");
 
-  // Verifica se o utilizador está logado
+  // 🔹 Estado de autenticação
   onAuthStateChanged(auth, (user) => {
     if (user) {
+      // Está logado
       userInfoDiv.style.display = "block";
       noUserDiv.style.display = "none";
+      registoDiv.style.display = "block";
 
       userPhoto.src = user.photoURL || "https://via.placeholder.com/120";
       userName.textContent = user.displayName || "Utilizador sem nome";
       userEmail.textContent = user.email;
     } else {
+      // Não logado
       userInfoDiv.style.display = "none";
+      registoDiv.style.display = "none";
       noUserDiv.style.display = "block";
     }
   });
 
-  // Logout
-  document.getElementById("logoutBtn").addEventListener("click", async () => {
+  // 🔹 Login com Google
+  loginBtn.addEventListener("click", async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.error("Erro Firebase:", error);
+      alert("Erro ao entrar: " + error.message);
+    }
+  });
+
+  // 🔹 Logout
+  logoutBtn.addEventListener("click", async () => {
     await signOut(auth);
     alert("Terminaste a sessão.");
-    window.location.href = "login.html";
+  });
+
+  // 🔹 Guardar treino no Firestore
+  document.getElementById("treinoForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const descricao = document.getElementById("descricao").value;
+    const data = document.getElementById("data").value;
+
+    try {
+      await addDoc(collection(db, "treinos"), {
+        descricao,
+        data,
+        uid: auth.currentUser.uid,
+        timestamp: serverTimestamp()
+      });
+      alert("Treino guardado com sucesso!");
+      e.target.reset();
+    } catch (error) {
+      console.error("Erro ao guardar treino:", error);
+      alert("Erro ao guardar treino.");
+    }
   });
 </script>
-
