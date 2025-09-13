@@ -44,127 +44,150 @@ title: Registo de Treino
           <th>Ações</th>
         </tr>
       </thead>
-      <tbody id="treinosTableBody">
-        <!-- Linhas preenchidas por JS -->
-      </tbody>
+      <tbody id="treinosTableBody"></tbody>
     </table>
   </div>
 </section>
 
-<!-- Firebase scripts -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { 
+    getAuth, 
+    GoogleAuthProvider, 
+    signInWithPopup, 
+    onAuthStateChanged 
+  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+  import { 
+    getFirestore, 
+    collection, 
+    addDoc, 
+    query, 
+    where, 
+    orderBy, 
+    getDocs, 
+    deleteDoc, 
+    doc, 
+    serverTimestamp 
+  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-<script>
-  // Inicializa Firebase
+  // ⚠️ Usa os mesmos dados que tens em login.html
   const firebaseConfig = {
-    apiKey: "AIzaSyDxTP9oTiAlDRpjGgC_hL06uzpYLrbzZd8",
-    authDomain: "ctap-registo.firebaseapp.com",
-    projectId: "ctap-registo",
-    storageBucket: "ctap-registo.firebasestorage.app",
-    messagingSenderId: "460997897512",
-    appId: "1:460997897512:web:841860bf674a5b1d19b41d"
+    apiKey: "API_KEY_AQUI",
+    authDomain: "PROJECT_ID.firebaseapp.com",
+    projectId: "PROJECT_ID",
+    storageBucket: "PROJECT_ID.appspot.com",
+    messagingSenderId: "SENDER_ID",
+    appId: "APP_ID"
   };
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
   const loginButton = document.getElementById('loginGoogle');
   const treinoForm = document.getElementById('treinoForm');
   const treinosContainer = document.getElementById('treinosContainer');
   const treinosTableBody = document.getElementById('treinosTableBody');
 
+  let currentUser = null;
+
   // Login Google
-  loginButton.addEventListener('click', () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider)
-      .then((result) => {
-        const user = result.user;
-        alert(`Bem-vindo, ${user.displayName}!`);
-        treinoForm.style.display = 'block';
-        loginButton.style.display = 'none';
-        carregarTreinos(user.uid);
-      })
-      .catch((error) => {
-        console.error(error);
-        alert('Erro ao entrar com Google.');
-      });
+  loginButton.addEventListener('click', async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      currentUser = result.user;
+      alert(`Bem-vindo, ${currentUser.displayName}!`);
+      treinoForm.style.display = 'block';
+      loginButton.style.display = 'none';
+      carregarTreinos(currentUser.uid);
+    } catch (error) {
+      console.error("Erro Firebase:", error);
+      alert("Erro Firebase: " + error.code + " - " + error.message);
+    }
+  });
+
+  // Estado do utilizador (mantém sessão ativa)
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      currentUser = user;
+      treinoForm.style.display = 'block';
+      loginButton.style.display = 'none';
+      carregarTreinos(user.uid);
+    } else {
+      currentUser = null;
+      treinoForm.style.display = 'none';
+      loginButton.style.display = 'block';
+      treinosContainer.style.display = 'none';
+    }
   });
 
   // Registar treino
-  treinoForm.addEventListener('submit', (e) => {
+  treinoForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const user = auth.currentUser;
-    if (!user) {
+    if (!currentUser) {
       alert("Faz login antes de registar o treino.");
       return;
     }
-
-    const data = document.getElementById('dataTreino').value;
-    const flechas = parseInt(document.getElementById('numFlechas').value);
-    const obs = document.getElementById('obsTreino').value;
-
-    db.collection('treinos').add({
-      uid: user.uid,
-      nome: user.displayName,
-      email: user.email,
-      data: data,
-      flechas: flechas,
-      observacoes: obs,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    })
-    .then(() => {
+    try {
+      await addDoc(collection(db, "treinos"), {
+        uid: currentUser.uid,
+        nome: currentUser.displayName,
+        email: currentUser.email,
+        data: document.getElementById('dataTreino').value,
+        flechas: parseInt(document.getElementById('numFlechas').value),
+        observacoes: document.getElementById('obsTreino').value,
+        timestamp: serverTimestamp()
+      });
       alert("Treino registado com sucesso!");
       treinoForm.reset();
-      carregarTreinos(user.uid);
-    })
-    .catch((error) => {
+      carregarTreinos(currentUser.uid);
+    } catch (error) {
       console.error(error);
-      alert("Erro ao registar treino.");
-    });
+      alert("Erro ao registar treino: " + error.message);
+    }
   });
 
   // Carregar treinos do utilizador
-  function carregarTreinos(uid) {
+  async function carregarTreinos(uid) {
     treinosTableBody.innerHTML = '';
-    db.collection('treinos')
-      .where('uid', '==', uid)
-      .orderBy('timestamp', 'desc')
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          const treino = doc.data();
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${treino.data}</td>
-            <td>${treino.flechas}</td>
-            <td>${treino.observacoes || ''}</td>
-            <td>${treino.timestamp ? treino.timestamp.toDate().toLocaleString() : ''}</td>
-            <td><button class="btn btn-sm btn-danger" onclick="eliminarTreino('${doc.id}', '${uid}')">Eliminar</button></td>
-          `;
-          treinosTableBody.appendChild(row);
-        });
-        treinosContainer.style.display = querySnapshot.size > 0 ? 'block' : 'none';
-      })
-      .catch((error) => {
-        console.error(error);
-        alert("Erro ao carregar os treinos.");
+    try {
+      const q = query(
+        collection(db, "treinos"),
+        where("uid", "==", uid),
+        orderBy("timestamp", "desc")
+      );
+      const snapshot = await getDocs(q);
+      snapshot.forEach((docSnap) => {
+        const treino = docSnap.data();
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${treino.data}</td>
+          <td>${treino.flechas}</td>
+          <td>${treino.observacoes || ''}</td>
+          <td>${treino.timestamp ? treino.timestamp.toDate().toLocaleString() : ''}</td>
+          <td><button class="btn btn-sm btn-danger" onclick="eliminarTreino('${docSnap.id}', '${uid}')">Eliminar</button></td>
+        `;
+        treinosTableBody.appendChild(row);
       });
+      treinosContainer.style.display = snapshot.size > 0 ? 'block' : 'none';
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao carregar treinos: " + error.message);
+    }
   }
 
   // Eliminar treino
-  function eliminarTreino(docId, uid) {
+  window.eliminarTreino = async (docId, uid) => {
     if (confirm("Tens a certeza que queres eliminar este treino?")) {
-      db.collection('treinos').doc(docId).delete()
-        .then(() => {
-          alert("Treino eliminado com sucesso!");
-          carregarTreinos(uid);
-        })
-        .catch((error) => {
-          console.error(error);
-          alert("Erro ao eliminar treino.");
-        });
+      try {
+        await deleteDoc(doc(db, "treinos", docId));
+        alert("Treino eliminado com sucesso!");
+        carregarTreinos(uid);
+      } catch (error) {
+        console.error(error);
+        alert("Erro ao eliminar treino: " + error.message);
+      }
     }
-  }
+  };
 </script>
