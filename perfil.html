@@ -101,8 +101,14 @@ onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
 
+    // Normalizar email para minúsculas e remover espaços
+    const emailNormalized = user.email.trim().toLowerCase();
+
     // Verificar se é atleta autorizado
-    const q = query(collection(db, "atletas"), where("email", "==", user.email));
+    const q = query(
+      collection(db, "atletas"), 
+      where("email", "==", emailNormalized)
+    );
     const snapshot = await getDocs(q);
 
     if (snapshot.empty) {
