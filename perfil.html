@@ -64,7 +64,7 @@ title: Perfil
     getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut 
   } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
   import {
-    getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc, deleteDoc
+    getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc, deleteDoc, orderBy
   } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
   // 🔹 Config Firebase
@@ -161,14 +161,11 @@ title: Perfil
   // 🔹 Carregar registos do utilizador
   async function carregarRegistos() {
     registosTableBody.innerHTML = "";
-	
-    import { orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-	const q = query(
-	  collection(db, "treinos"),
-	  where("uid", "==", currentUser.uid),
-	  orderBy("data", "desc")  // ordena da mais recente para a mais antiga
-	);
+    const q = query(
+      collection(db, "treinos"),
+      where("uid", "==", currentUser.uid),
+      orderBy("data", "desc") // ordena do mais recente para o mais antigo
+    );
     const snapshot = await getDocs(q);
 
     snapshot.forEach(docSnap => {
@@ -207,14 +204,12 @@ title: Perfil
       // Editar / Guardar registo
       btnEdit.addEventListener("click", async () => {
         if (btnEdit.textContent === "Editar") {
-          // Ativa inputs para edição
           inputData.removeAttribute("readonly");
           inputFlechas.removeAttribute("readonly");
           inputObs.removeAttribute("readonly");
           btnEdit.textContent = "Guardar";
-          inputObs.rows = 3; // aumenta a área do textarea ao editar
+          inputObs.rows = 3;
         } else {
-          // Guardar alterações
           const novaData = inputData.value;
           const novasFlechas = parseInt(inputFlechas.value);
           const novasObs = inputObs.value;
@@ -226,12 +221,11 @@ title: Perfil
               observacoes: novasObs
             });
             alert("Registo atualizado com sucesso!");
-            // Voltar a deixar readonly
             inputData.setAttribute("readonly", true);
             inputFlechas.setAttribute("readonly", true);
             inputObs.setAttribute("readonly", true);
             btnEdit.textContent = "Editar";
-            inputObs.rows = 1; // volta ao tamanho inicial
+            inputObs.rows = 1;
           } catch (error) {
             console.error("Erro ao atualizar registo:", error);
             alert("Erro ao atualizar registo.");
