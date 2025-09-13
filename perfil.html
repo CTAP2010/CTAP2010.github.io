@@ -119,7 +119,9 @@ title: Perfil
   loginBtn.addEventListener("click", async () => {
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      // Aqui podes adicionar validação de email se quiseres
     } catch (error) {
       console.error("Erro Firebase:", error);
       alert("Erro ao entrar: " + error.message);
@@ -166,34 +168,20 @@ title: Perfil
       const registo = docSnap.data();
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td><input type="date" value="${registo.data}" class="form-control form-control-sm" id="data-${docSnap.id}"></td>
-        <td><input type="number" value="${registo.numFlechas}" class="form-control form-control-sm" id="flechas-${docSnap.id}"></td>
-        <td><textarea class="form-control form-control-sm" id="obs-${docSnap.id}">${registo.observacoes || ''}</textarea></td>
+        <td><input type="date" value="${registo.data}" class="form-control form-control-sm" id="data-${docSnap.id}" readonly></td>
+        <td><input type="number" value="${registo.numFlechas}" class="form-control form-control-sm" id="flechas-${docSnap.id}" readonly></td>
+        <td><textarea class="form-control form-control-sm" id="obs-${docSnap.id}" rows="1" readonly>${registo.observacoes || ''}</textarea></td>
         <td>
-          <button class="btn btn-success btn-sm me-1" id="save-${docSnap.id}">Guardar</button>
+          <button class="btn btn-primary btn-sm me-1" id="edit-${docSnap.id}">Editar</button>
           <button class="btn btn-danger btn-sm" id="delete-${docSnap.id}">Apagar</button>
         </td>
       `;
       registosTableBody.appendChild(tr);
 
-      // Guardar alterações
-      document.getElementById(`save-${docSnap.id}`).addEventListener("click", async () => {
-        const novaData = document.getElementById(`data-${docSnap.id}`).value;
-        const novasFlechas = parseInt(document.getElementById(`flechas-${docSnap.id}`).value);
-        const novasObs = document.getElementById(`obs-${docSnap.id}`).value;
-
-        try {
-          await updateDoc(doc(db, "treinos", docSnap.id), {
-            data: novaData,
-            numFlechas: novasFlechas,
-            observacoes: novasObs
-          });
-          alert("Registo atualizado com sucesso!");
-        } catch (error) {
-          console.error("Erro ao atualizar registo:", error);
-          alert("Erro ao atualizar registo.");
-        }
-      });
+      const btnEdit = document.getElementById(`edit-${docSnap.id}`);
+      const inputData = document.getElementById(`data-${docSnap.id}`);
+      const inputFlechas = document.getElementById(`flechas-${docSnap.id}`);
+      const inputObs = document.getElementById(`obs-${docSnap.id}`);
 
       // Apagar registo
       document.getElementById(`delete-${docSnap.id}`).addEventListener("click", async () => {
@@ -205,6 +193,41 @@ title: Perfil
           } catch (error) {
             console.error("Erro ao apagar registo:", error);
             alert("Erro ao apagar registo.");
+          }
+        }
+      });
+
+      // Editar / Guardar registo
+      btnEdit.addEventListener("click", async () => {
+        if (btnEdit.textContent === "Editar") {
+          // Ativa inputs para edição
+          inputData.removeAttribute("readonly");
+          inputFlechas.removeAttribute("readonly");
+          inputObs.removeAttribute("readonly");
+          btnEdit.textContent = "Guardar";
+          inputObs.rows = 3; // aumenta a área do textarea ao editar
+        } else {
+          // Guardar alterações
+          const novaData = inputData.value;
+          const novasFlechas = parseInt(inputFlechas.value);
+          const novasObs = inputObs.value;
+
+          try {
+            await updateDoc(doc(db, "treinos", docSnap.id), {
+              data: novaData,
+              numFlechas: novasFlechas,
+              observacoes: novasObs
+            });
+            alert("Registo atualizado com sucesso!");
+            // Voltar a deixar readonly
+            inputData.setAttribute("readonly", true);
+            inputFlechas.setAttribute("readonly", true);
+            inputObs.setAttribute("readonly", true);
+            btnEdit.textContent = "Editar";
+            inputObs.rows = 1; // volta ao tamanho inicial
+          } catch (error) {
+            console.error("Erro ao atualizar registo:", error);
+            alert("Erro ao atualizar registo.");
           }
         }
       });
