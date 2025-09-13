@@ -285,3 +285,16 @@
   }
 }
 
+/* Linhas alternadas suaves na tabela */
+#registosTable.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f9f9f9; /* tom muito suave */
+}
+
+#registosTable.table-striped tbody tr:nth-of-type(even) {
+  background-color: #ffffff; /* branco */
+}
+
+/* Opcional: efeito hover */
+#registosTable tbody tr:hover {
+  background-color: #e6f7e6; /* verde claro suave ao passar o mouse */
+}

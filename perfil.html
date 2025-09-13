@@ -25,15 +25,36 @@ title: Perfil
     <h2 class="mb-3">Registo de Treino</h2>
     <form id="treinoForm">
       <div class="mb-3">
-        <label for="descricao" class="form-label">Descrição</label>
-        <input type="text" class="form-control" id="descricao" required>
-      </div>
-      <div class="mb-3">
         <label for="data" class="form-label">Data</label>
         <input type="date" class="form-control" id="data" required>
       </div>
+      <div class="mb-3">
+        <label for="numFlechas" class="form-label">Número de Flechas</label>
+        <input type="number" class="form-control" id="numFlechas" min="0" required>
+      </div>
+      <div class="mb-3">
+        <label for="observacoes" class="form-label">Observações</label>
+        <textarea class="form-control" id="observacoes" rows="3"></textarea>
+      </div>
       <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
+
+    <hr class="my-4">
+
+    <h3 class="mb-3">Registos Anteriores</h3>
+    <table class="table table-striped" id="registosTable">
+      <thead class="table-dark">
+        <tr>
+          <th>Data</th>
+          <th>Flechas</th>
+          <th>Observações</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Registos vão ser inseridos aqui -->
+      </tbody>
+    </table>
   </div>
 </section>
 
@@ -42,9 +63,8 @@ title: Perfil
   import { 
     getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut 
   } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-
   import {
-    getFirestore, collection, addDoc, serverTimestamp
+    getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc, deleteDoc
   } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
   // 🔹 Config Firebase
@@ -70,11 +90,14 @@ title: Perfil
   const userPhoto = document.getElementById("userPhoto");
   const userName = document.getElementById("userName");
   const userEmail = document.getElementById("userEmail");
+  const registosTableBody = document.querySelector("#registosTable tbody");
+
+  let currentUser = null;
 
   // 🔹 Estado de autenticação
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
-      // Está logado
+      currentUser = user;
       userInfoDiv.style.display = "block";
       noUserDiv.style.display = "none";
       registoDiv.style.display = "block";
@@ -82,8 +105,10 @@ title: Perfil
       userPhoto.src = user.photoURL || "https://via.placeholder.com/120";
       userName.textContent = user.displayName || "Utilizador sem nome";
       userEmail.textContent = user.email;
+
+      carregarRegistos();
     } else {
-      // Não logado
+      currentUser = null;
       userInfoDiv.style.display = "none";
       registoDiv.style.display = "none";
       noUserDiv.style.display = "block";
@@ -110,21 +135,79 @@ title: Perfil
   // 🔹 Guardar treino no Firestore
   document.getElementById("treinoForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const descricao = document.getElementById("descricao").value;
     const data = document.getElementById("data").value;
+    const numFlechas = parseInt(document.getElementById("numFlechas").value);
+    const observacoes = document.getElementById("observacoes").value;
 
     try {
       await addDoc(collection(db, "treinos"), {
-        descricao,
         data,
-        uid: auth.currentUser.uid,
+        numFlechas,
+        observacoes,
+        uid: currentUser.uid,
         timestamp: serverTimestamp()
       });
       alert("Treino guardado com sucesso!");
       e.target.reset();
+      carregarRegistos();
     } catch (error) {
       console.error("Erro ao guardar treino:", error);
       alert("Erro ao guardar treino.");
     }
   });
+
+  // 🔹 Carregar registos do utilizador
+  async function carregarRegistos() {
+    registosTableBody.innerHTML = "";
+    const q = query(collection(db, "treinos"), where("uid", "==", currentUser.uid));
+    const snapshot = await getDocs(q);
+
+    snapshot.forEach(docSnap => {
+      const registo = docSnap.data();
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><input type="date" value="${registo.data}" class="form-control form-control-sm" id="data-${docSnap.id}"></td>
+        <td><input type="number" value="${registo.numFlechas}" class="form-control form-control-sm" id="flechas-${docSnap.id}"></td>
+        <td><textarea class="form-control form-control-sm" id="obs-${docSnap.id}">${registo.observacoes || ''}</textarea></td>
+        <td>
+          <button class="btn btn-success btn-sm me-1" id="save-${docSnap.id}">Guardar</button>
+          <button class="btn btn-danger btn-sm" id="delete-${docSnap.id}">Apagar</button>
+        </td>
+      `;
+      registosTableBody.appendChild(tr);
+
+      // Guardar alterações
+      document.getElementById(`save-${docSnap.id}`).addEventListener("click", async () => {
+        const novaData = document.getElementById(`data-${docSnap.id}`).value;
+        const novasFlechas = parseInt(document.getElementById(`flechas-${docSnap.id}`).value);
+        const novasObs = document.getElementById(`obs-${docSnap.id}`).value;
+
+        try {
+          await updateDoc(doc(db, "treinos", docSnap.id), {
+            data: novaData,
+            numFlechas: novasFlechas,
+            observacoes: novasObs
+          });
+          alert("Registo atualizado com sucesso!");
+        } catch (error) {
+          console.error("Erro ao atualizar registo:", error);
+          alert("Erro ao atualizar registo.");
+        }
+      });
+
+      // Apagar registo
+      document.getElementById(`delete-${docSnap.id}`).addEventListener("click", async () => {
+        if (confirm("Tens a certeza que queres apagar este registo?")) {
+          try {
+            await deleteDoc(doc(db, "treinos", docSnap.id));
+            alert("Registo apagado com sucesso!");
+            carregarRegistos();
+          } catch (error) {
+            console.error("Erro ao apagar registo:", error);
+            alert("Erro ao apagar registo.");
+          }
+        }
+      });
+    });
+  }
 </script>
