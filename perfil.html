@@ -62,12 +62,8 @@ title: Perfil
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { 
-  getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut 
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import {
-  getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc, deleteDoc, orderBy, getDoc
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc, deleteDoc, orderBy, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 // 🔹 Config Firebase
 const firebaseConfig = {
@@ -102,11 +98,12 @@ onAuthStateChanged(auth, async (user) => {
     currentUser = user;
 
     try {
-      // Verificar se o email está no array autorizado
+      // 🔹 Verificar se o email está no array autorizado
       const docRef = doc(db, "config", "autorizados");
       const docSnap = await getDoc(docRef);
 
-      if (!docSnap.exists() || !docSnap.data().emails.includes(user.email)) {
+      const emailsAutorizados = docSnap.exists() ? docSnap.data().emails.map(e => e.toLowerCase()) : [];
+      if (!emailsAutorizados.includes(user.email.toLowerCase())) {
         alert("Não tens permissão para aceder a este site.");
         currentUser = null;
         userInfoDiv.style.display = "none";
@@ -197,7 +194,7 @@ async function carregarRegistos() {
   const q = query(
     collection(db, "treinos"),
     where("email", "==", currentUser.email),
-    orderBy("data", "desc")  // ordenar por data (string)
+    orderBy("data", "desc") // ordenar por data
   );
 
   const snapshot = await getDocs(q);
