@@ -66,7 +66,7 @@ import {
   getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut 
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import {
-  getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc, deleteDoc, orderBy, getDoc
+  getFirestore, collection, addDoc, serverTimestamp, query, getDocs, updateDoc, doc, deleteDoc, orderBy
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 // 🔹 Config Firebase
@@ -101,32 +101,27 @@ onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
 
-    // Verificar se o email do utilizador está na lista de emails autorizados
-    const configDoc = doc(db, "config", "autorizados");
-    const configSnap = await getDoc(configDoc);
-
-    if (!configSnap.exists()) {
-      alert("Configuração de emails autorizados não encontrada!");
-      currentUser = null;
-      noUserDiv.style.display = "block";
-      loginBtn.style.display = "inline-block";
-      return;
-    }
-
-    const emailsAutorizados = configSnap.data().emails || [];
+    // Verificar se email está no array autorizado
+    const autorizadosDoc = await getDocs(collection(db, "config"));
+    let emailsAutorizados = [];
+    autorizadosDoc.forEach(docSnap => {
+      if (docSnap.id === "autorizados" && docSnap.data().emails) {
+        emailsAutorizados = docSnap.data().emails;
+      }
+    });
 
     if (!emailsAutorizados.includes(user.email)) {
       alert("Não tens permissão para aceder a este site.");
+      await signOut(auth);
       currentUser = null;
       userInfoDiv.style.display = "none";
       registoDiv.style.display = "none";
       noUserDiv.style.display = "block";
       loginBtn.style.display = "inline-block";
-      await signOut(auth);
       return;
     }
 
-    // Email autorizado — mostrar info do utilizador e formulário
+    // Mostrar info do utilizador e formulário
     userInfoDiv.style.display = "block";
     noUserDiv.style.display = "none";
     registoDiv.style.display = "block";
@@ -137,7 +132,6 @@ onAuthStateChanged(auth, async (user) => {
     userEmail.textContent = user.email;
 
     carregarRegistos();
-
   } else {
     currentUser = null;
     userInfoDiv.style.display = "none";
@@ -176,7 +170,6 @@ document.getElementById("treinoForm").addEventListener("submit", async (e) => {
       data,
       numFlechas,
       observacoes,
-      uid: currentUser.uid,
       email: currentUser.email,
       timestamp: serverTimestamp()
     });
@@ -194,13 +187,14 @@ async function carregarRegistos() {
   registosTableBody.innerHTML = "";
   const q = query(
     collection(db, "treinos"),
-    where("email", "==", currentUser.email),
     orderBy("data", "desc")
   );
   const snapshot = await getDocs(q);
 
   snapshot.forEach(docSnap => {
     const registo = docSnap.data();
+    if (registo.email !== currentUser.email) return; // Só mostra do utilizador
+
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td><input type="date" value="${registo.data}" class="form-control form-control-sm" id="data-${docSnap.id}" readonly></td>
