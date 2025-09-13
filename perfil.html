@@ -62,8 +62,12 @@ title: Perfil
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc, deleteDoc, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import { 
+  getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut 
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import {
+  getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc, deleteDoc, orderBy, getDoc
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 // 🔹 Config Firebase
 const firebaseConfig = {
@@ -97,33 +101,42 @@ onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
 
-    // Normaliza email
-    const emailNormalized = user.email.trim().toLowerCase();
+    // Verificar se o email do utilizador está na lista de emails autorizados
+    const configDoc = doc(db, "config", "autorizados");
+    const configSnap = await getDoc(configDoc);
 
-    // Verificar se é atleta autorizado
-    const q = query(collection(db, "atletas"), where("email", "==", emailNormalized));
-    const snapshot = await getDocs(q);
+    if (!configSnap.exists()) {
+      alert("Configuração de emails autorizados não encontrada!");
+      currentUser = null;
+      noUserDiv.style.display = "block";
+      loginBtn.style.display = "inline-block";
+      return;
+    }
 
-    if (snapshot.empty) {
+    const emailsAutorizados = configSnap.data().emails || [];
+
+    if (!emailsAutorizados.includes(user.email)) {
       alert("Não tens permissão para aceder a este site.");
       currentUser = null;
       userInfoDiv.style.display = "none";
       registoDiv.style.display = "none";
       noUserDiv.style.display = "block";
       loginBtn.style.display = "inline-block";
-    } else {
-      // Mostrar info do utilizador e formulário
-      userInfoDiv.style.display = "block";
-      noUserDiv.style.display = "none";
-      registoDiv.style.display = "block";
-      loginBtn.style.display = "none";
-
-      userPhoto.src = user.photoURL || "https://via.placeholder.com/120";
-      userName.textContent = user.displayName || "Utilizador sem nome";
-      userEmail.textContent = user.email;
-
-      carregarRegistos();
+      await signOut(auth);
+      return;
     }
+
+    // Email autorizado — mostrar info do utilizador e formulário
+    userInfoDiv.style.display = "block";
+    noUserDiv.style.display = "none";
+    registoDiv.style.display = "block";
+    loginBtn.style.display = "none";
+
+    userPhoto.src = user.photoURL || "https://via.placeholder.com/120";
+    userName.textContent = user.displayName || "Utilizador sem nome";
+    userEmail.textContent = user.email;
+
+    carregarRegistos();
 
   } else {
     currentUser = null;
@@ -164,6 +177,7 @@ document.getElementById("treinoForm").addEventListener("submit", async (e) => {
       numFlechas,
       observacoes,
       uid: currentUser.uid,
+      email: currentUser.email,
       timestamp: serverTimestamp()
     });
     alert("Treino guardado com sucesso!");
@@ -180,7 +194,7 @@ async function carregarRegistos() {
   registosTableBody.innerHTML = "";
   const q = query(
     collection(db, "treinos"),
-    where("uid", "==", currentUser.uid),
+    where("email", "==", currentUser.email),
     orderBy("data", "desc")
   );
   const snapshot = await getDocs(q);
