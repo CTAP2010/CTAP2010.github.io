@@ -205,4 +205,50 @@ title: Perfil
       const inputObs = document.getElementById(`obs-${docSnap.id}`);
 
       // Apagar registo
-      document.getElementById(`delete-${docSnap.id}`).addEventListener("
+      document.getElementById(`delete-${docSnap.id}`).addEventListener("click", async () => {
+        if (confirm("Tens a certeza que queres apagar este registo?")) {
+          try {
+            await deleteDoc(doc(db, "treinos", docSnap.id));
+            alert("Registo apagado com sucesso!");
+            carregarRegistos();
+          } catch (error) {
+            console.error("Erro ao apagar registo:", error);
+            alert("Erro ao apagar registo.");
+          }
+        }
+      });
+
+      // Editar / Guardar registo
+      btnEdit.addEventListener("click", async () => {
+        if (btnEdit.textContent === "Editar") {
+          inputData.removeAttribute("readonly");
+          inputFlechas.removeAttribute("readonly");
+          inputObs.removeAttribute("readonly");
+          btnEdit.textContent = "Guardar";
+          inputObs.rows = 3;
+        } else {
+          const novaData = inputData.value;
+          const novasFlechas = parseInt(inputFlechas.value);
+          const novasObs = inputObs.value;
+
+          try {
+            await updateDoc(doc(db, "treinos", docSnap.id), {
+              data: novaData,
+              numFlechas: novasFlechas,
+              observacoes: novasObs
+            });
+            alert("Registo atualizado com sucesso!");
+            inputData.setAttribute("readonly", true);
+            inputFlechas.setAttribute("readonly", true);
+            inputObs.setAttribute("readonly", true);
+            btnEdit.textContent = "Editar";
+            inputObs.rows = 1;
+          } catch (error) {
+            console.error("Erro ao atualizar registo:", error);
+            alert("Erro ao atualizar registo.");
+          }
+        }
+      });
+    });
+  }
+</script>
