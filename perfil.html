@@ -62,12 +62,8 @@ title: Perfil
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { 
-  getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut 
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import {
-  getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc, deleteDoc, orderBy
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc, deleteDoc, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 // 🔹 Config Firebase
 const firebaseConfig = {
@@ -101,14 +97,11 @@ onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
 
-    // Normalizar email para minúsculas e remover espaços
+    // Normaliza email
     const emailNormalized = user.email.trim().toLowerCase();
 
     // Verificar se é atleta autorizado
-    const q = query(
-      collection(db, "atletas"), 
-      where("email", "==", emailNormalized)
-    );
+    const q = query(collection(db, "atletas"), where("email", "==", emailNormalized));
     const snapshot = await getDocs(q);
 
     if (snapshot.empty) {
@@ -117,7 +110,7 @@ onAuthStateChanged(auth, async (user) => {
       userInfoDiv.style.display = "none";
       registoDiv.style.display = "none";
       noUserDiv.style.display = "block";
-      loginBtn.style.display = "inline-block"; // Mantém botão de login
+      loginBtn.style.display = "inline-block";
     } else {
       // Mostrar info do utilizador e formulário
       userInfoDiv.style.display = "block";
