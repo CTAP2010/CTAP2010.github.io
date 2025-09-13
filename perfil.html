@@ -17,10 +17,11 @@ title: Perfil
     <img id="userPhoto" src="" alt="Foto de Perfil" class="rounded-circle mb-3" width="120">
     <h3 id="userName"></h3>
     <p id="userEmail"></p>
+    <p><span id="userRole" class="badge bg-info"></span></p>
     <button id="logoutBtn" class="btn btn-danger">Sair</button>
   </div>
 
-  <!-- 🔹 Formulário de registo (só aparece se estiver autorizado) -->
+  <!-- 🔹 Formulário de registo (apenas atletas) -->
   <div id="registoTreino" style="display:none;" class="mt-5">
     <h2 class="mb-3">Registo de Treino</h2>
     <form id="treinoForm">
@@ -38,25 +39,27 @@ title: Perfil
       </div>
       <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
+  </div>
 
-    <hr class="my-4">
+  <hr class="my-4">
 
-    <h3 class="mb-3">Registos Anteriores</h3>
-    <div class="table-responsive">
-      <table class="table table-striped" id="registosTable">
-        <thead class="table-dark">
-          <tr>
-            <th>Data</th>
-            <th>Flechas</th>
-            <th>Observações</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Registos vão ser inseridos aqui -->
-        </tbody>
-      </table>
-    </div>
+  <!-- 🔹 Registos -->
+  <h3 class="mb-3">Registos de Treino</h3>
+  <div class="table-responsive">
+    <table class="table table-striped" id="registosTable">
+      <thead class="table-dark">
+        <tr>
+          <th>Email</th>
+          <th>Data</th>
+          <th>Flechas</th>
+          <th>Observações</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Registos vão ser inseridos aqui -->
+      </tbody>
+    </table>
   </div>
 </section>
 
@@ -88,9 +91,11 @@ const registoDiv = document.getElementById("registoTreino");
 const userPhoto = document.getElementById("userPhoto");
 const userName = document.getElementById("userName");
 const userEmail = document.getElementById("userEmail");
+const userRole = document.getElementById("userRole");
 const registosTableBody = document.querySelector("#registosTable tbody");
 
 let currentUser = null;
+let role = null; // "atleta" ou "treinador"
 
 // 🔹 Estado de autenticação
 onAuthStateChanged(auth, async (user) => {
@@ -98,45 +103,50 @@ onAuthStateChanged(auth, async (user) => {
     currentUser = user;
 
     try {
-      // 🔹 Verificar se o email está no array autorizado
+      // 🔹 Verificar se o email está autorizado
       const docRef = doc(db, "config", "autorizados");
       const docSnap = await getDoc(docRef);
 
-      const emailsAutorizados = docSnap.exists() ? docSnap.data().emails.map(e => e.toLowerCase()) : [];
-      if (!emailsAutorizados.includes(user.email.toLowerCase())) {
+      if (!docSnap.exists()) throw new Error("Configuração não encontrada");
+
+      const data = docSnap.data();
+      const emailsAtletas = (data.emails || []).map(e => e.toLowerCase());
+      const emailsTreinadores = (data.treinadores || []).map(e => e.toLowerCase());
+
+      if (emailsAtletas.includes(user.email.toLowerCase())) {
+        role = "atleta";
+      } else if (emailsTreinadores.includes(user.email.toLowerCase())) {
+        role = "treinador";
+      } else {
         alert("Não tens permissão para aceder a este site.");
-        currentUser = null;
-        userInfoDiv.style.display = "none";
-        registoDiv.style.display = "none";
-        noUserDiv.style.display = "block";
-        loginBtn.style.display = "inline-block";
+        logoutBtn.click();
         return;
       }
 
-      // Email autorizado → mostrar info e formulário
+      // Mostrar info
       userInfoDiv.style.display = "block";
       noUserDiv.style.display = "none";
-      registoDiv.style.display = "block";
       loginBtn.style.display = "none";
-
       userPhoto.src = user.photoURL || "https://via.placeholder.com/120";
       userName.textContent = user.displayName || "Utilizador sem nome";
       userEmail.textContent = user.email;
+      userRole.textContent = role.toUpperCase();
 
+      // Só atletas podem registar treinos
+      registoDiv.style.display = (role === "atleta") ? "block" : "none";
+
+      // Carregar registos
       carregarRegistos();
 
     } catch (error) {
       console.error("Erro ao verificar autorização:", error);
       alert("Erro ao verificar autorização.");
-      currentUser = null;
-      userInfoDiv.style.display = "none";
-      registoDiv.style.display = "none";
-      noUserDiv.style.display = "block";
-      loginBtn.style.display = "inline-block";
+      logoutBtn.click();
     }
 
   } else {
     currentUser = null;
+    role = null;
     userInfoDiv.style.display = "none";
     registoDiv.style.display = "none";
     noUserDiv.style.display = "block";
@@ -161,10 +171,10 @@ logoutBtn.addEventListener("click", async () => {
   alert("Terminaste a sessão.");
 });
 
-// 🔹 Guardar treino
+// 🔹 Guardar treino (apenas atletas)
 document.getElementById("treinoForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  if (!currentUser) return;
+  if (!currentUser || role !== "atleta") return;
 
   const data = document.getElementById("data").value;
   const numFlechas = parseInt(document.getElementById("numFlechas").value);
@@ -173,7 +183,7 @@ document.getElementById("treinoForm").addEventListener("submit", async (e) => {
   try {
     await addDoc(collection(db, "treinos"), {
       email: currentUser.email,
-      data,               // data como string
+      data,
       numFlechas,
       observacoes,
       timestamp: serverTimestamp()
@@ -187,15 +197,20 @@ document.getElementById("treinoForm").addEventListener("submit", async (e) => {
   }
 });
 
-// 🔹 Carregar registos ordenados por data (string) desc
+// 🔹 Carregar registos
 async function carregarRegistos() {
   registosTableBody.innerHTML = "";
 
-  const q = query(
-    collection(db, "treinos"),
-    where("email", "==", currentUser.email),
-    orderBy("data", "desc") // ordenar por data
-  );
+  let q;
+  if (role === "treinador") {
+    q = query(collection(db, "treinos"), orderBy("data", "desc"));
+  } else {
+    q = query(
+      collection(db, "treinos"),
+      where("email", "==", currentUser.email),
+      orderBy("data", "desc")
+    );
+  }
 
   const snapshot = await getDocs(q);
 
@@ -203,66 +218,72 @@ async function carregarRegistos() {
     const registo = docSnap.data();
     const tr = document.createElement("tr");
     tr.innerHTML = `
+      <td>${registo.email}</td>
       <td><input type="date" value="${registo.data}" class="form-control form-control-sm" id="data-${docSnap.id}" readonly></td>
       <td><input type="number" value="${registo.numFlechas}" class="form-control form-control-sm" id="flechas-${docSnap.id}" readonly></td>
       <td><textarea class="form-control form-control-sm" id="obs-${docSnap.id}" rows="1" readonly>${registo.observacoes || ''}</textarea></td>
       <td>
-        <button class="btn btn-primary btn-sm me-1" id="edit-${docSnap.id}">Editar</button>
-        <button class="btn btn-danger btn-sm" id="delete-${docSnap.id}">Apagar</button>
+        ${(role === "atleta" && registo.email === currentUser.email) ? `
+          <button class="btn btn-primary btn-sm me-1" id="edit-${docSnap.id}">Editar</button>
+          <button class="btn btn-danger btn-sm" id="delete-${docSnap.id}">Apagar</button>
+        ` : ""}
       </td>
     `;
     registosTableBody.appendChild(tr);
 
-    const btnEdit = document.getElementById(`edit-${docSnap.id}`);
-    const inputData = document.getElementById(`data-${docSnap.id}`);
-    const inputFlechas = document.getElementById(`flechas-${docSnap.id}`);
-    const inputObs = document.getElementById(`obs-${docSnap.id}`);
+    // Só atleta pode editar/apagar os seus registos
+    if (role === "atleta" && registo.email === currentUser.email) {
+      const btnEdit = document.getElementById(`edit-${docSnap.id}`);
+      const inputData = document.getElementById(`data-${docSnap.id}`);
+      const inputFlechas = document.getElementById(`flechas-${docSnap.id}`);
+      const inputObs = document.getElementById(`obs-${docSnap.id}`);
 
-    // Apagar registo
-    document.getElementById(`delete-${docSnap.id}`).addEventListener("click", async () => {
-      if (confirm("Tens a certeza que queres apagar este registo?")) {
-        try {
-          await deleteDoc(doc(db, "treinos", docSnap.id));
-          alert("Registo apagado com sucesso!");
-          carregarRegistos();
-        } catch (error) {
-          console.error("Erro ao apagar registo:", error);
-          alert("Erro ao apagar registo.");
+      // Apagar registo
+      document.getElementById(`delete-${docSnap.id}`).addEventListener("click", async () => {
+        if (confirm("Tens a certeza que queres apagar este registo?")) {
+          try {
+            await deleteDoc(doc(db, "treinos", docSnap.id));
+            alert("Registo apagado com sucesso!");
+            carregarRegistos();
+          } catch (error) {
+            console.error("Erro ao apagar registo:", error);
+            alert("Erro ao apagar registo.");
+          }
         }
-      }
-    });
+      });
 
-    // Editar / Guardar
-    btnEdit.addEventListener("click", async () => {
-      if (btnEdit.textContent === "Editar") {
-        inputData.removeAttribute("readonly");
-        inputFlechas.removeAttribute("readonly");
-        inputObs.removeAttribute("readonly");
-        btnEdit.textContent = "Guardar";
-        inputObs.rows = 3;
-      } else {
-        const novaData = inputData.value;
-        const novasFlechas = parseInt(inputFlechas.value);
-        const novasObs = inputObs.value;
+      // Editar / Guardar
+      btnEdit.addEventListener("click", async () => {
+        if (btnEdit.textContent === "Editar") {
+          inputData.removeAttribute("readonly");
+          inputFlechas.removeAttribute("readonly");
+          inputObs.removeAttribute("readonly");
+          btnEdit.textContent = "Guardar";
+          inputObs.rows = 3;
+        } else {
+          const novaData = inputData.value;
+          const novasFlechas = parseInt(inputFlechas.value);
+          const novasObs = inputObs.value;
 
-        try {
-          await updateDoc(doc(db, "treinos", docSnap.id), {
-            data: novaData,
-            numFlechas: novasFlechas,
-            observacoes: novasObs
-          });
-          alert("Registo atualizado com sucesso!");
-          inputData.setAttribute("readonly", true);
-          inputFlechas.setAttribute("readonly", true);
-          inputObs.setAttribute("readonly", true);
-          btnEdit.textContent = "Editar";
-          inputObs.rows = 1;
-        } catch (error) {
-          console.error("Erro ao atualizar registo:", error);
-          alert("Erro ao atualizar registo.");
+          try {
+            await updateDoc(doc(db, "treinos", docSnap.id), {
+              data: novaData,
+              numFlechas: novasFlechas,
+              observacoes: novasObs
+            });
+            alert("Registo atualizado com sucesso!");
+            inputData.setAttribute("readonly", true);
+            inputFlechas.setAttribute("readonly", true);
+            inputObs.setAttribute("readonly", true);
+            btnEdit.textContent = "Editar";
+            inputObs.rows = 1;
+          } catch (error) {
+            console.error("Erro ao atualizar registo:", error);
+            alert("Erro ao atualizar registo.");
+          }
         }
-      }
-    });
+      });
+    }
   });
 }
 </script>
