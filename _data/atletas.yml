@@ -41,12 +41,12 @@
   foto: "/assets/img/atletas/foto_temp.jpg"
   mensagem: "frase"
   
-- nome: "Victor Grandíssimo"
+- nome: "Victor Gradíssimo"
   categoria_principal: "Recurvo"
   subcategoria: "Veteranos"
   sexo: "Masculino"
-  foto: "/assets/img/atletas/foto_temp.jpg"
-  mensagem: "frase"
+  foto: "/assets/img/atletas/Victor Gradíssimo.jpg"
+  mensagem: "O meu yôga!"
   
 - nome: "Luís Lage"
   categoria_principal: "Recurvo"
@@ -102,7 +102,7 @@
   subcategoria: "Seniores"
   sexo: "Masculino"
   foto: "/assets/img/atletas/foto_temp.jpg"
-  mensagem: "frase"
+  mensagem: "No CTAP, cada flecha é progresso, cada treino é futuro!"
   
 - nome: "José Magalhães"
   categoria_principal: "Recurvo"
