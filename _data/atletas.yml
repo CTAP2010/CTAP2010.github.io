@@ -102,14 +102,14 @@
   subcategoria: "Seniores"
   sexo: "Masculino"
   foto: "/assets/img/atletas/foto_temp.jpg"
-  mensagem: "No CTAP, cada flecha é progresso, cada treino é futuro!"
+  mensagem: "frase"
   
 - nome: "José Magalhães"
   categoria_principal: "Recurvo"
   subcategoria: "Veteranos"
   sexo: "Masculino"
-  foto: "/assets/img/atletas/foto_temp.jpg"
-  mensagem: "frase"
+  foto: "/assets/img/atletas/José Magalhães.jpg"
+  mensagem: "No CTAP, cada flecha é progresso, cada treino é futuro!"
   
 - nome: "Maria Magalhães"
   categoria_principal: "Recurvo"
