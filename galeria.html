@@ -6,11 +6,10 @@ title: Galeria
 <section class="container my-5" id="galeria">
     <h1 class="mb-4 text-center" style="color: var(--verde-escuro);">Galeria</h1>
     <div class="row g-4">
-        {% assign fotos = site.static_files | where_exp:"file","file.path contains '/assets/img/galeria/'" %}
-        {% for foto in fotos %}
+        {% for foto in site.data.galeria %}
         <div class="col-sm-6 col-md-4">
-            <img src="{{ foto.path }}" class="img-fluid rounded shadow galeria-img" alt="Galeria {{ forloop.index }}"
-                 onclick="openLightbox({{ forloop.index0 }})">
+            <img src="/assets/img/galeria/{{ foto }}" class="img-fluid rounded shadow galeria-img"
+                 alt="{{ foto }}" onclick="openLightbox({{ forloop.index0 }})">
         </div>
         {% endfor %}
     </div>
@@ -29,7 +28,6 @@ title: Galeria
         </div>
     </div>
 </div>
-
 
 <script>
     let currentIndex = 0;
