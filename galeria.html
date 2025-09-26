@@ -50,7 +50,7 @@ title: Galeria
         currentIndex = (currentIndex + 1) % images.length;
         document.getElementById('lightboxImage').src = images[currentIndex];
     }
-
+    
     // 🔹 Navegação por teclado
     document.addEventListener('keydown', function (event) {
         if (document.getElementById('lightboxModal').classList.contains('show')) {
@@ -64,27 +64,4 @@ title: Galeria
         }
     });
 
-    // 🔹 Swipe em mobile
-    let touchStartX = 0;
-    let touchEndX = 0;
-    const lightbox = document.getElementById('lightboxModal');
-
-    lightbox.addEventListener('touchstart', e => {
-        touchStartX = e.changedTouches[0].screenX;
-    }, false);
-
-    lightbox.addEventListener('touchend', e => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-    }, false);
-
-    function handleSwipe() {
-        const swipeThreshold = 50; // px mínimos
-        if (touchEndX < touchStartX - swipeThreshold) {
-            nextImage(); // swipe esquerda → próxima
-        }
-        if (touchEndX > touchStartX + swipeThreshold) {
-            prevImage(); // swipe direita → anterior
-        }
-    }
 </script>
