@@ -6,13 +6,13 @@ title: Galeria
 <section class="container my-5" id="galeria">
   <h1 class="mb-4 text-center" style="color: var(--verde-escuro);">Galeria</h1>
   <div class="row g-4">
-    {% assign fotos = site.static_files | where_exp:"file","file.path contains '/assets/img/galeria/'" %}
-    {% for foto in fotos %}
+      {% assign fotos = site.static_files | where_exp:"file","file.path contains '/assets/img/galeria/'" | reverse %}
+      {% for foto in fotos %}
       <div class="col-sm-6 col-md-4">
-        <img src="{{ foto.path }}" class="img-fluid rounded shadow galeria-img" alt="Galeria {{ forloop.index }}" 
-             onclick="openLightbox({{ forloop.index0 }})">
+          <img src="{{ foto.path }}" class="img-fluid rounded shadow galeria-img" alt="Galeria {{ forloop.index }}"
+               onclick="openLightbox({{ forloop.index0 }})">
       </div>
-    {% endfor %}
+      {% endfor %}
   </div>
 </section>
 
@@ -49,5 +49,44 @@ title: Galeria
   function nextImage() {
     currentIndex = (currentIndex + 1) % images.length;
     document.getElementById('lightboxImage').src = images[currentIndex];
-  }
+    }
+
+    // ?? Navegação por teclado
+    document.addEventListener('keydown', function (event) {
+        if (document.getElementById('lightboxModal').classList.contains('show')) {
+            if (event.key === "ArrowLeft") {
+                prevImage();
+            } else if (event.key === "ArrowRight") {
+                nextImage();
+            } else if (event.key === "Escape") {
+                bootstrap.Modal.getInstance(document.getElementById('lightboxModal')).hide();
+            }
+        }
+    });
+
+    // ?? Swipe em mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const lightbox = document.getElementById('lightboxModal');
+
+    lightbox.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, false);
+
+    lightbox.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, false);
+
+    function handleSwipe() {
+        const swipeThreshold = 50; // px mínimos
+        if (touchEndX < touchStartX - swipeThreshold) {
+            nextImage(); // swipe esquerda ? próxima
+        }
+        if (touchEndX > touchStartX + swipeThreshold) {
+            prevImage(); // swipe direita ? anterior
+        }
+    }
+
 </script>
+
