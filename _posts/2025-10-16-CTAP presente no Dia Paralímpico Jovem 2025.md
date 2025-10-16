@@ -2,7 +2,7 @@
 layout: post
 title: "CTAP presente no Dia Paralímpico Jovem 2025"
 date: 2025-10-19
-img: /assets/img/noticias/dia-paralimpico-jovem-2025.jpg
+img: /assets/img/post/dia-paralimpico-jovem-2025.jpg
 ---
 
 No passado dia **11 de outubro de 2025**, o **Clube de Tiro com Arco do Porto (CTAP)** marcou presença no **Dia Paralímpico Jovem**, um evento promovido pela **Câmara Municipal de Matosinhos** e pelo **Comité Paralímpico de Portugal**, que teve lugar no **Complexo Desportivo de Custóias**.
