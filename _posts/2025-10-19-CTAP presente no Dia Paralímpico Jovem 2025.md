@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "CTAP presente no Dia Paralímpico Jovem 2025"
-date: 2025-10-19
+date: 2025-10-16
 img: /assets/img/post/dia-paralimpico-jovem-2025.jpg
 ---
 
