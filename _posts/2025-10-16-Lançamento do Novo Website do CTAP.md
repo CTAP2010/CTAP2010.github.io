@@ -30,5 +30,5 @@ Graças ao seu trabalho, o CTAP tem agora um espaço digital moderno, que reflet
 
 ---
 
-Visita o novo site em **[https://rmossso.github.io](https://rmossso.github.io)** e acompanha todas as novidades, eventos e fotos mais recentes do **Clube de Tiro com Arco do Porto**.
+Visita o novo site em **[https://ctap.pt](https://ctap.pt)** e acompanha todas as novidades, eventos e fotos mais recentes do **Clube de Tiro com Arco do Porto**.
 
