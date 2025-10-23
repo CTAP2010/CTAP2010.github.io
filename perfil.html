@@ -326,3 +326,10 @@ exportBtn.addEventListener("click", async () => {
   XLSX.writeFile(wb, "Registos_Treinos.xlsx");
 });
 </script>
+
+<script>
+document.querySelectorAll('#registosTable textarea').forEach(textarea => {
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+});
+</script>

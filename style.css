@@ -314,6 +314,8 @@
 #registosTable textarea {
   width: 100%;
   box-sizing: border-box;
+  height: auto;          /* altura automática */
+  white-space: pre-wrap; /* mantém quebras de linha */
 }
 
 /* 🔹 Melhor contraste do cabeçalho */
