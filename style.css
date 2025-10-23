@@ -314,8 +314,6 @@
 #registosTable textarea {
   width: 100%;
   box-sizing: border-box;
-  height: auto;          /* altura automática */
-  white-space: pre-wrap; /* mantém quebras de linha */
 }
 
 /* 🔹 Melhor contraste do cabeçalho */
@@ -327,8 +325,8 @@
 
 /* 🔹 Ajuste para os botões pequenos dentro da tabela */
 #registosTable .btn-sm {
-  padding: 0.5rem 1.0rem;
-  font-size: 1.0rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
 }
 
 /* 🔹 Centralizar conteúdo das células */
