@@ -3,6 +3,7 @@ layout: post
 title: "Lançamento do Novo Website do CTAP"
 date: 2025-10-16
 img: /assets/img/post/lancamento_website.jpg
+excerpt: "O CTAP lançou o seu website oficial."
 ---
 
 O **Clube de Tiro com Arco do Porto (CTAP)** tem o enorme prazer de apresentar o seu **novo website oficial**, um passo marcante na modernização da comunicação do clube e na divulgação da modalidade.
