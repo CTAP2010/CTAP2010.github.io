@@ -315,6 +315,8 @@
   width: 100%;
   box-sizing: border-box;
   height: auto;          /* altura automática */
+  overflow: hidden;      /* esconde scroll interno */
+  resize: none;          /* impede redimensionamento manual */
   white-space: pre-wrap; /* mantém quebras de linha */
 }
 
