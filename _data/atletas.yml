@@ -24,8 +24,8 @@
   categoria_principal: "Recurvo"
   subcategoria: "Seniores"
   sexo: "Masculino"
-  foto: "/assets/img/atletas/foto_temp.jpg"
-  mensagem: ""
+  foto: "/assets/img/atletas/Pedro Bessa.jpg"
+  mensagem: "De vez em quando acerto no 10!"
   
 - nome: "Quintino Barros"
   categoria_principal: "Recurvo"
@@ -115,7 +115,7 @@
   categoria_principal: "Recurvo"
   subcategoria: "Robins"
   sexo: "Feminino"
-  foto: "/assets/img/atletas/foto_temp.jpg"
+  foto: "/assets/img/atletas/Maria Magalhães.jpg"
   mensagem: ""
 
 - nome: "Javier Lanatta"
