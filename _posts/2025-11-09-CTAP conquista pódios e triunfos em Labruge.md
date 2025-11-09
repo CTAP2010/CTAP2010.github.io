@@ -1,4 +1,4 @@
-------
+---
 layout: post
 title: "CTAP conquista pódios e triunfos em Labruge"
 date: 2025-11-09
