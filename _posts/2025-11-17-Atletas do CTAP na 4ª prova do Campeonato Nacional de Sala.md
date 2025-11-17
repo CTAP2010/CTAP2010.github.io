@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Atletas do CTAP na 4ª prova do Campeonato Nacional de Sala"
-date: 2025-11-08
+date: 2025-11-17
 img: /assets/img/post/4_prova_sala.jpg
 excerpt: "O CTAP estará presente na 3ª Prova do Campeonato Nacional de Sala 2025/2026, que se realiza no Pavilhão Desportivo de Labruge, no domingo, 23 de novembro"
 ---
