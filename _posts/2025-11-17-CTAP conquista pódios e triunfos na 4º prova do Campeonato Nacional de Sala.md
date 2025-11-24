@@ -66,4 +66,22 @@ Quintino Barros
 Vítor Gradíssimo
 Total: 1442 pontos
 
+🤝 Resultados por Equipas Mistas
+Equipas Mistas – Recurvo Seniores
+
+🥈 2º lugar – CTAP
+Atletas: Anastasiia Khikhlovskaia & Daniel Silva
+
+Total: 977 pts
+
+
+Equipas Mistas – Recurvo Veteranos
+
+🥇 1º lugar – CTAP
+Atletas: Cristina Ramalho & José Magalhães
+
+Total: 883 pts
+
+
+
 O CTAP felicita todos os seus atletas pelo empenho, espírito desportivo e resultados conquistados. Continuamos a representar o Porto com orgulho em todas as competições nacionais.
