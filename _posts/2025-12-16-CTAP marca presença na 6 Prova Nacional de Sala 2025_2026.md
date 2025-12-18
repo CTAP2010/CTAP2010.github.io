@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "CTAP conquista pódios e triunfos na 4º prova do Campeonato Nacional de Sala"
-date: 2025-11-24
+title: "CTAP marca presença na 6 Prova Nacional de Sala 2025/2026"
+date: 2025-12-16
 img: /assets/img/post/6_prova_sala.jpg
-excerpt: "O CTAP brilhou em Labruge, conquistando vários pódios individuais e coletivos na 4ª Prova do Campeonato Nacional de Sala 2025/2026."
+excerpt: "A prova de natal em Caldas da Rainha"
 ---
 O Clube de Tiro com Arco do Porto (CTAP) irá estar representado na 6.ª Prova Nacional de Sala 2025/2026, prova oficial do calendário da Federação Portuguesa de Tiro com Arco (FPTA), que se realiza no dia 21.
 
