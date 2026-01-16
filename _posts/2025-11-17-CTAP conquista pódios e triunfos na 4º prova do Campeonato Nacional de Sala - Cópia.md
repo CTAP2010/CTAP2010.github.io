@@ -2,6 +2,7 @@
 layout: post
 title: "CTAP conquista pódios e triunfos na 4º prova do Campeonato Nacional de Sala"
 date: 2025-11-24
+categories: noticias
 img: /assets/img/post/4_prova_sala_resultados.jpg
 excerpt: "O CTAP brilhou em Labruge, conquistando vários pódios individuais e coletivos na 4ª Prova do Campeonato Nacional de Sala 2025/2026."
 ---

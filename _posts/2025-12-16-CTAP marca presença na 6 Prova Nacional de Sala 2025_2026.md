@@ -2,6 +2,7 @@
 layout: post
 title: "CTAP marca presença na 6 Prova Nacional de Sala 2025/2026"
 date: 2025-12-16
+categories: noticias
 img: /assets/img/post/6_prova_sala.jpg
 excerpt: "A prova de natal em Caldas da Rainha"
 ---

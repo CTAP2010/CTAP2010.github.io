@@ -2,6 +2,7 @@
 layout: post
 title: "CTAP marca presença na 8 Prova Nacional de Sala 2025_2026"
 date: 2026-01-11
+categories: noticias
 img: /assets/img/post/8_prova_viseu.jpg
 excerpt: "O Clube de Tiro com Arco do Porto (CTAP) esteve em grande evidência na 8.ª Prova do Campeonato Nacional de Sala 2025/2026, realizada no dia 11 de janeiro de 2026, no Pavilhão Desportivo do Centro Social de Prime, numa organização do Centro Social de Prime (CSP)."
 ---

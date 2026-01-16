@@ -2,6 +2,7 @@
 layout: post
 title: "CTAP presente no Dia Paralímpico Jovem 2025"
 date: 2025-10-19
+categories: noticias
 img: /assets/img/post/dia-paralimpico-jovem-2025.jpg
 excerpt: "O CTAP participou no Dia Paralímpico Jovem 2025, promovendo o tiro com arco como modalidade inclusiva."
 ---

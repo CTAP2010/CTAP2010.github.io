@@ -2,6 +2,7 @@
 layout: post
 title: "CTAP conquista pódios e triunfos em Labruge"
 date: 2025-11-09
+categories: noticias
 img: /assets/img/post/prova_labruge_2025.jpg
 excerpt: "O CTAP brilhou em Labruge, conquistando vários pódios individuais e coletivos na 3ª Prova do Campeonato Nacional de Sala 2025/2026."
 ---

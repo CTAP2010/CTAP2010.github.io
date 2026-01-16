@@ -2,6 +2,7 @@
 layout: post
 title: "Lançamento do Novo Website do CTAP"
 date: 2025-10-16
+categories: noticias
 img: /assets/img/post/lancamento_website.jpg
 excerpt: "O CTAP lançou o seu website oficial."
 ---
