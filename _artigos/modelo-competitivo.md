@@ -1,5 +1,5 @@
 ---
-layout: opiniao
+layout: artigos
 title: "O modelo competitivo do tiro com arco em Portugal"
 date: 2026-01-01
 autor: "CTAP"
