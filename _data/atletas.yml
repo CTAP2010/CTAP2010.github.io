@@ -97,7 +97,7 @@
   foto: "/assets/img/atletas/foto_temp.jpg"
   mensagem: ""
   
-- nome: "Duarte Da Costa"
+- nome: "Duarte Costa"
   categoria_principal: "Recurvo"
   subcategoria: "Seniores"
   sexo: "Masculino"
@@ -131,3 +131,18 @@
   sexo: "Feminino"
   foto: "/assets/img/atletas/Cristina Ramalho.jpg"
   mensagem: "No tiro com arco, o alvo não é o fim; é um catalisador para melhoria contínua."
+  
+- nome: "Daniel Silva"
+  categoria_principal: "Recurvo"
+  subcategoria: "Seniores"
+  sexo: "Masculino"
+  foto: "/assets/img/atletas/foto_temp.jpg"
+  mensagem: ""
+
+- nome: "Jorge Pinto"
+  categoria_principal: "Recurvo"
+  subcategoria: "Seniores"
+  sexo: "Masculino"
+  foto: "/assets/img/atletas/foto_temp.jpg"
+  mensagem: ""
+  
