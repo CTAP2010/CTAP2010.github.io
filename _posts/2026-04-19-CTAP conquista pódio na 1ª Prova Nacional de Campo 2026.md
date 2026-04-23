@@ -27,7 +27,9 @@ A prova reuniu alguns dos melhores arqueiros nacionais, sendo os resultados ofic
 
 🥇 Resultados em equipas do CTAP
 🏹 Arco Recurvo – Veteranos Homens
-2.º lugar – Quintino Barros — 1542 pontos
+2.º lugar — 1542 pontos
+🏹 Arco Recurvo – Mistas Seniores
+2.º lugar — 810 pontos
 
 O conjunto de resultados evidencia vários pontos técnicos relevantes:
 
