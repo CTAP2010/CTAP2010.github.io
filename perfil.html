@@ -66,10 +66,137 @@ title: Perfil
       </table>
     </div>
   </div>
+
+  <!-- 🔹 Nova Avaliação Técnica (só treinadores) -->
+  <div id="avaliacaoFormDiv" style="display:none;" class="mt-5">
+    <hr class="my-4">
+    <h2 class="mb-3" id="avaliacaoFormTitulo">Nova Avaliação Técnica — Execução Técnica (Nível 02)</h2>
+    <form id="avaliacaoForm">
+      <div class="mb-3">
+        <label for="avAtleta" class="form-label">Atleta</label>
+        <select class="form-select" id="avAtleta" required></select>
+      </div>
+      <div class="mb-3">
+        <label for="avData" class="form-label">Data da avaliação</label>
+        <input type="date" class="form-control" id="avData" required>
+      </div>
+
+      <div class="mb-3 p-3 border rounded">
+        <h5>1. Ativação das costas (back tension)</h5>
+        <div class="mb-2">
+          <label class="form-label d-block">Inicia a puxada já a ativar os músculos das costas, não apenas o braço</label>
+          <select class="form-select form-select-sm" id="item1">
+            <option value="">— Por avaliar —</option>
+            <option value="cumpre">Cumpre</option>
+            <option value="trabalhar">A trabalhar</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label d-block">Sente e consegue descrever a aproximação das omoplatas durante a puxada</label>
+          <select class="form-select form-select-sm" id="item2">
+            <option value="">— Por avaliar —</option>
+            <option value="cumpre">Cumpre</option>
+            <option value="trabalhar">A trabalhar</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-3 p-3 border rounded">
+        <h5>2. Ancoragem sem perder a tensão</h5>
+        <div class="mb-2">
+          <label class="form-label d-block">Mantém a tensão nas costas do início da puxada até à ancoragem, sem quebra</label>
+          <select class="form-select form-select-sm" id="item3">
+            <option value="">— Por avaliar —</option>
+            <option value="cumpre">Cumpre</option>
+            <option value="trabalhar">A trabalhar</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label d-block">Não tensiona o peito nem o braço de tração para compensar</label>
+          <select class="form-select form-select-sm" id="item4">
+            <option value="">— Por avaliar —</option>
+            <option value="cumpre">Cumpre</option>
+            <option value="trabalhar">A trabalhar</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-3 p-3 border rounded">
+        <h5>3. Largada controlada</h5>
+        <div class="mb-2">
+          <label class="form-label d-block">A largada resulta do aumento de tensão nas costas, não de um gesto da mão</label>
+          <select class="form-select form-select-sm" id="item5">
+            <option value="">— Por avaliar —</option>
+            <option value="cumpre">Cumpre</option>
+            <option value="trabalhar">A trabalhar</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label d-block">Liberta a corda de forma suave, sem puxão brusco</label>
+          <select class="form-select form-select-sm" id="item6">
+            <option value="">— Por avaliar —</option>
+            <option value="cumpre">Cumpre</option>
+            <option value="trabalhar">A trabalhar</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-3 p-3 border rounded">
+        <h5>4. Follow-through e estabilidade</h5>
+        <div class="mb-2">
+          <label class="form-label d-block">Mantém a posição e o braço do arco estáveis 2-3 segundos após a largada</label>
+          <select class="form-select form-select-sm" id="item7">
+            <option value="">— Por avaliar —</option>
+            <option value="cumpre">Cumpre</option>
+            <option value="trabalhar">A trabalhar</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label d-block">Não desvia o arco para acompanhar visualmente a flecha</label>
+          <select class="form-select form-select-sm" id="item8">
+            <option value="">— Por avaliar —</option>
+            <option value="cumpre">Cumpre</option>
+            <option value="trabalhar">A trabalhar</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" id="avaliacaoSubmitBtn">Guardar Avaliação</button>
+      <button type="button" class="btn btn-secondary" id="avaliacaoCancelBtn" style="display:none;">Cancelar edição</button>
+    </form>
+  </div>
+
+  <!-- 🔹 Lista de avaliações técnicas (atletas veem só as suas; treinadores veem todas) -->
+  <div id="avaliacoesDiv" style="display:none;">
+    <hr class="my-4">
+    <h3>Avaliações Técnicas</h3>
+
+    <div class="table-responsive">
+      <table class="table table-striped" id="avaliacoesTable">
+        <thead class="table-dark">
+          <tr>
+            <th>Atleta</th>
+            <th>Data</th>
+            <th>Treinador</th>
+            <th>Resultado</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Avaliações vão ser inseridas aqui -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </section>
 
 <!-- 🔹 SheetJS para exportação Excel -->
 <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+<!-- 🔹 PizZip + Docxtemplater para exportação da Avaliação Técnica em Word -->
+<script src="https://unpkg.com/pizzip@3.2.0/dist/pizzip.js"></script>
+<script src="https://unpkg.com/docxtemplater@3.70.0/build/docxtemplater.js"></script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
@@ -102,6 +229,21 @@ const exportBtn = document.getElementById("exportBtn");
 const userPhoto = document.getElementById("userPhoto");
 const userName = document.getElementById("userName");
 const userEmail = document.getElementById("userEmail");
+
+// 🔹 Novos elementos - Avaliação Técnica
+const avaliacaoFormDiv = document.getElementById("avaliacaoFormDiv");
+const avaliacoesDiv = document.getElementById("avaliacoesDiv");
+const avaliacaoForm = document.getElementById("avaliacaoForm");
+const avAtletaSelect = document.getElementById("avAtleta");
+const avDataInput = document.getElementById("avData");
+const avaliacoesTableBody = document.querySelector("#avaliacoesTable tbody");
+const avaliacaoFormTitulo = document.getElementById("avaliacaoFormTitulo");
+const avaliacaoSubmitBtn = document.getElementById("avaliacaoSubmitBtn");
+const avaliacaoCancelBtn = document.getElementById("avaliacaoCancelBtn");
+
+const TEMPLATE_URL = "/assets/templates/CTAP_N02a_template.docx";
+const ITEM_IDS = [1, 2, 3, 4, 5, 6, 7, 8];
+let editingAvaliacaoId = null; // 🔹 null = a criar nova; caso contrário, id do doc a editar
 
 let currentUser = null;
 let isAtleta = false;
@@ -139,6 +281,8 @@ onAuthStateChanged(auth, async (user) => {
         userInfoDiv.style.display = "none";
         registoDiv.style.display = "none";
         registosDiv.style.display = "none"; // 🔹 esconde a tabela
+        avaliacaoFormDiv.style.display = "none"; // 🔹 esconde a avaliação
+        avaliacoesDiv.style.display = "none";     // 🔹 esconde a avaliação
         noUserDiv.style.display = "block";
         loginBtn.style.display = "inline-block";
         return;
@@ -151,11 +295,17 @@ onAuthStateChanged(auth, async (user) => {
       registoDiv.style.display = isAtleta ? "block" : "none";
       registosDiv.style.display = "block"; // 🔹 mostra a tabela
 
+      // 🔹 Avaliação Técnica: formulário só para treinadores, lista para todos
+      avaliacaoFormDiv.style.display = isTreinador ? "block" : "none";
+      avaliacoesDiv.style.display = "block";
+      if (isTreinador) popularSelectAtletas();
+
       userPhoto.src = user.photoURL || "https://via.placeholder.com/120";
       userName.textContent = user.displayName || "Utilizador sem nome";
       userEmail.textContent = user.email;
 
       carregarRegistos();
+      carregarAvaliacoes(); // 🔹 novo
 
     } catch (error) {
       console.error("Erro ao verificar autorização:", error);
@@ -164,6 +314,8 @@ onAuthStateChanged(auth, async (user) => {
       userInfoDiv.style.display = "none";
       registoDiv.style.display = "none";
       registosDiv.style.display = "none"; // 🔹 esconde a tabela
+      avaliacaoFormDiv.style.display = "none"; // 🔹 esconde a avaliação
+      avaliacoesDiv.style.display = "none";     // 🔹 esconde a avaliação
       noUserDiv.style.display = "block";
       loginBtn.style.display = "inline-block";
     }
@@ -173,6 +325,8 @@ onAuthStateChanged(auth, async (user) => {
     userInfoDiv.style.display = "none";
     registoDiv.style.display = "none";
     registosDiv.style.display = "none"; // 🔹 esconde a tabela
+    avaliacaoFormDiv.style.display = "none"; // 🔹 esconde a avaliação
+    avaliacoesDiv.style.display = "none";     // 🔹 esconde a avaliação
     noUserDiv.style.display = "block";
     loginBtn.style.display = "inline-block";
   }
@@ -325,5 +479,193 @@ exportBtn.addEventListener("click", async () => {
   XLSX.utils.book_append_sheet(wb, ws, "Treinos");
   XLSX.writeFile(wb, "Registos_Treinos.xlsx");
 });
-</script>
 
+
+// ============================================================
+// 🔹 AVALIAÇÃO TÉCNICA (Execução Técnica — Nível 02)
+// ============================================================
+
+// 🔹 Preencher o <select> de atletas a partir de config/autorizados
+function popularSelectAtletas() {
+  avAtletaSelect.innerHTML = '<option value="">-- Escolhe o atleta --</option>';
+  atletasArray
+    .slice()
+    .sort((a, b) => a.nome.localeCompare(b.nome))
+    .forEach(a => {
+      const opt = document.createElement("option");
+      opt.value = a.email;
+      opt.textContent = a.nome;
+      avAtletaSelect.appendChild(opt);
+    });
+}
+
+function resetAvaliacaoForm() {
+  avaliacaoForm.reset();
+  editingAvaliacaoId = null;
+  avaliacaoFormTitulo.textContent = "Nova Avaliação Técnica — Execução Técnica (Nível 02)";
+  avaliacaoSubmitBtn.textContent = "Guardar Avaliação";
+  avaliacaoCancelBtn.style.display = "none";
+}
+
+avaliacaoCancelBtn.addEventListener("click", resetAvaliacaoForm);
+
+// 🔹 Guardar / atualizar avaliação (só treinadores)
+avaliacaoForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (!currentUser || !isTreinador) return;
+
+  const atletaEmail = avAtletaSelect.value.toLowerCase();
+  const atletaNome = getNomeAtleta(atletaEmail);
+  const dataAv = avDataInput.value;
+
+  if (!atletaEmail) { alert("Escolhe o atleta."); return; }
+
+  const registo = {
+    atletaEmail,
+    atletaNome,
+    treinadorEmail: currentUser.email,
+    treinadorNome: currentUser.displayName || currentUser.email,
+    data: dataAv,
+    timestamp: serverTimestamp()
+  };
+  ITEM_IDS.forEach(n => {
+    registo[`item${n}`] = document.getElementById(`item${n}`).value; // "", "cumpre" ou "trabalhar"
+  });
+
+  try {
+    if (editingAvaliacaoId) {
+      await updateDoc(doc(db, "avaliacoes", editingAvaliacaoId), registo);
+      alert("Avaliação atualizada com sucesso!");
+    } else {
+      await addDoc(collection(db, "avaliacoes"), registo);
+      alert("Avaliação guardada com sucesso!");
+    }
+    resetAvaliacaoForm();
+    carregarAvaliacoes();
+  } catch (error) {
+    console.error("Erro ao guardar avaliação:", error);
+    alert("Erro ao guardar avaliação.");
+  }
+});
+
+// 🔹 Carregar avaliações (atletas veem só as suas; treinadores veem todas)
+async function carregarAvaliacoes() {
+  avaliacoesTableBody.innerHTML = "";
+
+  let q;
+  if (isTreinador) {
+    q = query(collection(db, "avaliacoes"), orderBy("data", "desc"));
+  } else {
+    q = query(collection(db, "avaliacoes"), where("atletaEmail", "==", currentUser.email.toLowerCase()), orderBy("data", "desc"));
+  }
+
+  const snapshot = await getDocs(q);
+
+  snapshot.forEach(docSnap => {
+    const registo = docSnap.data();
+    const tr = document.createElement("tr");
+
+    const numCumpre = ITEM_IDS.filter(n => registo[`item${n}`] === "cumpre").length;
+
+    tr.innerHTML = `
+      <td>${registo.atletaNome}</td>
+      <td>${registo.data}</td>
+      <td>${registo.treinadorNome || ''}</td>
+      <td>${numCumpre}/8 Cumpre</td>
+      <td>
+        <button class="btn btn-outline-success btn-sm me-1" id="avexport-${docSnap.id}">Exportar Word</button>
+      </td>
+    `;
+    avaliacoesTableBody.appendChild(tr);
+
+    // 🔹 Botões Editar/Apagar só para treinadores
+    if (isTreinador) {
+      const acoesTd = tr.lastElementChild;
+      const btnEdit = document.createElement("button");
+      btnEdit.className = "btn btn-primary btn-sm me-1";
+      btnEdit.textContent = "Editar";
+      const btnDelete = document.createElement("button");
+      btnDelete.className = "btn btn-danger btn-sm";
+      btnDelete.textContent = "Apagar";
+      acoesTd.appendChild(btnEdit);
+      acoesTd.appendChild(btnDelete);
+
+      btnEdit.addEventListener("click", () => {
+        editingAvaliacaoId = docSnap.id;
+        avAtletaSelect.value = registo.atletaEmail;
+        avDataInput.value = registo.data;
+        ITEM_IDS.forEach(n => {
+          document.getElementById(`item${n}`).value = registo[`item${n}`] || "";
+        });
+        avaliacaoFormTitulo.textContent = `A editar avaliação — ${registo.atletaNome} (${registo.data})`;
+        avaliacaoSubmitBtn.textContent = "Atualizar Avaliação";
+        avaliacaoCancelBtn.style.display = "inline-block";
+        avaliacaoFormDiv.scrollIntoView({ behavior: "smooth" });
+      });
+
+      btnDelete.addEventListener("click", async () => {
+        if (confirm("Tens a certeza que queres apagar esta avaliação?")) {
+          try {
+            await deleteDoc(doc(db, "avaliacoes", docSnap.id));
+            carregarAvaliacoes();
+          } catch (error) { alert("Erro ao apagar avaliação."); }
+        }
+      });
+    }
+
+    document.getElementById(`avexport-${docSnap.id}`).addEventListener("click", () => {
+      exportarAvaliacaoWord(registo);
+    });
+  });
+}
+
+// 🔹 Exportar uma avaliação para .docx a partir do template
+async function exportarAvaliacaoWord(registo) {
+  try {
+    const response = await fetch(TEMPLATE_URL);
+    if (!response.ok) throw new Error("Não foi possível carregar o template.");
+    const templateBuffer = await response.arrayBuffer();
+
+    const zip = new PizZip(templateBuffer);
+    const doc = new window.docxtemplater(zip, { paragraphLoop: true, linebreaks: true });
+
+    const dados = {
+      atleta: registo.atletaNome,
+      treinador: registo.treinadorNome || '',
+      data_avaliacao: formatarDataPt(registo.data)
+    };
+    ITEM_IDS.forEach(n => {
+      const valor = registo[`item${n}`];
+      dados[`item${n}_c`] = valor === "cumpre" ? "☑" : "☐";
+      dados[`item${n}_t`] = valor === "trabalhar" ? "☑" : "☐";
+    });
+
+    doc.render(dados);
+
+    const out = doc.getZip().generate({
+      type: "blob",
+      mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    });
+
+    const nomeFicheiro = `${registo.atletaNome.replace(/\s+/g, "")}_${registo.data}.docx`;
+    const url = URL.createObjectURL(out);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = nomeFicheiro;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Erro ao exportar avaliação para Word:", error);
+    alert("Erro ao gerar o documento Word.");
+  }
+}
+
+// 🔹 "2026-09-15" -> "15/09/2026"
+function formatarDataPt(dataIso) {
+  if (!dataIso) return '';
+  const [ano, mes, dia] = dataIso.split("-");
+  return `${dia}/${mes}/${ano}`;
+}
+</script>
