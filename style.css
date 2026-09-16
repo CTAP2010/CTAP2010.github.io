@@ -45,7 +45,13 @@
 }
 
 /* ================== Botões ================== */
-.btn-success, .btn-outline-success {
+.btn-success {
+  background-color: var(--verde-principal);
+  border-color: var(--verde-principal);
+  color: #fff;
+}
+
+.btn-outline-success {
   border-color: var(--verde-principal);
   color: var(--verde-principal);
 }
@@ -334,9 +340,39 @@
 #registosTable td {
   text-align: center;
   vertical-align: middle;
-  word-break: nowrap;
+  white-space: nowrap;
 }
 
+/* 🔹 Força largura mínima para ativar o scroll horizontal em vez de partir o texto */
 #registosTable {
+  min-width: 650px;
+}
+
+/* 🔹 Mesmo tratamento para a tabela de Avaliações Técnicas */
+#avaliacoesTable thead {
+  background-color: var(--verde-escuro);
+  color: #fff;
+  text-align: center;
+}
+
+#avaliacoesTable input,
+#avaliacoesTable textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#avaliacoesTable .btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+#avaliacoesTable th,
+#avaliacoesTable td {
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+#avaliacoesTable {
   min-width: 650px;
 }
