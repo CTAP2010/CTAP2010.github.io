@@ -334,5 +334,9 @@
 #registosTable td {
   text-align: center;
   vertical-align: middle;
-  word-break: break-word;
+  word-break: nowrap;
+}
+
+#registosTable {
+  min-width: 650px;
 }
