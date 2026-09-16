@@ -67,18 +67,18 @@ title: Perfil
     </div>
   </div>
 
-  <!-- 🔹 Nova Avaliação Técnica (só treinadores) -->
+  <!-- 🔹 Nova Avaliação Técnica (só atletas, sobre si próprios) -->
   <div id="avaliacaoFormDiv" style="display:none;" class="mt-5">
     <hr class="my-4">
     <h2 class="mb-3" id="avaliacaoFormTitulo">Nova Avaliação Técnica — Execução Técnica (Nível 02)</h2>
     <form id="avaliacaoForm">
       <div class="mb-3">
-        <label for="avAtleta" class="form-label">Atleta</label>
-        <select class="form-select" id="avAtleta" required></select>
-      </div>
-      <div class="mb-3">
         <label for="avData" class="form-label">Data da avaliação</label>
         <input type="date" class="form-control" id="avData" required>
+      </div>
+      <div class="mb-3">
+        <label for="avTreinador" class="form-label">Treinador</label>
+        <input type="text" class="form-control" id="avTreinador" placeholder="Nome do treinador que acompanhou o treino" required>
       </div>
 
       <div class="mb-3 p-3 border rounded">
@@ -234,8 +234,8 @@ const userEmail = document.getElementById("userEmail");
 const avaliacaoFormDiv = document.getElementById("avaliacaoFormDiv");
 const avaliacoesDiv = document.getElementById("avaliacoesDiv");
 const avaliacaoForm = document.getElementById("avaliacaoForm");
-const avAtletaSelect = document.getElementById("avAtleta");
 const avDataInput = document.getElementById("avData");
+const avTreinadorInput = document.getElementById("avTreinador");
 const avaliacoesTableBody = document.querySelector("#avaliacoesTable tbody");
 const avaliacaoFormTitulo = document.getElementById("avaliacaoFormTitulo");
 const avaliacaoSubmitBtn = document.getElementById("avaliacaoSubmitBtn");
@@ -295,10 +295,9 @@ onAuthStateChanged(auth, async (user) => {
       registoDiv.style.display = isAtleta ? "block" : "none";
       registosDiv.style.display = "block"; // 🔹 mostra a tabela
 
-      // 🔹 Avaliação Técnica: formulário só para treinadores, lista para todos
-      avaliacaoFormDiv.style.display = isTreinador ? "block" : "none";
+      // 🔹 Avaliação Técnica: formulário só para atletas (preenchem sobre si próprios), lista para todos
+      avaliacaoFormDiv.style.display = isAtleta ? "block" : "none";
       avaliacoesDiv.style.display = "block";
-      if (isTreinador) popularSelectAtletas();
 
       userPhoto.src = user.photoURL || "https://via.placeholder.com/120";
       userName.textContent = user.displayName || "Utilizador sem nome";
@@ -485,20 +484,6 @@ exportBtn.addEventListener("click", async () => {
 // 🔹 AVALIAÇÃO TÉCNICA (Execução Técnica — Nível 02)
 // ============================================================
 
-// 🔹 Preencher o <select> de atletas a partir de config/autorizados
-function popularSelectAtletas() {
-  avAtletaSelect.innerHTML = '<option value="">-- Escolhe o atleta --</option>';
-  atletasArray
-    .slice()
-    .sort((a, b) => a.nome.localeCompare(b.nome))
-    .forEach(a => {
-      const opt = document.createElement("option");
-      opt.value = a.email;
-      opt.textContent = a.nome;
-      avAtletaSelect.appendChild(opt);
-    });
-}
-
 function resetAvaliacaoForm() {
   avaliacaoForm.reset();
   editingAvaliacaoId = null;
@@ -509,22 +494,17 @@ function resetAvaliacaoForm() {
 
 avaliacaoCancelBtn.addEventListener("click", resetAvaliacaoForm);
 
-// 🔹 Guardar / atualizar avaliação (só treinadores)
+// 🔹 Guardar / atualizar avaliação — o atleta preenche e submete sobre si próprio
 avaliacaoForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  if (!currentUser || !isTreinador) return;
+  if (!currentUser || !isAtleta) return;
 
-  const atletaEmail = avAtletaSelect.value.toLowerCase();
-  const atletaNome = getNomeAtleta(atletaEmail);
   const dataAv = avDataInput.value;
-
-  if (!atletaEmail) { alert("Escolhe o atleta."); return; }
+  const treinadorNome = avTreinadorInput.value.trim();
 
   const registo = {
-    atletaEmail,
-    atletaNome,
-    treinadorEmail: currentUser.email,
-    treinadorNome: currentUser.displayName || currentUser.email,
+    email: currentUser.email,
+    treinador: treinadorNome,
     data: dataAv,
     timestamp: serverTimestamp()
   };
@@ -548,7 +528,7 @@ avaliacaoForm.addEventListener("submit", async (e) => {
   }
 });
 
-// 🔹 Carregar avaliações (atletas veem só as suas; treinadores veem todas)
+// 🔹 Carregar avaliações (atletas veem só as suas; treinadores veem todas — igual aos Registos de Treino)
 async function carregarAvaliacoes() {
   avaliacoesTableBody.innerHTML = "";
 
@@ -556,7 +536,7 @@ async function carregarAvaliacoes() {
   if (isTreinador) {
     q = query(collection(db, "avaliacoes"), orderBy("data", "desc"));
   } else {
-    q = query(collection(db, "avaliacoes"), where("atletaEmail", "==", currentUser.email.toLowerCase()), orderBy("data", "desc"));
+    q = query(collection(db, "avaliacoes"), where("email", "==", currentUser.email), orderBy("data", "desc"));
   }
 
   const snapshot = await getDocs(q);
@@ -565,12 +545,13 @@ async function carregarAvaliacoes() {
     const registo = docSnap.data();
     const tr = document.createElement("tr");
 
+    const nomeAtleta = getNomeAtleta(registo.email);
     const numCumpre = ITEM_IDS.filter(n => registo[`item${n}`] === "cumpre").length;
 
     tr.innerHTML = `
-      <td>${registo.atletaNome}</td>
+      <td>${nomeAtleta}</td>
       <td>${registo.data}</td>
-      <td>${registo.treinadorNome || ''}</td>
+      <td>${registo.treinador || ''}</td>
       <td>${numCumpre}/8 Cumpre</td>
       <td>
         <button class="btn btn-outline-success btn-sm me-1" id="avexport-${docSnap.id}">Exportar Word</button>
@@ -578,8 +559,11 @@ async function carregarAvaliacoes() {
     `;
     avaliacoesTableBody.appendChild(tr);
 
-    // 🔹 Botões Editar/Apagar só para treinadores
-    if (isTreinador) {
+    // 🔹 Editar/Apagar: o próprio atleta (dono do registo) ou qualquer treinador
+    const emailUser = currentUser.email.toLowerCase();
+    const podeEditarApagar = isTreinador || registo.email.toLowerCase() === emailUser;
+
+    if (podeEditarApagar) {
       const acoesTd = tr.lastElementChild;
       const btnEdit = document.createElement("button");
       btnEdit.className = "btn btn-primary btn-sm me-1";
@@ -592,12 +576,12 @@ async function carregarAvaliacoes() {
 
       btnEdit.addEventListener("click", () => {
         editingAvaliacaoId = docSnap.id;
-        avAtletaSelect.value = registo.atletaEmail;
         avDataInput.value = registo.data;
+        avTreinadorInput.value = registo.treinador || '';
         ITEM_IDS.forEach(n => {
           document.getElementById(`item${n}`).value = registo[`item${n}`] || "";
         });
-        avaliacaoFormTitulo.textContent = `A editar avaliação — ${registo.atletaNome} (${registo.data})`;
+        avaliacaoFormTitulo.textContent = `A editar avaliação — ${nomeAtleta} (${registo.data})`;
         avaliacaoSubmitBtn.textContent = "Atualizar Avaliação";
         avaliacaoCancelBtn.style.display = "inline-block";
         avaliacaoFormDiv.scrollIntoView({ behavior: "smooth" });
@@ -614,13 +598,13 @@ async function carregarAvaliacoes() {
     }
 
     document.getElementById(`avexport-${docSnap.id}`).addEventListener("click", () => {
-      exportarAvaliacaoWord(registo);
+      exportarAvaliacaoWord(registo, nomeAtleta);
     });
   });
 }
 
-// 🔹 Exportar uma avaliação para .docx a partir do template
-async function exportarAvaliacaoWord(registo) {
+// 🔹 Exportar uma avaliação para .docx a partir do template (o original nunca é alterado — cada exportação lê o template e gera um ficheiro novo)
+async function exportarAvaliacaoWord(registo, nomeAtleta) {
   try {
     const response = await fetch(TEMPLATE_URL);
     if (!response.ok) throw new Error("Não foi possível carregar o template.");
@@ -630,8 +614,8 @@ async function exportarAvaliacaoWord(registo) {
     const doc = new window.docxtemplater(zip, { paragraphLoop: true, linebreaks: true });
 
     const dados = {
-      atleta: registo.atletaNome,
-      treinador: registo.treinadorNome || '',
+      atleta: nomeAtleta,
+      treinador: registo.treinador || '',
       data_avaliacao: formatarDataPt(registo.data)
     };
     ITEM_IDS.forEach(n => {
@@ -647,7 +631,7 @@ async function exportarAvaliacaoWord(registo) {
       mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     });
 
-    const nomeFicheiro = `${registo.atletaNome.replace(/\s+/g, "")}_${registo.data}.docx`;
+    const nomeFicheiro = `${nomeAtleta.replace(/\s+/g, "")}_${registo.data}.docx`;
     const url = URL.createObjectURL(out);
     const a = document.createElement("a");
     a.href = url;
