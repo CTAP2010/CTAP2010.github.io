@@ -27,7 +27,7 @@ title: Equipa
               <div class="membros">
                 {% for atleta in atletas_sexo %}
                   <div class="membro">
-                    <img src="{{ atleta.foto }}" alt="{{ atleta.nome }}">
+                    <img src="{{ atleta.foto }}" alt="{{ atleta.nome }}" loading="lazy">
                     <h5 style="color: var(--verde-principal);">{{ atleta.nome }}</h5>
                     <p>{{ atleta.mensagem }}</p>
                   </div>
