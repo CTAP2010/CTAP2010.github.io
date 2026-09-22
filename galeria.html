@@ -9,7 +9,7 @@ title: Galeria
     {% assign fotos = site.static_files | where_exp:"file","file.path contains '/assets/img/galeria/'" | sort: "path" | reverse %}
     {% for foto in fotos %}
       <div class="col-sm-6 col-md-4">
-        <img src="{{ foto.path }}" class="img-fluid rounded shadow galeria-img" alt="Galeria {{ forloop.index }}" 
+        <img src="{{ foto.path }}" class="img-fluid rounded shadow galeria-img" alt="Foto da galeria do CTAP" loading="lazy"" 
              onclick="openLightbox({{ forloop.index0 }})">
       </div>
     {% endfor %}
