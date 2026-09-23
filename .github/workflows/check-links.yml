@@ -1,0 +1,25 @@
+name: Verificar links partidos
+
+on:
+  schedule:
+    - cron: '0 8 * * 1'   # toda segunda-feira às 08:00 UTC
+  workflow_dispatch:        # também podes correr manualmente, no separador Actions
+
+jobs:
+  linkcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Build do site (Jekyll)
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      - name: Verificar links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --no-progress --exclude-mail './_site/**/*.html'
+          fail: true

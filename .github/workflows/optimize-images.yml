@@ -1,0 +1,41 @@
+name: Otimizar imagens automaticamente
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/img/**/*.jpg'
+      - 'assets/img/**/*.jpeg'
+      - 'assets/img/**/*.png'
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Instalar ferramentas de otimização
+        run: sudo apt-get update && sudo apt-get install -y jpegoptim optipng imagemagick
+
+      - name: Redimensionar imagens grandes (máx. 1600px de largura/altura)
+        run: |
+          find assets/img -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) \
+            -exec mogrify -resize '1600x1600>' {} \;
+
+      - name: Comprimir JPG
+        run: |
+          find assets/img -type f \( -iname "*.jpg" -o -iname "*.jpeg" \) \
+            -exec jpegoptim --max=82 --strip-all {} \;
+
+      - name: Comprimir PNG
+        run: |
+          find assets/img -type f -iname "*.png" \
+            -exec optipng -o2 {} \;
+
+      - name: Publicar alterações (só faz commit se algo mudou)
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "🤖 Otimização automática de imagens"
