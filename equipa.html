@@ -1,42 +1,35 @@
 ---
 layout: default
-title: Equipa
+title: Horários
 ---
 
 <div class="container my-5">
-  <h1 class="text-center mb-5" style="color: var(--verde-escuro);">A Nossa Equipa</h1>
+  <h1 class="text-center mb-5" style="color: var(--verde-escuro);">Horários</h1>
 
-  {% assign categorias = "Recurvo,Barebow,Compound" | split: "," %}
-  {% assign subcategorias = "Flechas,Robins,Juvenis,Cadetes,Juniores,Seniores,Veteranos" | split: "," %}
-  {% assign sexos = "Masculino,Feminino" | split: "," %}
+  <section class="mb-5 p-4 rounded shadow" style="background-color: var(--cinza-claro);">
+    <h2 class="mb-3" style="color: var(--verde-escuro);">Experiências</h2>
+    <p class="mb-3">
+      Todas as experiências carecem de marcação aqui no site. Depois de preencher o
+      formulário e este ser completamente preenchido, a experiência será automaticamente confirmada.
+    </p>
+    <p class="mb-0">
+      <strong>Sábado:</strong> data a designar no formulário, das 15h às 16h.
+    </p>
+  </section>
 
-  {% for cat in categorias %}
-    {% assign atletas_categoria = site.data.atletas | where: "categoria_principal", cat %}
-    {% if atletas_categoria.size > 0 %}
-      <h2 class="categoria">{{ cat }}</h2>
+  <section class="mb-5 p-4 rounded shadow" style="background-color: var(--cinza-claro);">
+    <h2 class="mb-3" style="color: var(--verde-escuro);">Formação</h2>
+    <h3 class="mb-3">Novas inscrições</h3>
 
-      {% for sub in subcategorias %}
-        {% assign atletas_sub = atletas_categoria | where: "subcategoria", sub %}
-        {% if atletas_sub.size > 0 %}
-          <h3 class="subcategoria">{{ sub }}</h3>
+    <div class="mb-4">
+      <p class="mb-1"><strong>€90</strong> — jóia de inscrição convertida em 3 meses de formação.</p>
+      <p class="mb-0"><strong>€25</strong> — quota anual de associado.</p>
+    </div>
 
-          {% for sexo in sexos %}
-            {% assign atletas_sexo = atletas_sub | where: "sexo", sexo %}
-            {% if atletas_sexo.size > 0 %}
-              <h4 class="sexo">{{ sexo }}</h4>
-              <div class="membros">
-                {% for atleta in atletas_sexo %}
-                  <div class="membro">
-                    <img src="{{ atleta.foto }}" alt="{{ atleta.nome }}" loading="lazy">
-                    <h5 style="color: var(--verde-principal);">{{ atleta.nome }}</h5>
-                    <p>{{ atleta.mensagem }}</p>
-                  </div>
-                {% endfor %}
-              </div>
-            {% endif %}
-          {% endfor %}
-        {% endif %}
-      {% endfor %}
-    {% endif %}
-  {% endfor %}
+    <h3>Horários</h3>
+    <p class="mb-0">
+      <strong>Terças e quintas:</strong> das 19h às 20h.<br>
+      <strong>Sábados:</strong> das 15h às 17h.
+    </p>
+  </section>
 </div>
